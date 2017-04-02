@@ -1,0 +1,126 @@
+itemGroup.Aquaculture=Aquaculture
+
+# Encantamentos
+enchantment.aquacultureAppealing=Apelando
+enchantment.aquacultureBarbedHook=Gancho Farpado
+enchantment.aquacultureDoubleHook=Gancho Duplo
+enchantment.aquacultureFastCast=lance Rápido
+enchantment.aquacultureHeavyLine=Linha Pesada
+enchantment.aquacultureLongCast=lance Longo
+enchantment.aquacultureMagnetic=Magnético
+enchantment.aquacultureShortCast=Lance Curto
+
+# Vara de Pesca
+item.fishingRod.name=Vara de Pesca de Madeira
+item.IronFishingRod.name=Vara de Pesca de Ferro
+item.GoldFishingRod.name=Vara de Pesca de Ouro
+item.DiamondFishingRod.name=Vara de Pesca de Diamante
+item.AdminFishingRod.name=Vara de Pesca do Admin
+
+item.Seaweed.name=Algas Marinhas
+item.Algae.name=Algas
+
+# Comida
+item.RawWhaleSteak.name=Carne Crua de Baleia
+item.RawFishFillet.name=Posta Crua de Peixe
+item.CookedFishFillet.name=Posta Frita de Peixe
+item.CookedWhaleSteak.name=Filé de Baleia
+item.Whaleburger.name=Hamburguer Assado de Baleia
+item.FrogLegs.name=Pernas de Rã
+item.CookedFrogLegs.name=Pernas Fritas de Rã
+item.TurtleSoup.name=Sopa de Tartaruga
+item.Sushi.name=Sushi
+
+# Micelânia de Itens
+item.Driftwood.name=Madeira Petrificada
+item.TinCan.name=Lata de Estanho
+item.MessageInABottle.name=Mensagem na Garrafa
+item.Box.name=Caixa
+item.Lockbox.name=Caixa com Fechadura
+item.TreasureChest.name=Baú do Tesouro
+
+item.NeptuniumIngot.name=Lingote de Neptunium
+item.NeptunesBounty.name=Dádiva de Neptuno
+item.NeptuniumPickaxe.name=Picareta de Neptunium
+item.NeptuniumShovel.name=Pá de Neptunium
+item.NeptuniumAxe.name=Machado de Neptunium
+item.NeptuniumHoe.name=Enxada de Neptunium
+item.NeptuniumSword.name=Espada de Neptunium
+item.NeptuniumHelmet.name=Elmo de Neptunium
+item.NeptuniumPlate.name=Peitoral de Neptunium
+item.NeptuniumLegs.name=Calça de Neptunium
+item.NeptuniumBoots.name=Botas de Neptunium
+
+# Peixe
+item.Fish.name=Peixe
+item.Fish.Bluegill.name=Perca-sol
+item.Fish.Perch.name=Perca
+item.Fish.Gar.name=Gar
+item.Fish.Bass.name=Robalo
+item.Fish.Muskellunge.name=Lúcio-almiscarado
+item.Fish.Brown_Trout.name=Truta
+item.Fish.Catfish.name=Peixe-gato
+item.Fish.Carp.name=Carpa
+item.Fish.Blowfish.name=Baiacu
+item.Fish.Red_Grouper.name=Garoupa
+item.Fish.Salmon.name=Salmão
+item.Fish.Tuna.name=Atum
+item.Fish.Swordfish.name=Peixe-espada
+item.Fish.Shark.name=Tubarão
+item.Fish.Whale.name=Baleia
+item.Fish.Squid.name=Lula
+item.Fish.Jellyfish.name=Água-viva
+item.Fish.Frog.name=Rã
+item.Fish.Turtle.name=Tartaruga
+item.Fish.Leech.name=Sanguessuga
+item.Fish.Pirahna.name=Piranha
+item.Fish.Electric_Eel.name=Poraquê
+item.Fish.Tambaqui.name=Tambaqui
+item.Fish.Arapaima.name=Pirarucu
+item.Fish.Cod.name=Bacalhau
+item.Fish.Pollock.name=Escamudo
+item.Fish.Herring.name=Arenque
+item.Fish.Halibut.name=Linguado
+item.Fish.Pink_Salmon.name=Salmão Rosa
+item.Fish.Rainbow_Trout.name=Truta Arco-íris
+item.Fish.Blackfish.name=Peixe-negro
+item.Fish.Capitaine.name=Bodião
+item.Fish.Boulti.name=Tilápia
+item.Fish.Bagrid.name=Bagre
+item.Fish.Syndontis.name=Synodontis
+item.Fish.Red_Shrooma.name=Shrooma Vermelho
+item.Fish.Brown_Shrooma.name=Shrooma Marrom
+item.Fish.Goldfish.name=Peixinho Dourado
+item.Fish.Fish_Bones.name=Espinhas de Peixe
+
+# Menssagem na garrafa
+aquaculture.message=ERRO! Peixe escapando!
+aquaculture.message1=Como eu minero de peixe?
+aquaculture.message2=O médico disse que eu deveria começar a engarrafar os meus sentimentos.
+aquaculture.message3=Socorro, estou preso em uma fábrica que faz mensagens em garrafa!
+aquaculture.message4=Minha casa foi ´grifada´, enviar suprimentos!
+aquaculture.message5=Hey! Over here! I think I see you!
+aquaculture.message6=Haha, agora você está sujando!
+aquaculture.message7=Propriedade do Guaraná Creeper.
+aquaculture.message8=Aviso: Perigo de asfixia, mantenha fora do alcance das crianças.
+aquaculture.message9=Se você conseguir ler isso, sou você do futuro, não coma o bacon.
+aquaculture.message10=Admit one, Davy Jones' Locker.
+aquaculture.message11=9.17 N 19.89 E
+aquaculture.message12=Neptunite é real, eu te digo! Eu não estava mentindo!
+aquaculture.message13=Aumente sua vara de pesca por apenas 19,95 de Ouro! Garantido!
+aquaculture.message14=Que diabos é ´Fishallurgy´? Algum tipo de reação a pescar?
+aquaculture.message15=HAMBÚRGUERES DE BALEIA! 2 pães + 1 filé de baleia! ESPALHE A PALAVRA!
+aquaculture.message16=Desde que desembarcaram as coisas não têm sido as mesmas, porque no momento em que pise na costa eu perdi totalmente o jogo.
+aquaculture.message17=Pressione ALT+F4 para Diamantes gratuitos!
+aquaculture.message18=Oh eu tenho um lindo monte de cocos...
+aquaculture.message19=Entrei para uma tribo de canibais eles queriam carne nova.
+aquaculture.message20=Tanto espaço para atividades!
+aquaculture.message21=Caro Shadowclaimer, adicione ´Diamonds Unobtainium Hiper´ que são ferramentas invulneráveis com de velocidade mineração instantâneas e armaduras. Atenciosamente, Todos nós.
+aquaculture.message22=Caro Shadowclaimer, então quando a 1.X vai sair? Sinceramente, Todos nós.
+aquaculture.message23=Queridos fãs, oi! Atenciosamente, Shadowclaimer.
+aquaculture.message24=Shadowclaimer <3's Nhira
+aquaculture.message25=Null Pointer Exception: Aquaculture.MessageInABottle a (STRING) não pode ser nula.
+aquaculture.message26=I grind up diamond armor every morning and eat it for fast. - mDiyo
+aquaculture.message27=-A mensagem magicamente desaparece de sua mão.-
+aquaculture.message28=Olhe para mim, agora veja seu inventário, agora volta a olhar para mim, esta mensagem agora virou diamantes! Não... estou brincando, é de papel ainda.
+aquaculture.message29=Reciclagem de Bronze 5.
