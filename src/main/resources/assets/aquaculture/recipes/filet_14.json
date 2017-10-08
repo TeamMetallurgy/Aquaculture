@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "aquaculture:fish",
+      "data": 13
+    }
+  ],
+  "result": {
+    "item": "aquaculture:food",
+    "data": 3,
+    "count": 8
+  }
+}
