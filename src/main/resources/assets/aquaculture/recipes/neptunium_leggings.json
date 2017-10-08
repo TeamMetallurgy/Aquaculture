@@ -1,0 +1,18 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "SSS",
+    "S S",
+    "S S"
+  ],
+  "key": {
+    "S": {
+      "item": "aquaculture:neptunium_ingot",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "aquaculture:neptunium_leggings",
+    "data": 0
+  }
+}
