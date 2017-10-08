@@ -1,0 +1,22 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "B",
+    "S",
+    "B"
+  ],
+  "key": {
+    "S": {
+      "item": "aquaculture:food",
+      "data": 5
+    },
+    "B": {
+      "item": "minecraft:bread",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "aquaculture:food",
+    "data": 6
+  }
+}
