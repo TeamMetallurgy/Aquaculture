@@ -1,0 +1,26 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "  I",
+    " IS",
+    "T S"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:string",
+      "data": 0
+    },
+    "T": {
+      "item": "minecraft:stick",
+      "data": 0
+    },
+    "I": {
+      "item": "minecraft:diamond",
+      "data": 0
+    }	
+  },
+  "result": {
+    "item": "aquaculture:diamond_fishing_rod",
+    "data": 0
+  }
+}
