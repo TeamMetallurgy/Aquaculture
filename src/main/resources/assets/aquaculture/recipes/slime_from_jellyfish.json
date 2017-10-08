@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "aquaculture:fish",
+      "data": 16
+    }
+  ],
+  "result": {
+    "item": "minecraft:slime_ball",
+    "data": 0,
+    "count": 2
+  }
+}
