@@ -3,7 +3,7 @@
   "pattern": [
     "SSS",
     "S S",
-    "S S"
+    "   "
   ],
   "key": {
     "S": {
@@ -12,7 +12,7 @@
     }
   },
   "result": {
-    "item": "aquaculture:neptunium_leggings",
+    "item": "aquaculture:neptunium_helmet",
     "data": 0
   }
 }

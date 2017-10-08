@@ -1,9 +1,9 @@
 {
   "type": "forge:ore_shaped",
   "pattern": [
-    "SSS",
     "S S",
-    "S S"
+    "SSS",
+    "SSS"
   ],
   "key": {
     "S": {
@@ -12,7 +12,7 @@
     }
   },
   "result": {
-    "item": "aquaculture:neptunium_leggings",
+    "item": "aquaculture:neptunium_chestplate",
     "data": 0
   }
 }
