@@ -7,8 +7,8 @@
   ],
   "key": {
     "S": {
-      "item": "aquaculture:neptunium_ingot",
-      "data": 0
+      "item": "aquaculture:loot",
+      "data": 1
     },
     "T": {
       "item": "minecraft:stick",
