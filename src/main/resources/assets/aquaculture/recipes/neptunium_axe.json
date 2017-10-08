@@ -1,0 +1,22 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "SS",
+    "ST",
+    " T"
+  ],
+  "key": {
+    "S": {
+      "item": "aquaculture:loot",
+      "data": 1
+    },
+    "T": {
+      "item": "minecraft:stick",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "aquaculture:neptunium_axe",
+    "data": 0
+  }
+}
