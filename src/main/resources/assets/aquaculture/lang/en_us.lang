@@ -127,10 +127,10 @@ aquaculture.message29=Recycle for 5 Brass.
 
 # Enchantments
 
-aquaculture.enchantment.barbed_hook.desc=This gives a fishing rod a higher catch window.
-aquaculture.enchantment.heavy_line.desc=The fish caught by this enchantment are heavier.
-aquaculture.enchantment.double_hook.desc=You have a chance of catching two fish instead of one.
-aquaculture.enchantment.appealing.desc=Catch more fish, as opposed to loot.
-aquaculture.enchantment.long_cast.desc=Fishing rod can be cast farther.
-aquaculture.enchantment.short_cast.desc=Fishing rod can be cast closer.
-aquaculture.enchantment.magnetic.desc=Catch more loot, as opposed to fish.
+enchantment.aquaculture.barbed_hook.desc=This gives a fishing rod a higher catch window.
+enchantment.aquaculture.heavy_line.desc=The fish caught by this enchantment are heavier.
+enchantment.aquaculture.double_hook.desc=You have a chance of catching two fish instead of one.
+enchantment.aquaculture.appealing.desc=Catch more fish, as opposed to loot.
+enchantment.aquaculture.long_cast.desc=Fishing rod can be cast farther.
+enchantment.aquaculture.short_cast.desc=Fishing rod can be cast closer.
+enchantment.aquaculture.magnetic.desc=Catch more loot, as opposed to fish.
