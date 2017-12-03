@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class Aquaculture {
     public final static String MOD_ID = "aquaculture";
     public final static String MOD_NAME = "Aquaculture";
-    public final static String MOD_VERSION = "1.5.0";
+    public final static String MOD_VERSION = "1.6.0";
 
     @Instance(MOD_ID)
     public static Aquaculture instance;
