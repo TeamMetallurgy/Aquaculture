@@ -47,18 +47,6 @@ public class ItemFish extends Item {
 
     }
 
-    public void addFilletRecipes() {
-        for (int i = 0; i < fish.size(); i++) {
-            Fish f = fish.get(i);
-            if (f.filletAmount != 0) {
-                // Fixme: Change to JSON recipes
-                /*
-                GameRegistry.addShapelessRecipe(AquacultureItems.fishFillet.getItemStack(f.filletAmount), new ItemStack(this, 1, i));
-                */
-            }
-        }
-    }
-
     public String getItemDisplayName(ItemStack par1ItemStack) {
         if (par1ItemStack.hasTagCompound()) {
             if (par1ItemStack.getTagCompound().hasKey("Prefix")) {
