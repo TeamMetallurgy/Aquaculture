@@ -12,7 +12,7 @@ public class AquacultureRecipes {
 
         GameRegistry.addSmelting(AquacultureItems.fishFillet.getItemStack(), AquacultureItems.cookedFillet.getItemStack(), 0.3f);
         GameRegistry.addSmelting(AquacultureItems.whaleSteak.getItemStack(), AquacultureItems.cookedWhaleSteak.getItemStack(), 0.3f);
-        GameRegistry.addSmelting(AquacultureItems.tinCan.getItemStack(), new ItemStack(Items.IRON_INGOT), 0.7f);
+        GameRegistry.addSmelting(AquacultureItems.tinCan.getItemStack(), new ItemStack(Items.IRON_NUGGET, 7), 0.7f);
         GameRegistry.addSmelting(AquacultureItems.frogLegs.getItemStack(), AquacultureItems.cookedFrogLegs.getItemStack(), 0.3F);
     }
 }
