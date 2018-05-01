@@ -8,7 +8,6 @@ import com.teammetallurgy.aquaculture.items.meta.SubItem;
 import com.teammetallurgy.aquaculture.items.meta.SubItemFood;
 import com.teammetallurgy.aquaculture.loot.BiomeType;
 import com.teammetallurgy.aquaculture.loot.FishLoot;
-
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;

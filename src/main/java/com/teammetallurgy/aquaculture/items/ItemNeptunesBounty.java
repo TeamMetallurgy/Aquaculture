@@ -3,20 +3,18 @@ package com.teammetallurgy.aquaculture.items;
 import com.teammetallurgy.aquaculture.items.meta.MetaItem;
 import com.teammetallurgy.aquaculture.items.meta.SubItem;
 import com.teammetallurgy.aquaculture.loot.WeightedLootSet;
-
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import java.util.Random;
+import javax.annotation.Nonnull;
 
 public class ItemNeptunesBounty extends SubItem {
-    Random rand = new Random();
-    WeightedLootSet loot;
+    private WeightedLootSet loot;
 
-    public ItemNeptunesBounty(MetaItem par1) {
-        super(par1);
+    public ItemNeptunesBounty(MetaItem metaItem) {
+        super(metaItem);
         loot = null;
     }
 
@@ -35,19 +33,20 @@ public class ItemNeptunesBounty extends SubItem {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-        if (par2World.isRemote)
-            return par1ItemStack;
+    @Nonnull
+    public ItemStack onItemRightClick(@Nonnull ItemStack stack, World world, EntityPlayer player) {
+        if (world.isRemote)
+            return stack;
 
         if (loot == null)
             initLoot();
 
         ItemStack item = loot.getRandomLoot();
 
-        EntityItem entityitem = new EntityItem(par3EntityPlayer.world, par3EntityPlayer.posX, par3EntityPlayer.posY, par3EntityPlayer.posZ, item);
-        par2World.spawnEntity(entityitem);
+        EntityItem entityitem = new EntityItem(player.world, player.posX, player.posY, player.posZ, item);
+        world.spawnEntity(entityitem);
 
-        par1ItemStack.shrink(1);
-        return par1ItemStack;
+        stack.shrink(1);
+        return stack;
     }
 }

@@ -6,6 +6,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+
 public class NeptuniumArmor extends ItemArmor {
     private String texture;
 
@@ -19,14 +21,14 @@ public class NeptuniumArmor extends ItemArmor {
     }
 
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String layer) {
+    public String getArmorTexture(@Nonnull ItemStack stack, Entity entity, EntityEquipmentSlot slot, String layer) {
         return "aquaculture:textures/armor/" + texture + ".png";
     }
 
     @Override
-    public Item setUnlocalizedName(String par1Str) {
-        super.setUnlocalizedName(par1Str);
+    @Nonnull
+    public Item setUnlocalizedName(@Nonnull String name) {
+        super.setUnlocalizedName(name);
         return this;
     }
-
 }

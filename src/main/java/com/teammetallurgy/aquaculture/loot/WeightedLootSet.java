@@ -1,6 +1,7 @@
 package com.teammetallurgy.aquaculture.loot;
 
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -8,16 +9,15 @@ import net.minecraft.item.ItemStack;
 import java.util.*;
 
 public class WeightedLootSet {
-
     public Map<Integer, ItemStack> loot;
     public Map<Integer, Integer> lootMin;
     public Map<Integer, Integer> lootMax;
     public int totalWeight;
 
     public WeightedLootSet() {
-        loot = new HashMap<Integer, ItemStack>();
-        lootMin = new HashMap<Integer, Integer>();
-        lootMax = new HashMap<Integer, Integer>();
+        loot = new HashMap<>();
+        lootMin = new HashMap<>();
+        lootMax = new HashMap<>();
         totalWeight = 0;
     }
 
@@ -63,12 +63,7 @@ public class WeightedLootSet {
                 int amount = rand.nextInt(max - min + 1) + min;
                 stack.setCount(amount);
                 if (stack.getItem() == Items.ENCHANTED_BOOK) {
-                    // TODO: Find a way to enchant books
-                    /*
-                    Enchantment enchantment = Enchantment.enchantmentsList[rand.nextInt(Enchantment.enchantmentsList.length)];
-                    int l = MathHelper.getRandomIntegerInRange(rand, enchantment.getMinLevel(), enchantment.getMaxLevel());
-                    ((ItemEnchantedBook) stack.getItem()).addEnchantment(stack, new EnchantmentData(enchantment, l));
-                    */
+                    EnchantmentHelper.addRandomEnchantment(rand, stack, 5 + rand.nextInt(15), true);
                 }
                 break;
             }

@@ -8,7 +8,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class AquacultureRecipes {
 
     public void addRecipes() {
-
         GameRegistry.addSmelting(AquacultureItems.fishFillet.getItemStack(), AquacultureItems.cookedFillet.getItemStack(), 0.3f);
         GameRegistry.addSmelting(AquacultureItems.whaleSteak.getItemStack(), AquacultureItems.cookedWhaleSteak.getItemStack(), 0.3f);
         GameRegistry.addSmelting(AquacultureItems.tinCan.getItemStack(), new ItemStack(Items.IRON_NUGGET, 7), 0.7f);

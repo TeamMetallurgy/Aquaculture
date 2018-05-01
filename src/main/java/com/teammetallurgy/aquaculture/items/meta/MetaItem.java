@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 
 public class MetaItem extends Item {
@@ -35,57 +36,58 @@ public class MetaItem extends Item {
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack itemStack) {
-        int i = MathHelper.clamp(itemStack.getItemDamage(), 0, subItems.size() - 1);
-        String uname = subItems.get(i).getUnlocalizedName(itemStack);
+    @Nonnull
+    public String getUnlocalizedName(@Nonnull ItemStack stack) {
+        int i = MathHelper.clamp(stack.getItemDamage(), 0, subItems.size() - 1);
+        String uname = subItems.get(i).getUnlocalizedName(stack);
         uname = uname.replace(" ", "_");
         return "item." + uname;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> itemStackList) {
+    public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> items) {
         if (this.isInCreativeTab(tab)) {
             for (SubItem subItem : subItems) {
-                itemStackList.add(subItem.getItemStack());
+                items.add(subItem.getItemStack());
             }
         }
     }
 
     // ItemRedirects
     @Override
-    public ItemStack onItemUseFinish(ItemStack itemStack, World world, EntityLivingBase entityLiving) {
-        int damage = itemStack.getItemDamage();
+    @Nonnull
+    public ItemStack onItemUseFinish(@Nonnull ItemStack stack, World world, EntityLivingBase entityLiving) {
+        int damage = stack.getItemDamage();
         if (entityLiving instanceof EntityPlayer && damage >= 0 && damage < subItems.size()) {
             EntityPlayer player = (EntityPlayer) entityLiving;
-            return subItems.get(damage).onEaten(itemStack, world, player);
+            return subItems.get(damage).onEaten(stack, world, player);
         }
-
-        return itemStack;
+        return stack;
     }
 
     @Override
-    public int getMaxItemUseDuration(ItemStack itemStack) {
-        int damage = itemStack.getItemDamage();
+    public int getMaxItemUseDuration(@Nonnull ItemStack stack) {
+        int damage = stack.getItemDamage();
         if (damage >= 0 && damage < subItems.size()) {
-            return subItems.get(damage).getMaxItemUseDuration(itemStack);
+            return subItems.get(damage).getMaxItemUseDuration(stack);
         }
-
         return 0;
     }
 
     @Override
-    public EnumAction getItemUseAction(ItemStack itemStack) {
-        int damage = itemStack.getItemDamage();
+    @Nonnull
+    public EnumAction getItemUseAction(@Nonnull ItemStack stack) {
+        int damage = stack.getItemDamage();
         if (damage >= 0 && damage < subItems.size()) {
-            return subItems.get(damage).getItemUseAction(itemStack);
+            return subItems.get(damage).getItemUseAction(stack);
         }
-
         return EnumAction.NONE;
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
         ItemStack itemStack = player.getHeldItem(hand);
 
         int damage = itemStack.getItemDamage();

@@ -23,12 +23,12 @@ public class EnchantmentAppealing extends EnchantmentFishingPole {
     }
 
     @Override
-    public int getMinEnchantability(int par1) {
-        return 12 + (par1 - 1) * 20;
+    public int getMinEnchantability(int enchantmentLevel) {
+        return 12 + (enchantmentLevel - 1) * 20;
     }
 
     @Override
-    public int getMaxEnchantability(int par1) {
-        return this.getMinEnchantability(par1) + 25;
+    public int getMaxEnchantability(int enchantmentLevel) {
+        return this.getMinEnchantability(enchantmentLevel) + 25;
     }
 }

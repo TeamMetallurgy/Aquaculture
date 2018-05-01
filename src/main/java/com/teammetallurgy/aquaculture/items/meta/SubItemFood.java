@@ -11,10 +11,17 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.Optional.Interface;
+import squeek.applecore.api.food.FoodValues;
+import squeek.applecore.api.food.IEdible;
+import squeek.applecore.api.food.ItemFoodProxy;
 
-@Interface(iface = "squeek.applecore.api.food.IEdible", modid = "AppleCore")
-public class SubItemFood {
+import javax.annotation.Nonnull;
+
+@Interface(iface = "squeek.applecore.api.food.IEdible", modid = "applecore")
+public class SubItemFood implements IEdible {
     public int damage;
     public MetaItemFood item;
     public String unlocalizedName;
@@ -54,15 +61,17 @@ public class SubItemFood {
         return this;
     }
 
+    @Nonnull
     public ItemStack getItemStack() {
         return getItemStack(1);
     }
 
+    @Nonnull
     public ItemStack getItemStack(int amount) {
         return new ItemStack(item, amount, damage);
     }
 
-    public String getUnlocalizedName(ItemStack itemStack) {
+    public String getUnlocalizedName(@Nonnull ItemStack stack) {
         return unlocalizedName;
     }
 
@@ -71,58 +80,56 @@ public class SubItemFood {
         return this;
     }
 
-    /*
     @Override
-    @Method(modid = "AppleCore")
-    public FoodValues getFoodValues(ItemStack itemStack) {
+    @Optional.Method(modid = "applecore")
+    public FoodValues getFoodValues(@Nonnull ItemStack stack) {
         return new FoodValues(this.getHealAmount(), this.getSaturationModifier());
     }
     
-    @Method(modid = "AppleCore")
-    public void onEatenAppleCore(ItemStack itemStack, EntityPlayer player) {
-        player.getFoodStats().addStats(new ItemFoodProxy(this), itemStack);
+    @Optional.Method(modid = "applecore")
+    public void onEatenAppleCore(@Nonnull ItemStack stack, EntityPlayer player) {
+        player.getFoodStats().addStats(new ItemFoodProxy(this), stack);
     }
-    */
 
-    public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityLivingBase entity) {
-        par1ItemStack.shrink(1);
+    public ItemStack onEaten(@Nonnull ItemStack stack, World world, EntityLivingBase entity) {
+        stack.shrink(1);
         if (!(entity instanceof EntityPlayer)) {
-            return par1ItemStack;
+            return stack;
         }
 
         EntityPlayer player = (EntityPlayer) entity;
 
-        /*
-        if (Loader.isModLoaded("AppleCore"))
-            onEatenAppleCore(par1ItemStack, player);
-        else
-        */
-        player.getFoodStats().addStats(this.getHealAmount(), this.getSaturationModifier());
-        par2World.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, par2World.rand.nextFloat() * 0.1F + 0.9F);
-        this.onFoodEaten(par1ItemStack, par2World, player);
-        return par1ItemStack;
+        if (Loader.isModLoaded("applecore")) {
+            onEatenAppleCore(stack, player);
+        } else {
+            player.getFoodStats().addStats(this.getHealAmount(), this.getSaturationModifier());
+            world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
+            this.onFoodEaten(stack, world, player);
+        }
+        return stack;
     }
 
-    protected void onFoodEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-        if (!par2World.isRemote && this.potion != null && par2World.rand.nextFloat() < this.potionEffectProbability) {
-            par3EntityPlayer.addPotionEffect(new PotionEffect(this.potion, this.potionDuration * 20, this.potionAmplifier));
+    protected void onFoodEaten(@Nonnull ItemStack stack, World world, EntityPlayer player) {
+        if (!world.isRemote && this.potion != null && world.rand.nextFloat() < this.potionEffectProbability) {
+            player.addPotionEffect(new PotionEffect(this.potion, this.potionDuration * 20, this.potionAmplifier));
         }
     }
 
-    public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+    public int getMaxItemUseDuration(@Nonnull ItemStack stack) {
         return eatTime;
     }
 
-    public EnumAction getItemUseAction(ItemStack par1ItemStack) {
+    public EnumAction getItemUseAction(@Nonnull ItemStack stack) {
         return EnumAction.EAT;
     }
 
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, EnumHand hand) {
-        if (par3EntityPlayer.canEat(this.alwaysEdible)) {
-            par3EntityPlayer.setActiveHand(hand);
+    @Nonnull
+    public ItemStack onItemRightClick(@Nonnull ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+        if (player.canEat(this.alwaysEdible)) {
+            player.setActiveHand(hand);
         }
 
-        return par1ItemStack;
+        return stack;
     }
 
     public int getHealAmount() {

@@ -2,7 +2,6 @@ package com.teammetallurgy.aquaculture.proxy;
 
 import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.handlers.EntityCustomFishHook;
-
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 

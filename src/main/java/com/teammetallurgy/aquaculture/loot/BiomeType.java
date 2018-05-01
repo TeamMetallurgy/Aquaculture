@@ -18,16 +18,15 @@ public class BiomeType {
 
     private BiomeType(String name, int[] biomes) {
         this.name = name;
-        for (int i = 0; i < biomes.length; i++) {
-            addBiome(biomes[i], this);
+        for (int biome : biomes) {
+            addBiome(biome, this);
         }
-
         FishLoot.instance().addBiome(this);
     }
 
     public static void addBiome(int biomeID, BiomeType biomeType) {
         if (biomeMap == null)
-            biomeMap = new HashMap<Integer, BiomeType>();
+            biomeMap = new HashMap<>();
 
         if (biomeMap.containsKey(biomeID)) {
             System.out.println("[Aquaculture] Error: Biome ID " + biomeID + " already registered as " + biomeMap.get(biomeID) + " when trying to register " + biomeType);

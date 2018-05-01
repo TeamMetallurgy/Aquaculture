@@ -1,13 +1,13 @@
 package com.teammetallurgy.aquaculture.enchantments;
 
-import com.google.common.base.Predicate;
 import com.teammetallurgy.aquaculture.items.AquacultureItems;
-
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+
+import java.util.function.Predicate;
 
 /**
  * @author Freyja
@@ -27,17 +27,13 @@ public class AquacultureEnchants {
 
     public static void init() {
 
-        Predicate<Item> isAquacultureRod = new Predicate<Item>() {
-            @Override
-            public boolean apply(Item item) {
-                return item == AquacultureItems.adminFishingRod ||
-                        item == AquacultureItems.diamondFishingRod ||
-                        item == AquacultureItems.goldFishingRod ||
-                        item == AquacultureItems.ironFishingRod ||
-                        item == AquacultureItems.woodenFishingRod;
-            }
-        };
-        enumFishingPole = EnumHelper.addEnchantmentType("fishingPole", isAquacultureRod);
+        Predicate<Item> isAquacultureRod = item ->
+                item == AquacultureItems.adminFishingRod ||
+                item == AquacultureItems.diamondFishingRod ||
+                item == AquacultureItems.goldFishingRod ||
+                item == AquacultureItems.ironFishingRod ||
+                item == AquacultureItems.woodenFishingRod;
+        enumFishingPole = EnumHelper.addEnchantmentType("fishingPole", isAquacultureRod::test);
 
         appealing = new EnchantmentAppealing(Enchantment.Rarity.RARE);
         appealing.setRegistryName("appealing");
@@ -68,7 +64,5 @@ public class AquacultureEnchants {
         heavyLine = new EnchantmentHeavyLine(Enchantment.Rarity.UNCOMMON);
         heavyLine.setRegistryName("heavy_line");
         ForgeRegistries.ENCHANTMENTS.register(heavyLine);
-
     }
-
 }

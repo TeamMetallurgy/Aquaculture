@@ -6,7 +6,6 @@ import com.teammetallurgy.aquaculture.handlers.AquacultureTab;
 import com.teammetallurgy.aquaculture.handlers.Config;
 import com.teammetallurgy.aquaculture.items.AquacultureItems;
 import com.teammetallurgy.aquaculture.proxy.CommonProxy;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -19,7 +18,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class Aquaculture {
     public final static String MOD_ID = "aquaculture";
     public final static String MOD_NAME = "Aquaculture";
-    public final static String MOD_VERSION = "1.6.0";
+    public final static String MOD_VERSION = "@VERSION@";
 
     @Instance(MOD_ID)
     public static Aquaculture instance;

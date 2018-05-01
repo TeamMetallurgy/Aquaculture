@@ -2,7 +2,6 @@ package com.teammetallurgy.aquaculture.items;
 
 import com.teammetallurgy.aquaculture.items.meta.MetaItem;
 import com.teammetallurgy.aquaculture.items.meta.SubItem;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
@@ -11,21 +10,23 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class ItemMessageInABottle extends SubItem {
-    Random rand = new Random();
+    private Random rand = new Random();
 
-    public ItemMessageInABottle(MetaItem par1) {
-        super(par1);
+    public ItemMessageInABottle(MetaItem metaItem) {
+        super(metaItem);
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-        if (par2World.isRemote)
-            return par1ItemStack;
+    @Nonnull
+    public ItemStack onItemRightClick(@Nonnull ItemStack stack, World world, EntityPlayer player) {
+        if (world.isRemote)
+            return stack;
 
-        par2World.playSound(null, par3EntityPlayer.posX, par3EntityPlayer.posY, par3EntityPlayer.posZ, SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.PLAYERS, 0.5F, 0.4F / (rand.nextFloat() * 0.4F + 0.8F));
+        world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.PLAYERS, 0.5F, 0.4F / (rand.nextFloat() * 0.4F + 0.8F));
 
         int messageRoll = rand.nextInt(29) + 1;
 
@@ -36,13 +37,12 @@ public class ItemMessageInABottle extends SubItem {
             message = "aquaculture.message" + messageRoll;
         }
 
-        if (par3EntityPlayer instanceof EntityPlayerMP) {
-
+        if (player instanceof EntityPlayerMP) {
             TextComponentTranslation chatMessage = new TextComponentTranslation(message);
-            par3EntityPlayer.sendMessage(chatMessage);
+            player.sendMessage(chatMessage);
         }
 
-        par1ItemStack.shrink(1);
-        return par1ItemStack;
+        stack.shrink(1);
+        return stack;
     }
 }

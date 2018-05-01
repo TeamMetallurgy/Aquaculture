@@ -5,7 +5,6 @@ import com.teammetallurgy.aquaculture.client.CustomFishingHookRenderFactory;
 import com.teammetallurgy.aquaculture.handlers.AquacultureEntitySpawnHandler;
 import com.teammetallurgy.aquaculture.handlers.EntityCustomFishHook;
 import com.teammetallurgy.aquaculture.items.AquacultureItems;
-
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;

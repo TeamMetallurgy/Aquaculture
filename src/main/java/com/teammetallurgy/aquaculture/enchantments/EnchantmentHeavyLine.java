@@ -15,12 +15,12 @@ public class EnchantmentHeavyLine extends EnchantmentFishingPole {
     }
 
     @Override
-    public int getMinEnchantability(int par1) {
-        return 5 + 20 * (par1 - 1);
+    public int getMinEnchantability(int enchantmentLevel) {
+        return 5 + 20 * (enchantmentLevel - 1);
     }
 
     @Override
-    public int getMaxEnchantability(int par1) {
-        return super.getMinEnchantability(par1) + 50;
+    public int getMaxEnchantability(int enchantmentLevel) {
+        return super.getMinEnchantability(enchantmentLevel) + 50;
     }
 }

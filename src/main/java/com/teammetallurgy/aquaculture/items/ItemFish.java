@@ -1,8 +1,8 @@
 package com.teammetallurgy.aquaculture.items;
 
+import com.google.common.base.Preconditions;
 import com.teammetallurgy.aquaculture.loot.BiomeType;
 import com.teammetallurgy.aquaculture.loot.FishLoot;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -14,24 +14,23 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javax.annotation.Nullable;
-
 public class ItemFish extends Item {
-    public List<Fish> fish;
+    public NonNullList<Fish> fish;
 
     public ItemFish() {
         super();
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
 
-        fish = new ArrayList<>();
+        fish = NonNullList.create();
     }
 
     public void addFish(String name, int filletAmount, int minWeight, int maxWeight, BiomeType biome, int rarity) {
@@ -47,21 +46,23 @@ public class ItemFish extends Item {
 
     }
 
-    public String getItemDisplayName(ItemStack par1ItemStack) {
-        if (par1ItemStack.hasTagCompound()) {
-            if (par1ItemStack.getTagCompound().hasKey("Prefix")) {
-                return par1ItemStack.getTagCompound().getString("Prefix") + " " + super.getItemStackDisplayName(par1ItemStack);
+    @Override
+    @Nonnull
+    public String getItemStackDisplayName(@Nonnull ItemStack stack) {
+        if (stack.hasTagCompound() && stack.getTagCompound() != null) {
+            if (stack.getTagCompound().hasKey("Prefix")) {
+                return stack.getTagCompound().getString("Prefix") + " " + super.getItemStackDisplayName(stack);
             }
         }
-        return super.getItemStackDisplayName(par1ItemStack);
+        return super.getItemStackDisplayName(stack);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack itemStack, @Nullable World world, List<String> toolTip, ITooltipFlag tooltipType) {
-        if (itemStack.hasTagCompound()) {
-            if (itemStack.getTagCompound().hasKey("Weight")) {
-                float weight = itemStack.getTagCompound().getFloat("Weight");
+    public void addInformation(@Nonnull ItemStack stack, @Nullable World world, List<String> toolTip, ITooltipFlag tooltipType) {
+        if (stack.hasTagCompound() && stack.getTagCompound() != null) {
+            if (stack.getTagCompound().hasKey("Weight")) {
+                float weight = stack.getTagCompound().getFloat("Weight");
 
                 DecimalFormat df = new DecimalFormat("#,###.##");
                 BigDecimal bd = new BigDecimal(weight);
@@ -74,8 +75,8 @@ public class ItemFish extends Item {
         }
     }
 
-    public void assignRandomWeight(ItemStack stack, int heavyLineLvl) {
-        if (stack == null)
+    public void assignRandomWeight(@Nonnull ItemStack stack, int heavyLineLvl) {
+        if (stack.isEmpty())
             return;
 
         Fish f = fish.get(stack.getItemDamage());
@@ -95,6 +96,7 @@ public class ItemFish extends Item {
             stack.setTagCompound(new NBTTagCompound());
         }
 
+        Preconditions.checkNotNull(stack.getTagCompound(), "tagCompound");
         stack.getTagCompound().setFloat("Weight", weight);
 
         if (weight <= f.maxWeight / 10.0) {
@@ -107,31 +109,20 @@ public class ItemFish extends Item {
 
     }
 
+    @Nonnull
     public ItemStack getItemStackFish(String name) {
         for (int i = 0; i < fish.size(); i++) {
             if (fish.get(i).name.equals(name)) {
                 return new ItemStack(this, 1, i);
             }
         }
-
-        return null;
+        return ItemStack.EMPTY;
     }
 
-    /*
-    @SideOnly(Side.CLIENT)
     @Override
-    public IIcon getIconFromDamage(int par1) {
-        int j = MathHelper.clamp_int(par1, 0, fish.size());
-        return fish.get(j).icon;
-    }
-     */
-
-    /**
-     * Returns the unlocalized name of this item. This version accepts an ItemStack so different stacks can have different names based on their damage or NBT.
-     */
-    @Override
-    public String getUnlocalizedName(ItemStack par1ItemStack) {
-        int i = MathHelper.clamp(par1ItemStack.getItemDamage(), 0, fish.size());
+    @Nonnull
+    public String getUnlocalizedName(@Nonnull ItemStack stack) {
+        int i = MathHelper.clamp(stack.getItemDamage(), 0, fish.size());
         String uname = super.getUnlocalizedName() + "." + fish.get(i).name;
         uname = uname.replace(" ", "_");
         return uname;
@@ -139,7 +130,7 @@ public class ItemFish extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
+    public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
         if (this.isInCreativeTab(tab)) {
             for (int j = 0; j < fish.size(); ++j) {
                 subItems.add(new ItemStack(this, 1, j));
@@ -147,22 +138,11 @@ public class ItemFish extends Item {
         }
     }
 
-    /*
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister) {
-        for (Fish f : fish) {
-            f.icon = par1IconRegister.registerIcon("Aquaculture:" + f.name);
-        }
-    }
-    */
-
     public class Fish {
         public String name;
         public int filletAmount;
         public int minWeight;
         public int maxWeight;
-        // public IIcon icon;
 
         public Fish(String name, int amount, int min, int max) {
             this.name = name;

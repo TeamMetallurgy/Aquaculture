@@ -3,7 +3,6 @@ package com.teammetallurgy.aquaculture.items;
 import com.teammetallurgy.aquaculture.items.meta.MetaItem;
 import com.teammetallurgy.aquaculture.items.meta.SubItem;
 import com.teammetallurgy.aquaculture.loot.WeightedLootSet;
-
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -11,14 +10,13 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import java.util.Random;
+import javax.annotation.Nonnull;
 
 public class ItemBox extends SubItem {
-    public Random rand = new Random();
     public WeightedLootSet loot;
 
-    public ItemBox(MetaItem par1) {
-        super(par1);
+    public ItemBox(MetaItem metaItem) {
+        super(metaItem);
         loot = new WeightedLootSet();
         loot.addLoot(Blocks.STONE, 5, 1, 1);
         loot.addLoot(Blocks.DIRT, 5, 1, 1);
@@ -64,16 +62,17 @@ public class ItemBox extends SubItem {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-        if (par2World.isRemote)
-            return par1ItemStack;
+    @Nonnull
+    public ItemStack onItemRightClick(@Nonnull ItemStack stack, World world, EntityPlayer player) {
+        if (world.isRemote)
+            return stack;
 
         ItemStack randomLoot = loot.getRandomLoot();
 
-        EntityItem entityitem = new EntityItem(par3EntityPlayer.world, par3EntityPlayer.posX, par3EntityPlayer.posY, par3EntityPlayer.posZ, randomLoot);
-        par2World.spawnEntity(entityitem);
+        EntityItem entityitem = new EntityItem(player.world, player.posX, player.posY, player.posZ, randomLoot);
+        world.spawnEntity(entityitem);
 
-        par1ItemStack.shrink(1);
-        return par1ItemStack;
+        stack.shrink(1);
+        return stack;
     }
 }

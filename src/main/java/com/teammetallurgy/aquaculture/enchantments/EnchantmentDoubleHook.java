@@ -23,12 +23,12 @@ public class EnchantmentDoubleHook extends EnchantmentFishingPole {
     }
 
     @Override
-    public int getMinEnchantability(int par1) {
+    public int getMinEnchantability(int enchantmentLevel) {
         return 15;
     }
 
     @Override
-    public int getMaxEnchantability(int par1) {
-        return super.getMinEnchantability(par1) + 50;
+    public int getMaxEnchantability(int enchantmentLevel) {
+        return super.getMinEnchantability(enchantmentLevel) + 50;
     }
 }

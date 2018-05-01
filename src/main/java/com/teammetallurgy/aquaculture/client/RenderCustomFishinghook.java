@@ -3,7 +3,6 @@ package com.teammetallurgy.aquaculture.client;
 import com.teammetallurgy.aquaculture.handlers.EntityCustomFishHook;
 import com.teammetallurgy.aquaculture.items.ItemAdminFishingRod;
 import com.teammetallurgy.aquaculture.items.ItemAquacultureFishingRod;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -18,6 +17,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
+import javax.annotation.Nonnull;
+
 public class RenderCustomFishinghook extends Render<EntityCustomFishHook> {
 
     private static final ResourceLocation FISH_HOOK_TEXTURE = new ResourceLocation("textures/particle/particles.png");
@@ -27,15 +28,15 @@ public class RenderCustomFishinghook extends Render<EntityCustomFishHook> {
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(EntityCustomFishHook entity) {
+    protected ResourceLocation getEntityTexture(@Nonnull EntityCustomFishHook entity) {
         return FISH_HOOK_TEXTURE;
     }
 
     @Override
-    public void doRender(EntityCustomFishHook entity, double x, double y, double z, float entityYaw, float partialTicks) {
+    public void doRender(@Nonnull EntityCustomFishHook entity, double x, double y, double z, float entityYaw, float partialTicks) {
         EntityPlayer entityplayer = entity.getAngler();
 
-        if (entityplayer != null && !this.renderOutlines) {
+        if (!this.renderOutlines) {
             GlStateManager.pushMatrix();
             GlStateManager.translate((float) x, (float) y, (float) z);
             GlStateManager.enableRescaleNormal();
@@ -43,15 +44,6 @@ public class RenderCustomFishinghook extends Render<EntityCustomFishHook> {
             this.bindEntityTexture(entity);
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder bufferBuilder = tessellator.getBuffer();
-            int i = 1;
-            int j = 2;
-            float f = 0.0625F;
-            float f1 = 0.125F;
-            float f2 = 0.125F;
-            float f3 = 0.1875F;
-            float f4 = 1.0F;
-            float f5 = 0.5F;
-            float f6 = 0.5F;
             GlStateManager.rotate(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
             GlStateManager.rotate((this.renderManager.options.thirdPersonView == 2 ? -1 : 1) * -this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
 
@@ -75,9 +67,9 @@ public class RenderCustomFishinghook extends Render<EntityCustomFishHook> {
             GlStateManager.disableRescaleNormal();
             GlStateManager.popMatrix();
             int k = entityplayer.getPrimaryHand() == EnumHandSide.RIGHT ? 1 : -1;
-            ItemStack itemstack = entityplayer.getHeldItemMainhand();
+            ItemStack heldStack = entityplayer.getHeldItemMainhand();
 
-            boolean isAquaRod = itemstack.getItem() instanceof ItemAdminFishingRod || itemstack.getItem() instanceof ItemAquacultureFishingRod;
+            boolean isAquaRod = heldStack.getItem() instanceof ItemAdminFishingRod || heldStack.getItem() instanceof ItemAquacultureFishingRod;
             if (!isAquaRod) {
                 k = -k;
             }
@@ -88,7 +80,6 @@ public class RenderCustomFishinghook extends Render<EntityCustomFishHook> {
             double d0 = MathHelper.sin(f9);
             double d1 = MathHelper.cos(f9);
             double d2 = k * 0.35D;
-            double d3 = 0.8D;
             double d4;
             double d5;
             double d6;
@@ -122,7 +113,6 @@ public class RenderCustomFishinghook extends Render<EntityCustomFishHook> {
             GlStateManager.disableTexture2D();
             GlStateManager.disableLighting();
             bufferBuilder.begin(3, DefaultVertexFormats.POSITION_COLOR);
-            int l = 16;
 
             for (int i1 = 0; i1 <= 16; ++i1) {
                 float f11 = i1 / 16.0F;
@@ -135,5 +125,4 @@ public class RenderCustomFishinghook extends Render<EntityCustomFishHook> {
             super.doRender(entity, x, y, z, entityYaw, partialTicks);
         }
     }
-
 }

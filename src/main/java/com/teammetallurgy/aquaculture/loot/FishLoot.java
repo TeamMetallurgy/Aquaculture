@@ -1,21 +1,20 @@
 package com.teammetallurgy.aquaculture.loot;
 
 import com.teammetallurgy.aquaculture.items.AquacultureItems;
-
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
 public class FishLoot {
-
     public static FishLoot instance;
     Map<BiomeType, WeightedLootSet> fishBiomeMap;
     Map<BiomeType, WeightedLootSet> junkBiomeMap;
 
     private FishLoot() {
-        junkBiomeMap = new HashMap<BiomeType, WeightedLootSet>();
-        fishBiomeMap = new HashMap<BiomeType, WeightedLootSet>();
+        junkBiomeMap = new HashMap<>();
+        fishBiomeMap = new HashMap<>();
     }
 
     public static FishLoot instance() {
@@ -58,6 +57,7 @@ public class FishLoot {
         junkBiomeMap.get(biome).addLoot(fish, rarity, 1, 1);
     }
 
+    @Nonnull
     public ItemStack getRandomFish(int biomeID) {
         BiomeType biome = BiomeType.getBiomeType(biomeID);
 
@@ -70,6 +70,7 @@ public class FishLoot {
         return fishStack;
     }
 
+    @Nonnull
     public ItemStack getRandomFish(int biomeID, int heavyLineLvl) {
         BiomeType biome = BiomeType.getBiomeType(biomeID);
 
@@ -84,6 +85,7 @@ public class FishLoot {
         return fishStack;
     }
 
+    @Nonnull
     public ItemStack getRandomJunk(int biomeID) {
         BiomeType biome = BiomeType.getBiomeType(biomeID);
 

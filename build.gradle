@@ -13,19 +13,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'maven'  
 
-/*
-// for people who want stable - not yet functional for MC 1.8.8 - we require the forgegradle 2.1 snapshot
-plugins {
-    id "net.minecraftforge.gradle.forge" version "2.0.2"
-}
-*/
-
-repositories {
-    maven {
-        name = "Team Metallurgy Maven"
-        url = "http://teammetallurgy.com/maven"
-    }
-    
+repositories {   
 	maven {
         name = "Squeek502's Maven"
 		url = "http://www.ryanliptak.com/maven/"
@@ -33,15 +21,13 @@ repositories {
 }
 
 version = "1.2.6"
-group = "com.teammetallurgy.aquaculture" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = "com.teammetallurgy.aquaculture"
 archivesBaseName = "Aquaculture"
 
 ext.configFile = file "build.properties"
 
-sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
-compileJava {
-    sourceCompatibility = targetCompatibility = '1.8'
-}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 configFile.withReader {
     def prop = new Properties()
@@ -53,10 +39,13 @@ minecraft {
     version = config.minecraft_version + "-" + config.forge_version
     runDir = "run"
     mappings = config.mcp_mappings
+	
+	replace "@VERSION@", project.mod_version
+    replaceIn "Aquaculture.java"
 }
 
 dependencies {
-    //deobfCompile "applecore:AppleCore:${config.minecraft_version}-${config.applecore_api_version}:api"
+    deobfCompile "applecore:AppleCore:${config.minecraft_version}-${config.applecore_api_version}:api"
 }
 
 task buildInfo() {
