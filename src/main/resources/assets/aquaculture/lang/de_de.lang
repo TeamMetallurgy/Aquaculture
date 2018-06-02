@@ -1,0 +1,135 @@
+itemGroup.Aquaculture=Aquaculture
+
+# Enchantments
+enchantment.aquacultureAppealing=Anziehend
+enchantment.aquacultureBarbedHook=Widerhaken
+enchantment.aquacultureDoubleHook=Doppelhaken
+enchantment.aquacultureFastCast=Schneller Wurf
+enchantment.aquacultureHeavyLine=Schwere Leine
+enchantment.aquacultureLongCast=Langer Wurf
+enchantment.aquacultureMagnetic=Magnetisch
+enchantment.aquacultureShortCast=Kurzer Wurf
+
+# Rod
+item.fishingRod.name=Holzangel
+item.IronFishingRod.name=Eisenangel
+item.GoldFishingRod.name=Goldangel
+item.DiamondFishingRod.name=Diamantangel
+item.AdminFishingRod.name=Adminangel
+
+item.Seaweed.name=Seetang
+item.Algae.name=Algen
+
+# Food
+item.RawWhaleSteak.name=Rohes Walsteak
+item.RawFishFillet.name=Rohes Fischfilet
+item.CookedFishFillet.name=Gebratenes Fischfilet
+item.CookedWhaleSteak.name=Gebratenes Walsteak
+item.Whaleburger.name=Gebratener Wal-Burger
+item.FrogLegs.name=Froschschenkel
+item.CookedFrogLegs.name=Gekochte Froschschenkel
+item.TurtleSoup.name=Schildkrötensuppe
+item.Sushi.name=Sushi
+
+# Misc Items
+item.Driftwood.name=Treibholz
+item.TinCan.name=Blechdose
+item.MessageInABottle.name=Flaschenpost
+item.Box.name=Box
+item.Lockbox.name=Schließkassette
+item.TreasureChest.name=Schatztruhe
+
+item.NeptuniumIngot.name=Neptuniumbarren
+item.NeptunesBounty.name=Neptuns Belohnung
+item.NeptuniumPickaxe.name=Neptuniumspitzhacke
+item.NeptuniumShovel.name=Neptuniumschaufel
+item.NeptuniumAxe.name=Neptuniumaxt
+item.NeptuniumHoe.name=Neptuniumhacke
+item.NeptuniumSword.name=Neptuniumschwert
+item.NeptuniumHelmet.name=Neptuniumhelm
+item.NeptuniumChestplate.name=Neptuniumbrustplatte
+item.NeptuniumLeggings.name=Neptuniumbeinschutz
+item.NeptuniumBoots.name=Neptuniumstiefel
+
+# Fish
+item.Fish.name=Fisch
+item.Fish.Bluegill.name=Blauer Sonnenbarsch
+item.Fish.Perch.name=Barsch
+item.Fish.Gar.name=Hecht
+item.Fish.Bass.name=Barsch
+item.Fish.Muskellunge.name=Muskellunge
+item.Fish.Brown_Trout.name=Seeforelle
+item.Fish.Catfish.name=Wels
+item.Fish.Carp.name=Karpfen
+item.Fish.Blowfish.name=Kugelfisch
+item.Fish.Red_Grouper.name=Roter Zackenbarsch
+item.Fish.Salmon.name=Lachs
+item.Fish.Tuna.name=Thunfisch
+item.Fish.Swordfish.name=Schwertfisch
+item.Fish.Shark.name=Hai
+item.Fish.Whale.name=Wal
+item.Fish.Squid.name=Tintenfisch
+item.Fish.Jellyfish.name=Qualle
+item.Fish.Frog.name=Frosch
+item.Fish.Turtle.name=Schildkröte
+item.Fish.Leech.name=Blutegel
+item.Fish.Pirahna.name=Piranha
+item.Fish.Electric_Eel.name=Zitteraal
+item.Fish.Tambaqui.name=Tambaqui
+item.Fish.Arapaima.name=Arapaima
+item.Fish.Cod.name=Kabeljau
+item.Fish.Pollock.name=Köhler
+item.Fish.Herring.name=Hering
+item.Fish.Halibut.name=Heilbutt
+item.Fish.Pink_Salmon.name=Buckellachs
+item.Fish.Rainbow_Trout.name=Regenbogenforelle
+item.Fish.Blackfish.name=Schwarzfisch
+item.Fish.Capitaine.name=Nilbarsch
+item.Fish.Boulti.name=Oreochromis niloticus
+item.Fish.Bagrid.name=Stachelwels
+item.Fish.Syndontis.name=Fiederbartwels
+item.Fish.Red_Shrooma.name=Roter Pilza
+item.Fish.Brown_Shrooma.name=Brauner Pilza
+item.Fish.Goldfish.name=Goldfisch
+item.Fish.Fish_Bones.name=Gräten
+
+# Message in a bottle
+aquaculture.message=FEHLER! Fisch entkommt!
+aquaculture.message1=Wie baue ich Fische ab?
+aquaculture.message2=Der Doktor sagte, ich sollte anfangen, meine Gefühle unter Verschluss zu halten.
+aquaculture.message3=Hilfe, ich bin in einer Flachenpost-Fabrik gefangen!
+aquaculture.message4=Mein Haus wurde gegrieft, bitte schicke Vorräte!
+aquaculture.message5=Hallo! Hier drüben! Ich glaube, ich sehe dich!
+aquaculture.message6=Haha, jetzt hast du den Abfall!
+aquaculture.message7=Eigentum von Creeper-Cola.
+aquaculture.message8=Warnung: Erstickungsgefahr, außerhalb der Reichweite von Kindern aufbewahren.
+aquaculture.message9=Wenn du das bekommst, bist du aus der Zukunft, iss NICHT das Schweineschnitzel.
+aquaculture.message10=Gib eins zu, Davy Jones’ Kiste.
+aquaculture.message11=9.17 N 19.89 E
+aquaculture.message12=Neptunit ist echt, sage ich dir! Ich habe es nicht erfunden!
+aquaculture.message13=Vergrößern Sie Ihre Angel für nur 19.95 Gold! Garantiert!
+aquaculture.message14=Was zur Hölle ist Fischallurgie? Eine Art Reaktion auf Fisch?
+aquaculture.message15=WAL-BURGER! 2x Brot + Walsteak! VERBREITET DIE BOTSCHAFT!
+aquaculture.message16=Seit ich an Land gegangen bin, waren die Dinge nicht mehr die gleichen, denn in dem Moment, bei dem ich an Land ging, verlor ich das Spiel völlig..
+aquaculture.message17=Drücke Alt-F4 für kostenlose Diamanten!
+aquaculture.message18=Oh, ich habe einen schöne Menge Kokosnüsse..
+aquaculture.message19=Ich schloss mich einem Stamm von Kannibalen an, um sich zum Mittagessen zu treffen.
+aquaculture.message20=So viel Platz für AKTIVITÄTEN!
+aquaculture.message21=Lieber Shadowclaimer, bitte füge Unobtainium Hyper-Diamanten hinzu, aus denen man unzerstörbare Werkzeuge, die sofortig abbauen und Rüstung herstellen kann. Mit freundlichen Grüßen, alle.
+aquaculture.message22=Lieber Shadowclaimer, also wann kommt 1.X raus? Mit freundlichen Grüßen, alle.
+aquaculture.message23=Liebe Fans, hallo! Mit freundlichen Grüßen, Shadowclaimer.
+aquaculture.message24=Das Thuniversum ist wirklich ein unglaublicher Ort
+aquaculture.message25=Null Pointer Exception: Aquaculture.MessageInABottle (String) cannot be null.
+aquaculture.message26=Ich zermahle jeden Morgen Diamantrüstung und esse sie zum Frühstück. - mDiyo
+aquaculture.message27=-Die Nachricht verschwindet auf magische Weise aus deiner Hand.-
+aquaculture.message28=Schau zu mir, jetzt zurück in dein Inventar, nun zurück zu mir, diese Nachricht ist jetzt zu DIAMANTEN geworden! Nee, nur Spaß, es ist immer noch Papier.
+aquaculture.message29=Recyceln für 5 Messing.
+
+# Enchantments
+enchantment.aquaculture.barbed_hook.desc=Dies verleiht einer Angel einen höheren Fangbereich.
+enchantment.aquaculture.heavy_line.desc=Fische, die mit dieser Verzauberung gefangen werden, sind schwerer.
+enchantment.aquaculture.double_hook.desc=Es besteht die Möglichkeit, zwei Fische statt einem zu fangen.
+enchantment.aquaculture.appealing.desc=Fange mehr Fische als Beute.
+enchantment.aquaculture.long_cast.desc=Angel kann weiter geworfen werden.
+enchantment.aquaculture.short_cast.desc=Angel kann näher geworfen werden.
+enchantment.aquaculture.magnetic.desc=Fange mehr Beute als Fische.
