@@ -1,7 +1,9 @@
 package com.teammetallurgy.aquaculture.loot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class BiomeType {
     public static BiomeType freshwater = new BiomeType("Freshwater", new int[] { 1, 4, 6, 7, 14, 15, 18, 27, 28, 29, 33, 129, 132, 134, 155, 156, 157, 161 });
@@ -12,7 +14,7 @@ public class BiomeType {
     public static BiomeType brackish = new BiomeType("Brackish", new int[] { 6, 134 });
     public static BiomeType mushroom = new BiomeType("Mushroom", new int[] { 14, 15 });
 
-    private static Map<Integer, BiomeType> biomeMap;
+    private static Map<Integer, ArrayList<BiomeType>> biomeMap;
 
     private String name;
 
@@ -29,15 +31,18 @@ public class BiomeType {
             biomeMap = new HashMap<>();
         }
 
-        if (biomeMap.containsKey(biomeID) && biomeMap.get(biomeID) == biomeType) {
+        if (biomeMap.containsKey(biomeID) && biomeMap.get(biomeID).contains(biomeType)) {
             System.out.println("[Aquaculture] Error: Biome ID " + biomeID + " is already registered as " + biomeMap.get(biomeID));
         } else {
-            biomeMap.put(biomeID, biomeType);
+        	if(!biomeMap.containsKey(biomeID))
+        		biomeMap.put(biomeID, new ArrayList<BiomeType>());
+            biomeMap.get(biomeID).add(biomeType);
         }
     }
 
     public static BiomeType getBiomeType(int biomeID) {
-        return biomeMap.get(biomeID);
+    	ArrayList<BiomeType> list = biomeMap.get(biomeID);
+        return list.get(new Random().nextInt(list.size()));
     }
 
     @Override
