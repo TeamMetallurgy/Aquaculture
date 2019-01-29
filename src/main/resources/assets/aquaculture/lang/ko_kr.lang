@@ -1,0 +1,135 @@
+itemGroup.Aquaculture=아쿠아컬쳐
+
+# Enchantments
+enchantment.aquacultureAppealing=매혹적인 미끼
+enchantment.aquacultureBarbedHook=미늘 바늘
+enchantment.aquacultureDoubleHook=이중 바늘
+enchantment.aquacultureFastCast=빠른 캐스트
+enchantment.aquacultureHeavyLine=무거운 줄
+enchantment.aquacultureLongCast=긴 캐스트
+enchantment.aquacultureMagnetic=자석
+enchantment.aquacultureShortCast=짧은 캐스트
+
+# Rod
+item.fishingRod.name=나무 낚싯대
+item.IronFishingRod.name=철 낚싯대
+item.GoldFishingRod.name=금 낚싯대
+item.DiamondFishingRod.name=다이아몬드 낚싯대
+item.AdminFishingRod.name=관리자 낚싯대
+
+item.Seaweed.name=해초
+item.Algae.name=조류
+
+# Food
+item.RawWhaleSteak.name=날 고래 살코기
+item.RawFishFillet.name=날 생선 살코기
+item.CookedFishFillet.name=요리된 생선 살코기
+item.CookedWhaleSteak.name=요리된 고래 스테이크
+item.Whaleburger.name=요리된 고래 버거
+item.FrogLegs.name=개구리 뒷다리
+item.CookedFrogLegs.name=요리된 개구리 뒷다리
+item.TurtleSoup.name=거북이 스프
+item.Sushi.name=초밥
+
+# Misc Items
+item.Driftwood.name=유목
+item.TinCan.name=빈 깡통
+item.MessageInABottle.name=병 속의 메세지
+item.Box.name=상자
+item.Lockbox.name=자물쇠 상자
+item.TreasureChest.name=보물 상자
+
+item.NeptuniumIngot.name=넵투늄 주괴
+item.NeptunesBounty.name=넵튠의 보상
+item.NeptuniumPickaxe.name=넵투늄 곡괭이
+item.NeptuniumShovel.name=넵투늄 삽
+item.NeptuniumAxe.name=넵투늄 도끼
+item.NeptuniumHoe.name=넵투늄 호미
+item.NeptuniumSword.name=넵투늄 검
+item.NeptuniumHelmet.name=넵투늄 투구
+item.NeptuniumChestplate.name=넵투늄 흉갑
+item.NeptuniumLeggings.name=넵투늄 각반
+item.NeptuniumBoots.name=넵투늄 부츠
+
+# Fish
+item.Fish.name=물고기
+item.Fish.Bluegill.name=블루길
+item.Fish.Perch.name=농어
+item.Fish.Gar.name=동갈치
+item.Fish.Bass.name=배스
+item.Fish.Muskellunge.name=강늉치
+item.Fish.Brown_Trout.name=갈색 송어
+item.Fish.Catfish.name=메기
+item.Fish.Carp.name=게
+item.Fish.Blowfish.name=복어
+item.Fish.Red_Grouper.name=붉바리
+item.Fish.Salmon.name=연어
+item.Fish.Tuna.name=참치
+item.Fish.Swordfish.name=황새치
+item.Fish.Shark.name=상어
+item.Fish.Whale.name=고래
+item.Fish.Squid.name=오징어
+item.Fish.Jellyfish.name=해파리
+item.Fish.Frog.name=개구리
+item.Fish.Turtle.name=거북이
+item.Fish.Leech.name=거머리
+item.Fish.Pirahna.name=피라냐
+item.Fish.Electric_Eel.name=전기 뱀장어
+item.Fish.Tambaqui.name=탐바퀴
+item.Fish.Arapaima.name=아라파이마
+item.Fish.Cod.name=대구
+item.Fish.Pollock.name=명태
+item.Fish.Herring.name=청어
+item.Fish.Halibut.name=넙치
+item.Fish.Pink_Salmon.name=곱사송어
+item.Fish.Rainbow_Trout.name=무지개송어
+item.Fish.Blackfish.name=지느러미고래
+item.Fish.Capitaine.name=카피테인
+item.Fish.Boulti.name=보우티
+item.Fish.Bagrid.name=배그리드
+item.Fish.Syndontis.name=사이돈티스
+item.Fish.Red_Shrooma.name=붉은 스루마
+item.Fish.Brown_Shrooma.name=갈색 스루마
+item.Fish.Goldfish.name=금붕어
+item.Fish.Fish_Bones.name=생선 가시
+
+# Message in a bottle
+aquaculture.message=오류! 낚시를 정지합니다!
+aquaculture.message1=생선은 어떻게 캐는거야?
+aquaculture.message2=의사 선생님은 내가 감정을 억눌러야 한다고 말했었지.
+aquaculture.message3=도와주세요 병 안에 편지를 넣는 공장에 갇혀있어요!
+aquaculture.message4=우리 가정은 매우 어려운 상태입니다. 보급품을 보내주세요!
+aquaculture.message5=이봐! 거기! 여기 좀 봐!
+aquaculture.message6=하하, 네 시간을 낭비했구나!
+aquaculture.message7=크리퍼-콜라의 자산입니다.
+aquaculture.message8=경고: 질식의 위험이 있습니다. 어린이의 손이 닿지 않는 곳에 보관하세요.
+aquaculture.message9=과거의 나에게. 돼지고기를 먹지 마!
+aquaculture.message10=인정해, 데이빗 존슨의 상자야.
+aquaculture.message11=9.17 N 19.89 E
+aquaculture.message12=넵튜나이트는 진짜야! 말했지! 내가 지어낸게 아니라고!
+aquaculture.message13=단돈 19.95 골드로 낚싯대를 바꾸세요!
+aquaculture.message14=피쉬알러지가 대체 뭐야? 물고기에 대한 알레르기?
+aquaculture.message15=고래 버거! 참깨빵 위에 고래고기 패티 두장 특별한 소스와 양상추!
+aquaculture.message16=내가 해변에 온 이후로 상황이 예전 같지 않았어. 내가 해변에 발을 디딘 순간, 나는 게임에서 완전히 져버렸거든..
+aquaculture.message17=Alt-F4를 눌러 공짜 다이아몬드를 받으세요!
+aquaculture.message18=이것 참 사랑스러운 코코넛들이네...
+aquaculture.message19=나는 새로운 사람을 맛보기 위해 식인종 부족에 가입했다.
+aquaculture.message20=커플을 위한 다양한 방이 있습니다!
+aquaculture.message21=이 편지는 영국에서 최초로 시작되어 일년에 한바퀴 돌면서 받는 사람에게 행운을 주었고 지금은 당신에게로 옮겨진 이 편지는 4일 안에 당신 곁을 떠나야 합니다.
+aquaculture.message22=방금 지나온 곳 바위 뒤에 다이아몬드 있음. 진짜임!
+aquaculture.message23=머리 감지 마. 빠져. 안감는다구? 그래도 빠져.
+aquaculture.message24=투나버스는 정말 믿을 수 없이 맛있는 채널이다.
+aquaculture.message25=Null Pointer Exception: Aquaculture.MessageInABottle (String) cannot be null.
+aquaculture.message26=나는 매일 아침 내 다이아몬드 갑옷을 갈아먹는다. 언젠가는 빨라지겠지. - mDiyo
+aquaculture.message27=-메세지가 마술처럼 당신의 손에서 사라졌다.-
+aquaculture.message28=날 봐, 이제 인벤토리를 열어봐. 그 후에 날 다시 봐봐. 이 메세지는 이제 다이아몬드야! ...당연히 농담이지. 아직 종이야.
+aquaculture.message29=재활용 하세요.
+
+# Enchantments
+enchantment.aquaculture.barbed_hook.desc=좀 더 다양한 생선이 낚입니다.
+enchantment.aquaculture.heavy_line.desc=좀 더 무거운 생선을 낚습니다.
+enchantment.aquaculture.double_hook.desc=한번에 두 마리의 생선을 낚을 확률이 생깁니다.
+enchantment.aquaculture.appealing.desc=아이템보다 생선을 더 많이 낚습니다.
+enchantment.aquaculture.long_cast.desc=찌를 좀 더 멀리 날립니다.
+enchantment.aquaculture.short_cast.desc=찌를 좀 더 가까이 날립니다.
+enchantment.aquaculture.magnetic.desc=생선보다 아이템을 좀 더 많이 낚습니다.
