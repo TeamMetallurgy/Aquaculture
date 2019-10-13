@@ -88,6 +88,7 @@ public class AquaFishingRodItem extends FishingRodItem {
                 if (!isAdminRod && !bait.isEmpty()) {
                     lureSpeed += ((BaitItem) bait.getItem()).getLureSpeedModifier();
                 }
+                lureSpeed = Math.min(5, lureSpeed);
                 //Luck
                 int luck = EnchantmentHelper.getFishingLuckBonus(heldStack);
                 if (hook != Hooks.EMPTY && hook.getLuckModifier() > 0) luck += hook.getLuckModifier();
