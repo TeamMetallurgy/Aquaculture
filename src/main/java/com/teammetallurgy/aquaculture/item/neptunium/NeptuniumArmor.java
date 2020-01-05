@@ -27,15 +27,15 @@ public class NeptuniumArmor extends ArmorItem {
     public void onArmorTick(@Nonnull ItemStack stack, World world, PlayerEntity player) {
         if (player.areEyesInFluid(FluidTags.WATER)) {
             if (this.slot == EquipmentSlotType.HEAD) {
-                player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 1, 0, false, false, false));
+                player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 60, 0, false, false, false));
             } else if (this.slot == EquipmentSlotType.CHEST) {
-                player.addPotionEffect(new EffectInstance(Effects.WATER_BREATHING, 1, 0, false, false, false));
+                player.addPotionEffect(new EffectInstance(Effects.WATER_BREATHING, 60, 0, false, false, false));
             } else if (this.slot == EquipmentSlotType.LEGS) {
                 if (!player.isCrouching()) {
                     player.setMotion(player.getMotion().add(0, player.fallDistance, 0));
                 }
             } else if (this.slot == EquipmentSlotType.FEET) {
-                player.addPotionEffect(new EffectInstance(Effects.SPEED, 1, 0, false, false, false));
+                player.addPotionEffect(new EffectInstance(Effects.SPEED, 60, 0, false, false, false));
                 player.move(MoverType.PLAYER, player.getMotion()); //Make the swimming react to the swiftness potion
             }
         }
