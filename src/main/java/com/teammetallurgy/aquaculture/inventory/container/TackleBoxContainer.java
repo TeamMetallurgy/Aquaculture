@@ -40,15 +40,38 @@ public class TackleBoxContainer extends Container {
             this.tackleBox.openInventory(playerInventory.player);
             this.tackleBox.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
                 SlotFishingRod fishingRod = (SlotFishingRod) addSlot(new SlotFishingRod(handler, 0, 117, 21));
-                this.slotHook = this.addSlot(new SlotHidable(fishingRod, 0, 106, 44));
+                this.slotHook = this.addSlot(new SlotHidable(fishingRod, 0, 106, 44) {
+                    @Override
+                    public boolean isItemValid(@Nonnull ItemStack stack) {
+                        return stack.getItem() instanceof HookItem && super.isItemValid(stack);
+                    }
+                });
                 this.slotBait = this.addSlot(new SlotHidable(fishingRod, 1, 129, 44) {
+                    @Override
+                    public boolean isItemValid(@Nonnull ItemStack stack) {
+                        return stack.getItem() instanceof BaitItem && super.isItemValid(stack);
+                    }
                     @Override
                     public boolean canTakeStack(PlayerEntity player) {
                         return false;
                     }
                 });
-                this.slotLine = this.addSlot(new SlotHidable(fishingRod, 2, 106, 67));
-                this.slotBobber = this.addSlot(new SlotHidable(fishingRod, 3, 129, 67));
+                this.slotLine = this.addSlot(new SlotHidable(fishingRod, 2, 106, 67) {
+                    @Override
+                    public boolean isItemValid(@Nonnull ItemStack stack) {
+                        Item item = stack.getItem();
+                        boolean isDyeable = item instanceof IDyeableArmorItem;
+                        return item.isIn(AquacultureAPI.Tags.FISHING_LINE) && isDyeable && super.isItemValid(stack);
+                    }
+                });
+                this.slotBobber = this.addSlot(new SlotHidable(fishingRod, 3, 129, 67) {
+                    @Override
+                    public boolean isItemValid(@Nonnull ItemStack stack) {
+                        Item item = stack.getItem();
+                        boolean isDyeable = item instanceof IDyeableArmorItem;
+                        return item.isIn(AquacultureAPI.Tags.BOBBER) && isDyeable && super.isItemValid(stack);
+                    }
+                });
 
                 //Tackle Box
                 for (int column = 0; column < collumns; ++column) {
@@ -57,7 +80,7 @@ public class TackleBoxContainer extends Container {
                             @Override
                             public boolean isItemValid(@Nonnull ItemStack stack) {
                                 Item item = stack.getItem();
-                                boolean isDyeable = stack.getItem() instanceof IDyeableArmorItem;
+                                boolean isDyeable = item instanceof IDyeableArmorItem;
                                 return item.isIn(AquacultureAPI.Tags.TACKLE_BOX) || item instanceof HookItem || item instanceof BaitItem ||
                                         item.isIn(AquacultureAPI.Tags.FISHING_LINE) && isDyeable || item.isIn(AquacultureAPI.Tags.BOBBER) && isDyeable;
                             }
