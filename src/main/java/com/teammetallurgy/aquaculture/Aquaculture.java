@@ -48,13 +48,16 @@ public class Aquaculture {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AquaConfig.spec);
     }
 
+    @SuppressWarnings("deprecation")
     private void setupCommon(FMLCommonSetupEvent event) {
-        LootConditionManager.registerCondition(new BiomeTagCheck.Serializer());
-        FishWeightHandler.registerFishData();
-        AquaEntities.setSpawnPlacement();
-        DeferredWorkQueue.runLater(AquaEntities::addEntitySpawns);
-        DeferredWorkQueue.runLater(FishReadFromJson::addFishSpawns);
-        FishRegistry.addCatBreeding();
+        DeferredWorkQueue.runLater(() -> {
+            LootConditionManager.registerCondition(new BiomeTagCheck.Serializer());
+            FishWeightHandler.registerFishData();
+            AquaEntities.setSpawnPlacement();
+            AquaEntities.addEntitySpawns();
+            FishReadFromJson.addFishSpawns();
+            FishRegistry.addCatBreeding();
+        });
     }
 
     private void setupClient(FMLClientSetupEvent event) {
