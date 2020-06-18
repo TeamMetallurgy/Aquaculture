@@ -1,7 +1,7 @@
 package com.teammetallurgy.aquaculture.init;
 
 import com.teammetallurgy.aquaculture.Aquaculture;
-import com.teammetallurgy.aquaculture.misc.recipe.BrewingNBT;
+import com.teammetallurgy.aquaculture.item.crafting.BrewingNBT;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;

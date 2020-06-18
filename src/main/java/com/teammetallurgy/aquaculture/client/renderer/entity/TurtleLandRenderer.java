@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class TurtleLandRenderer extends MobRenderer<TurtleLandEntity, TurtleLandModel<TurtleLandEntity>> {
     private static final ResourceLocation BOX_TURTLE = new ResourceLocation(Aquaculture.MOD_ID, "textures/entity/turtle/box_turtle.png");
@@ -21,8 +20,8 @@ public class TurtleLandRenderer extends MobRenderer<TurtleLandEntity, TurtleLand
     }
 
     @Override
-    @Nullable
-    protected ResourceLocation getEntityTexture(@Nonnull TurtleLandEntity turtle) {
+    @Nonnull
+    public ResourceLocation getEntityTexture(@Nonnull TurtleLandEntity turtle) {
         if (AquaEntities.ARRAU_TURTLE.equals(turtle.getType())) {
             return ARRAU_TURTLE;
         } else if (AquaEntities.STARSHELL_TURTLE.equals(turtle.getType())) {

@@ -7,7 +7,6 @@ import com.teammetallurgy.aquaculture.entity.FishMountEntity;
 import com.teammetallurgy.aquaculture.entity.FishType;
 import com.teammetallurgy.aquaculture.item.FishMountItem;
 import com.teammetallurgy.aquaculture.misc.StackHelper;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
@@ -31,7 +30,8 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = Aquaculture.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class FishRegistry {
-    public static List<EntityType> fishEntities = Lists.newArrayList();
+    public static List<EntityType<AquaFishEntity>> fishEntities = Lists.newArrayList();
+    public static List<EntityType<FishMountEntity>> fishMounts = Lists.newArrayList();
 
     public static Item registerFishMount(@Nonnull String name) {
         EntityType.Builder<FishMountEntity> fishMountBuilder = EntityType.Builder.<FishMountEntity>create(FishMountEntity::new, EntityClassification.MISC)
@@ -40,6 +40,7 @@ public class FishRegistry {
         EntityType<FishMountEntity> fishMount = AquaEntities.register(name, fishMountBuilder);
         FishMountItem fishMountItem = new FishMountItem(fishMount);
         AquaItems.register(fishMountItem, name);
+        fishMounts.add(fishMount);
         return fishMountItem;
     }
 
@@ -60,12 +61,12 @@ public class FishRegistry {
     public static Item register(@Nonnull Item fishItem, @Nonnull String name, FishType fishSize) {
         AquaItems.register(fishItem, name);
         EntityType<AquaFishEntity> fish = EntityType.Builder.create(AquaFishEntity::new, EntityClassification.WATER_CREATURE).size(fishSize.getWidth(), fishSize.getHeight()).build("minecraft:cod"); //TODO Change when Forge allow for custom datafixers
-        registerEntity(name, fish);
+        registerFishEntity(name, fish);
         AquaFishEntity.TYPES.put(fish, fishSize);
         return fishItem;
     }
 
-    public static <T extends Entity> EntityType<T> registerEntity(String name, EntityType<T> entityType) {
+    public static EntityType<AquaFishEntity> registerFishEntity(String name, EntityType<AquaFishEntity> entityType) {
         ResourceLocation location = new ResourceLocation(Aquaculture.MOD_ID, name);
         entityType.setRegistryName(location);
         fishEntities.add(entityType);
@@ -73,8 +74,8 @@ public class FishRegistry {
     }
 
     @SubscribeEvent
-    public static void registerFish(RegistryEvent.Register<EntityType<?>> event) {
-        for (EntityType entityType : fishEntities) {
+    public static void registerFishies(RegistryEvent.Register<EntityType<?>> event) {
+        for (EntityType<AquaFishEntity> entityType : fishEntities) {
             event.getRegistry().register(entityType);
             EntitySpawnPlacementRegistry.register(entityType, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AquaFishEntity::canSpawnHere);
         }

@@ -13,7 +13,7 @@ import javax.annotation.Nonnull;
 
 public class WaterArrowEntity extends ArrowEntity {
 
-    public WaterArrowEntity(FMLPlayMessages.SpawnEntity spawPacket, World world) {
+    public WaterArrowEntity(FMLPlayMessages.SpawnEntity spawnPacket, World world) {
         super(world, 0, 0, 0);
     }
 

@@ -17,6 +17,7 @@ import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -31,7 +32,7 @@ import java.util.List;
 public class AquaBlocks {
     public static List<Block> BLOCKS = Lists.newArrayList();
     public static final Block FARMLAND = register(new FarmlandMoistBlock(), "farmland", null);
-    public static final Block NEPTUNIUM_BLOCK = register(new Block(Block.Properties.create(Material.IRON, MaterialColor.CYAN).hardnessAndResistance(5.0F, 6.0F).sound(SoundType.METAL)), "neptunium_block");
+    public static final Block NEPTUNIUM_BLOCK = register(new Block(Block.Properties.create(Material.IRON, MaterialColor.CYAN).hardnessAndResistance(5.0F, 6.0F).harvestTool(ToolType.PICKAXE).harvestLevel(2).sound(SoundType.METAL)), "neptunium_block");
     public static final Block NEPTUNES_BOUNTY = registerBaseBlock(new NeptunesBountyBlock(), "neptunes_bounty");
     public static final Block TACKLE_BOX = registerBaseBlock(new TackleBoxBlock(), "tackle_box");
     public static final Block WORM_FARM = register(new WormFarmBlock(), "worm_farm");

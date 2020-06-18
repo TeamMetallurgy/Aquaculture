@@ -52,7 +52,7 @@ public class FishReadFromJson {
                 JsonArray entries = poolsObject.getAsJsonArray("entries");
                 for (JsonElement entry : entries) {
                     JsonArray conditions = entry.getAsJsonObject().getAsJsonArray("conditions");
-                    EntityType fish = getEntityFromString(entry.getAsJsonObject().get("name").toString());
+                    EntityType<?> fish = getEntityFromString(entry.getAsJsonObject().get("name").toString());
                     for (JsonElement conditionElement : conditions) {
                         JsonObject condition = conditionElement.getAsJsonObject();
                         if (condition.get("condition").getAsString().equals("aquaculture:biome_tag_check")) {

@@ -1,5 +1,7 @@
 package com.teammetallurgy.aquaculture;
 
+import com.teammetallurgy.aquaculture.block.WormFarmBlock;
+import com.teammetallurgy.aquaculture.client.ClientHandler;
 import com.teammetallurgy.aquaculture.init.AquaEntities;
 import com.teammetallurgy.aquaculture.init.AquaItems;
 import com.teammetallurgy.aquaculture.init.FishRegistry;
@@ -7,7 +9,6 @@ import com.teammetallurgy.aquaculture.loot.BiomeTagCheck;
 import com.teammetallurgy.aquaculture.loot.FishReadFromJson;
 import com.teammetallurgy.aquaculture.loot.FishWeightHandler;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
-import com.teammetallurgy.aquaculture.misc.ClientHandler;
 import cpw.mods.modlauncher.Environment;
 import cpw.mods.modlauncher.Launcher;
 import net.minecraft.item.ItemGroup;
@@ -48,7 +49,6 @@ public class Aquaculture {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AquaConfig.spec);
     }
 
-    @SuppressWarnings("deprecation")
     private void setupCommon(FMLCommonSetupEvent event) {
         DeferredWorkQueue.runLater(() -> {
             LootConditionManager.registerCondition(new BiomeTagCheck.Serializer());

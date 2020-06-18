@@ -14,11 +14,11 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Hook {
-    public static final HashMap<String, Item> HOOKS = new HashMap<>();
+    public static final ConcurrentHashMap<String, Item> HOOKS = new ConcurrentHashMap<>();
     private final String name;
     private final String modID;
     private final Item hookItem;

@@ -17,12 +17,14 @@ public class AquaConfig {
         static final String BASIC_OPTIONS = "basic options";
         public ForgeConfigSpec.BooleanValue enableFishSpawning;
         public ForgeConfigSpec.BooleanValue randomWeight;
+        public ForgeConfigSpec.BooleanValue compostableFish;
         public ForgeConfigSpec.BooleanValue debugMode;
 
         BasicOptions(ForgeConfigSpec.Builder builder) {
             builder.push(BASIC_OPTIONS);
             enableFishSpawning = builder.comment("Enable fish mob spawning? Weight & biomes can be modified in the Aquaculture fish loot table").define("Enable fish spawning?", true);
             randomWeight = builder.define("Enable weight for fish? Useful for fishing competitions", false);
+            compostableFish = builder.define("Should fish be added as compostables for the composter/worm farm? (Based on fish, or weight if enabled)", true);
             debugMode = builder.define("Enable debug mode? (Enables additional logging)", false);
             builder.pop();
         }

@@ -113,8 +113,8 @@ public class AquaItems {
     public static final Item STARSHELL_TURTLE = register(new SimpleItem(), "starshell_turtle");
 
     //Block Items - Have to be specified here, when using a TEISR
-    public static final Item NEPTUNES_BOUNTY = register(new BlockItem(AquaBlocks.NEPTUNES_BOUNTY, new Item.Properties().group(Aquaculture.GROUP).setTEISR(() -> AquatemRenderer::new)), "neptunes_bounty");
-    public static final Item TACKLE_BOX = register(new BlockItem(AquaBlocks.TACKLE_BOX, new Item.Properties().maxStackSize(1).group(Aquaculture.GROUP).setTEISR(() -> AquatemRenderer::new)), "tackle_box");
+    public static final Item NEPTUNES_BOUNTY = register(new BlockItem(AquaBlocks.NEPTUNES_BOUNTY, new Item.Properties().group(Aquaculture.GROUP).setISTER(() -> AquatemRenderer::new)), "neptunes_bounty");
+    public static final Item TACKLE_BOX = register(new BlockItem(AquaBlocks.TACKLE_BOX, new Item.Properties().maxStackSize(1).group(Aquaculture.GROUP).setISTER(() -> AquatemRenderer::new)), "tackle_box");
 
     //Fish Mounting
     public static final Item OAK_FISH_MOUNT = AquacultureAPI.registerFishMount("oak_fish_mount");
@@ -146,7 +146,7 @@ public class AquaItems {
         for (Item item : ITEMS) {
             event.getRegistry().register(item);
         }
-        for (EntityType fishType : FishRegistry.fishEntities) { //Registers fish buckets
+        for (EntityType<AquaFishEntity> fishType : FishRegistry.fishEntities) { //Registers fish buckets
             if (fishType.getRegistryName() != null) {
                 Item bucket = new AquaFishBucket(fishType, Fluids.WATER, (new Item.Properties()).maxStackSize(1).group(Aquaculture.GROUP));
                 bucket.setRegistryName(fishType.getRegistryName().getPath() + "_bucket");

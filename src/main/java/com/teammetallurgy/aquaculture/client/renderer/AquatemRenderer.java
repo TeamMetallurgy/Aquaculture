@@ -1,9 +1,11 @@
 package com.teammetallurgy.aquaculture.client.renderer;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.teammetallurgy.aquaculture.block.NeptunesBountyBlock;
 import com.teammetallurgy.aquaculture.block.TackleBoxBlock;
 import com.teammetallurgy.aquaculture.block.tileentity.NeptunesBountyTileEntity;
 import com.teammetallurgy.aquaculture.block.tileentity.TackleBoxTileEntity;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.BlockItem;
@@ -20,13 +22,13 @@ public class AquatemRenderer extends ItemStackTileEntityRenderer {
     private static final TackleBoxTileEntity TACKLE_BOX = new TackleBoxTileEntity();
 
     @Override
-    public void renderByItem(@Nonnull ItemStack stack) {
+    public void render(@Nonnull ItemStack stack, @Nonnull MatrixStack matrixStack, @Nonnull IRenderTypeBuffer buffer, int i, int i1) {
         Item item = stack.getItem();
         boolean isBlockItem = item instanceof BlockItem;
         if (isBlockItem && ((BlockItem) item).getBlock() instanceof TackleBoxBlock) {
-            TileEntityRendererDispatcher.instance.renderAsItem(TACKLE_BOX);
+            TileEntityRendererDispatcher.instance.renderItem(TACKLE_BOX, matrixStack, buffer, i, i1);
         } else if (isBlockItem && ((BlockItem) item).getBlock() instanceof NeptunesBountyBlock) {
-            TileEntityRendererDispatcher.instance.renderAsItem(NEPTUNES_BOUNTY);
+            TileEntityRendererDispatcher.instance.renderItem(NEPTUNES_BOUNTY, matrixStack, buffer, i, i1);
         }
     }
 }

@@ -9,6 +9,8 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
@@ -36,11 +38,14 @@ public class LootBoxItem extends Item {
             LootContext.Builder builder = new LootContext.Builder(worldServer);
             List<ItemStack> loot = worldServer.getServer().getLootTableManager().getLootTableFromLocation(this.lootTable).generate(builder.build(LootParameterSets.EMPTY));
             if (!loot.isEmpty()) {
-                this.giveItem(player, loot.get(0));
+                ItemStack lootStack = loot.get(0);
+                player.sendStatusMessage(new TranslationTextComponent("aquaculture.loot.open", lootStack.getDisplayName()).applyTextStyle(TextFormatting.YELLOW), true);
+                this.giveItem(player, lootStack);
                 heldStack.shrink(1);
                 return new ActionResult<>(ActionResultType.SUCCESS, heldStack);
             }
         }
+
         return super.onItemRightClick(world, player, hand);
     }
 

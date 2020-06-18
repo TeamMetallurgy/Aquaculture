@@ -4,13 +4,13 @@ import com.teammetallurgy.aquaculture.Aquaculture;
 import net.minecraft.item.Item;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class FishData {
-    private HashMap<Item, Double> WEIGHT_MIN = new HashMap<>();
-    private HashMap<Item, Double> WEIGHT_MAX = new HashMap<>();
-    private HashMap<Item, Integer> FILLET_AMOUNT = new HashMap<>();
+    private final ConcurrentHashMap<Item, Double> WEIGHT_MIN = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Item, Double> WEIGHT_MAX = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Item, Integer> FILLET_AMOUNT = new ConcurrentHashMap<>();
 
     public void addWeight(Item fish, double min, double max) {
         if (!WEIGHT_MAX.containsKey(fish)) {

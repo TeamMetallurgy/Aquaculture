@@ -43,7 +43,6 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -186,29 +185,23 @@ public class AquaFishingBobberEntity extends FishingBobberEntity implements IEnt
     }
 
     private List<ItemStack> getLoot(LootContext.Builder builder, ServerWorld serverWorld) {
-        IFluidState fluidState = this.world.getFluidState(new BlockPos(this));
-        ResourceLocation lootTableLocation = null;
-        if (fluidState.isTagged(FluidTags.WATER)) {
-            lootTableLocation = LootTables.GAMEPLAY_FISHING;
-        }
+        ResourceLocation lootTableLocation;
         if (this.isLavaHookInLava(this, this.world, new BlockPos(this))) {
             if (serverWorld.getWorld().getDimension().isNether()) {
                 lootTableLocation = AquaLootTables.NETHER_FISHING;
             } else {
                 lootTableLocation = AquaLootTables.LAVA_FISHING;
             }
-        }
-        if (lootTableLocation == null) {
-            return new ArrayList<>();
         } else {
-            LootTable lootTable = serverWorld.getServer().getLootTableManager().getLootTableFromLocation(lootTableLocation);
-            return lootTable.generate(builder.build(LootParameterSets.FISHING));
+            lootTableLocation = LootTables.GAMEPLAY_FISHING;
         }
+        LootTable lootTable = serverWorld.getServer().getLootTableManager().getLootTableFromLocation(lootTableLocation);
+        return lootTable.generate(builder.build(LootParameterSets.FISHING));
     }
 
     private void spawnLoot(List<ItemStack> lootEntries) {
         for (ItemStack loot : lootEntries) {
-            ItemEntity lootEntity = new ItemEntity(this.world, this.posX, this.posY, this.posZ, loot) {
+            ItemEntity lootEntity = new ItemEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), loot) {
                 @Override
                 public boolean canRenderOnFire() {
                     return false;
@@ -220,16 +213,16 @@ public class AquaFishingBobberEntity extends FishingBobberEntity implements IEnt
 
                 @Override
                 public boolean isInvulnerableTo(@Nonnull DamageSource source) {
-                    BlockPos spawnPos = new BlockPos(AquaFishingBobberEntity.this.posX, AquaFishingBobberEntity.this.posY, AquaFishingBobberEntity.this.posZ);
+                    BlockPos spawnPos = new BlockPos(AquaFishingBobberEntity.this.getPosX(), AquaFishingBobberEntity.this.getPosY(), AquaFishingBobberEntity.this.getPosZ());
                     return AquaFishingBobberEntity.this.isLavaHookInLava(AquaFishingBobberEntity.this, this.world, spawnPos) || super.isInvulnerableTo(source);
                 }
             };
-            double x = this.angler.posX - this.posX;
-            double y = this.angler.posY - this.posY;
-            double z = this.angler.posZ - this.posZ;
+            double x = this.angler.getPosX() - this.getPosX();
+            double y = this.angler.getPosY() - this.getPosY();
+            double z = this.angler.getPosZ() - this.getPosZ();
             lootEntity.setMotion(x * 0.1D, (y * 0.1D + Math.sqrt(Math.sqrt(x * x + y * y + z * z)) * 0.08D) + (this.hasHook() && this.isLavaHookInLava(this, this.world, new BlockPos(x, y, z)) ? 0.2D : 0.0D), z * 0.1D);
             this.world.addEntity(lootEntity);
-            this.angler.world.addEntity(new ExperienceOrbEntity(this.angler.world, this.angler.posX, this.angler.posY + 0.5D, this.angler.posZ + 0.5D, this.rand.nextInt(6) + 1));
+            this.angler.world.addEntity(new ExperienceOrbEntity(this.angler.world, this.angler.getPosX(), this.angler.getPosY() + 0.5D, this.angler.getPosZ() + 0.5D, this.rand.nextInt(6) + 1));
             if (loot.getItem().isIn(ItemTags.FISHES)) {
                 this.angler.addStat(Stats.FISH_CAUGHT, 1);
             }
@@ -242,8 +235,7 @@ public class AquaFishingBobberEntity extends FishingBobberEntity implements IEnt
 
     @Override
     public void tick() {
-        super.tick();
-        /*if (this.hasHook() && this.hook.getFluids().contains(FluidTags.LAVA)) { //Lava fishing commented out for now
+        if (this.hasHook() && this.hook.getFluids().contains(FluidTags.LAVA)) {
             if (this.hook.getFluids().contains(FluidTags.WATER) && world.getFluidState(new BlockPos(this)).isTagged(FluidTags.WATER)) {
                 super.tick();
             } else {
@@ -251,7 +243,7 @@ public class AquaFishingBobberEntity extends FishingBobberEntity implements IEnt
             }
         } else {
             super.tick();
-        }*/
+        }
     }
 
     private void lavaFishingTick() {
@@ -304,10 +296,7 @@ public class AquaFishingBobberEntity extends FishingBobberEntity implements IEnt
                             this.caughtEntity = null;
                             this.currentState = State.FLYING;
                         } else {
-                            this.posX = this.caughtEntity.posX;
-                            this.posY = this.caughtEntity.getBoundingBox().minY + (double) this.caughtEntity.getHeight() * 0.8D;
-                            this.posZ = this.caughtEntity.posZ;
-                            this.setPosition(this.posX, this.posY, this.posZ);
+                            this.setPosition(this.caughtEntity.getPosX(), this.caughtEntity.getPosYHeight(0.8D), this.caughtEntity.getPosZ());
                         }
                     }
                     return;
@@ -315,7 +304,7 @@ public class AquaFishingBobberEntity extends FishingBobberEntity implements IEnt
 
                 if (this.currentState == State.BOBBING) {
                     Vec3d motion = this.getMotion();
-                    double y = this.posY + motion.y - (double) bobberPos.getY() - (double) f;
+                    double y = this.getPosY() + motion.y - (double) bobberPos.getY() - (double) f;
                     if (Math.abs(y) < 0.01D) {
                         y += Math.signum(y) * 0.1D;
                     }
@@ -332,7 +321,7 @@ public class AquaFishingBobberEntity extends FishingBobberEntity implements IEnt
             this.move(MoverType.SELF, this.getMotion());
             this.updateRotation();
             this.setMotion(this.getMotion().scale(0.92D));
-            this.setPosition(this.posX, this.posY, this.posZ);
+            this.recenterBoundingBox();
         }
     }
 
@@ -345,7 +334,7 @@ public class AquaFishingBobberEntity extends FishingBobberEntity implements IEnt
             ++delay;
         }
 
-        if (this.rand.nextFloat() < 0.5F && !this.world.isSkyLightMax(posUp)) {
+        if (this.rand.nextFloat() < 0.5F && !this.world.canSeeSky(posUp)) {
             --delay;
         }
 
@@ -372,9 +361,9 @@ public class AquaFishingBobberEntity extends FishingBobberEntity implements IEnt
                     angle = this.fishApproachAngle * 0.017453292F;
                     sin = MathHelper.sin(angle);
                     cos = MathHelper.cos(angle);
-                    x = this.posX + (double) (sin * (float) this.ticksCatchableDelay * 0.1F);
+                    x = this.getPosX() + (double) (sin * (float) this.ticksCatchableDelay * 0.1F);
                     y = ((float) MathHelper.floor(this.getBoundingBox().minY) + 1.0F);
-                    z = this.posZ + (double) (cos * (float) this.ticksCatchableDelay * 0.1F);
+                    z = this.getPosZ() + (double) (cos * (float) this.ticksCatchableDelay * 0.1F);
                     fluidState = serverworld.getFluidState(new BlockPos(x, y - 1.0D, z));
                     float zOffset = sin * 0.04F;
                     float xOffset = cos * 0.04F;
@@ -393,7 +382,7 @@ public class AquaFishingBobberEntity extends FishingBobberEntity implements IEnt
                         serverworld.spawnParticle(ParticleTypes.SMOKE, x, y, z, 0, -xOffset, 0.01D, zOffset, 1.0D);
                     }
                     if (this.hasHook() && this.hook.getCatchSound() != null) {
-                        this.world.playSound(null, this.posX, this.posY, this.posZ, this.hook.getCatchSound(), this.getSoundCategory(), 0.20F, 0.1F);
+                        this.world.playSound(null, this.getAngler() != null ? this.getAngler().getPosition() : this.getPosition(), this.hook.getCatchSound(), this.getSoundCategory(), 0.1F, 0.1F);
                     }
                 } else {
                     Vec3d motion = this.getMotion();
@@ -401,14 +390,14 @@ public class AquaFishingBobberEntity extends FishingBobberEntity implements IEnt
                     double boundingBox = this.getBoundingBox().minY + 0.5D;
                     if (serverworld.getFluidState(new BlockPos(this)).isTagged(FluidTags.WATER)) { //Water check added
                         this.playSound(SoundEvents.ENTITY_FISHING_BOBBER_SPLASH, 0.25F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
-                        serverworld.spawnParticle(ParticleTypes.BUBBLE, this.posX, boundingBox, this.posZ, (int) (1.0F + this.getWidth() * 20.0F), this.getWidth(), 0.0D, this.getWidth(), 0.20000000298023224D);
-                        serverworld.spawnParticle(ParticleTypes.FISHING, this.posX, boundingBox, this.posZ, (int) (1.0F + this.getWidth() * 20.0F), this.getWidth(), 0.0D, this.getWidth(), 0.20000000298023224D);
+                        serverworld.spawnParticle(ParticleTypes.BUBBLE, this.getPosX(), boundingBox, this.getPosZ(), (int) (1.0F + this.getWidth() * 20.0F), this.getWidth(), 0.0D, this.getWidth(), 0.20000000298023224D);
+                        serverworld.spawnParticle(ParticleTypes.FISHING, this.getPosX(), boundingBox, this.getPosZ(), (int) (1.0F + this.getWidth() * 20.0F), this.getWidth(), 0.0D, this.getWidth(), 0.20000000298023224D);
                     }
 
                     //Lava sound added
                     if (serverworld.getFluidState(new BlockPos(this)).isTagged(FluidTags.LAVA)) {
                         this.playSound(SoundEvents.BLOCK_LAVA_EXTINGUISH, 1.00F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
-                        serverworld.spawnParticle(ParticleTypes.LAVA, this.posX, boundingBox, this.posZ, (int) (1.0F + this.getWidth() * 20.0F), this.getWidth(), 0.0D, this.getWidth(), 0.20000000298023224D);
+                        serverworld.spawnParticle(ParticleTypes.LAVA, this.getPosX(), boundingBox, this.getPosZ(), (int) (1.0F + this.getWidth() * 20.0F), this.getWidth(), 0.0D, this.getWidth(), 0.20000000298023224D);
                     }
                     if (this.hasHook() && this.hook.getMaxCatchable() > 0) {
                         this.ticksCatchable = MathHelper.nextInt(this.rand, this.hook.getMinCatchable(), this.hook.getMaxCatchable());
@@ -430,9 +419,9 @@ public class AquaFishingBobberEntity extends FishingBobberEntity implements IEnt
                 if (this.rand.nextFloat() < angle) {
                     sin = MathHelper.nextFloat(this.rand, 0.0F, 360.0F) * 0.017453292F;
                     cos = MathHelper.nextFloat(this.rand, 25.0F, 60.0F);
-                    x = this.posX + (double) (MathHelper.sin(sin) * cos * 0.1F);
+                    x = this.getPosX() + (double) (MathHelper.sin(sin) * cos * 0.1F);
                     y = ((float) MathHelper.floor(this.getBoundingBox().minY) + 1.0F);
-                    z = this.posZ + (double) (MathHelper.cos(sin) * cos * 0.1F);
+                    z = this.getPosZ() + (double) (MathHelper.cos(sin) * cos * 0.1F);
                     fluidState = serverworld.getFluidState(new BlockPos(x, y - 1.0D, z));
                     if (fluidState.isTagged(FluidTags.WATER)) {
                         serverworld.spawnParticle(ParticleTypes.SPLASH, x, y, z, 2 + this.rand.nextInt(2), 0.10000000149011612D, 0.0D, 0.10000000149011612D, 0.0D);

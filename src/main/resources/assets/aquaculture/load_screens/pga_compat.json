@@ -1,0 +1,8 @@
+{
+	"screens" : [{
+			"COMMENT" : "Public Gui Announcement support", 
+			"class" : "com.teammetallurgy.aquaculture.inventory.container.TackleBoxContainer", 
+			"texture" : "aquaculture:textures/gui/container/tackle_box.png",
+			"size" : [175,171]
+		}]
+}

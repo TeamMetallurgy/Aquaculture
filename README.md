@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
   // compile against Aquaculture
-  deobfCompile "com.teammetallurgy.aquaculture:aquaculture_${mc_version}:${mc_version}-${aquaculture_version}"
+  compile fg.deobf("com.teammetallurgy.aquaculture:aquaculture_${mc_version}:${mc_version}-${aquaculture_version}")
 }
 ```
 

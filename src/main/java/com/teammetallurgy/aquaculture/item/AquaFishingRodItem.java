@@ -77,9 +77,9 @@ public class AquaFishingRodItem extends FishingRodItem {
                 }
             }
             player.swingArm(hand);
-            world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_FISHING_BOBBER_RETRIEVE, SoundCategory.NEUTRAL, 1.0F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+            world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_FISHING_BOBBER_RETRIEVE, SoundCategory.NEUTRAL, 1.0F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
         } else {
-            world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_FISHING_BOBBER_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+            world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_FISHING_BOBBER_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
             if (!world.isRemote) {
                 //Lure Speed
                 lureSpeed = EnchantmentHelper.getFishingSpeedBonus(heldStack);
@@ -88,6 +88,7 @@ public class AquaFishingRodItem extends FishingRodItem {
                 if (!isAdminRod && !bait.isEmpty()) {
                     lureSpeed += ((BaitItem) bait.getItem()).getLureSpeedModifier();
                 }
+                lureSpeed = Math.min(5, lureSpeed);
                 //Luck
                 int luck = EnchantmentHelper.getFishingLuckBonus(heldStack);
                 if (hook != Hooks.EMPTY && hook.getLuckModifier() > 0) luck += hook.getLuckModifier();
@@ -98,6 +99,11 @@ public class AquaFishingRodItem extends FishingRodItem {
             player.addStat(Stats.ITEM_USED.get(this));
         }
         return new ActionResult<>(ActionResultType.SUCCESS, heldStack);
+    }
+
+    @Override
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+        return this.material.getRepairMaterial().test(repair) || super.getIsRepairable(toRepair, repair);
     }
 
     @Nonnull

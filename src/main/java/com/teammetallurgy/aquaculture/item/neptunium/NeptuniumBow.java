@@ -2,6 +2,7 @@ package com.teammetallurgy.aquaculture.item.neptunium;
 
 import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.entity.WaterArrowEntity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.Item;
@@ -16,7 +17,11 @@ public class NeptuniumBow extends BowItem {
 
     @Override
     @Nonnull
-    public AbstractArrowEntity customeArrow(@Nonnull AbstractArrowEntity arrow) {
-        return new WaterArrowEntity(arrow.world, arrow.world.getPlayerByUuid(arrow.shootingEntity));
+    public AbstractArrowEntity customeArrow(@Nonnull AbstractArrowEntity arrowEntity) {
+        if (arrowEntity.getType() == EntityType.ARROW) {
+            return new WaterArrowEntity(arrowEntity.world, arrowEntity.world.getPlayerByUuid(arrowEntity.shootingEntity));
+        } else {
+            return super.customeArrow(arrowEntity);
+        }
     }
 }

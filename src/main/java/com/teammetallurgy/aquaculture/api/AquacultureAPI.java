@@ -9,6 +9,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nonnull;
 
@@ -31,6 +32,7 @@ public class AquacultureAPI {
         return FishRegistry.registerFishMount(name);
     }
 
+    @Mod.EventBusSubscriber(modid = Aquaculture.MOD_ID) //Statically load, cause reasons
     public static class Tags {
         public static final Tag<Item> FILLET_KNIFE = tag("forge", "fillet_knife");
         public static final Tag<Item> FISHING_LINE = tag(Aquaculture.MOD_ID, "fishing_line");

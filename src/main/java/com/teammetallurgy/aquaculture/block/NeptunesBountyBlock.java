@@ -1,6 +1,7 @@
 package com.teammetallurgy.aquaculture.block;
 
 import com.teammetallurgy.aquaculture.block.tileentity.NeptunesBountyTileEntity;
+import com.teammetallurgy.aquaculture.init.AquaBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
@@ -13,6 +14,7 @@ import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.properties.ChestType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -31,23 +33,23 @@ import java.util.List;
 public class NeptunesBountyBlock extends ChestBlock {
 
     public NeptunesBountyBlock() {
-        super(Block.Properties.create(Material.IRON, MaterialColor.IRON).hardnessAndResistance(3.5F, 8.0F).sound(SoundType.METAL));
+        super(Block.Properties.create(Material.IRON, MaterialColor.IRON).hardnessAndResistance(3.5F, 8.0F).sound(SoundType.METAL), () -> AquaBlocks.AquaTileEntities.NEPTUNES_BOUNTY);
     }
 
     @Override
-    public TileEntity createNewTileEntity(IBlockReader blockReader) {
+    public TileEntity createNewTileEntity(@Nonnull IBlockReader blockReader) {
         return new NeptunesBountyTileEntity();
     }
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
-        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite()).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+        return this.getDefaultState().with(TYPE, ChestType.SINGLE).with(FACING, context.getPlacementHorizontalFacing().getOpposite()).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
     }
 
     @Override
     @Nonnull
-    public BlockState updatePostPlacement(BlockState state, @Nonnull Direction direction, BlockState facingState, @Nonnull IWorld world, @Nonnull BlockPos currentPos, @Nonnull BlockPos facingPos) {
+    public BlockState updatePostPlacement(BlockState state, @Nonnull Direction direction, @Nonnull BlockState facingState, @Nonnull IWorld world, @Nonnull BlockPos currentPos, @Nonnull BlockPos facingPos) {
         if (state.get(WATERLOGGED)) {
             world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
         }
@@ -56,7 +58,7 @@ public class NeptunesBountyBlock extends ChestBlock {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable IBlockReader world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+    public void addInformation(@Nonnull ItemStack stack, @Nullable IBlockReader world, @Nonnull List<ITextComponent> tooltip, @Nonnull ITooltipFlag flag) {
         super.addInformation(stack, world, tooltip, flag);
         CompoundNBT tag = stack.getChildTag("BlockEntityTag");
         if (tag != null) {

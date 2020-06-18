@@ -1,6 +1,6 @@
 package com.teammetallurgy.aquaculture.client.gui.screen;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.inventory.container.TackleBoxContainer;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -31,7 +31,7 @@ public class TackleBoxScreen extends ContainerScreen<TackleBoxContainer> {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         if (this.minecraft != null) {
             this.minecraft.getTextureManager().bindTexture(TACKLE_BOX_GUI);
         }

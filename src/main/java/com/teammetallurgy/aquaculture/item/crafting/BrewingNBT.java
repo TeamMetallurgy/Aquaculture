@@ -1,4 +1,4 @@
-package com.teammetallurgy.aquaculture.misc.recipe;
+package com.teammetallurgy.aquaculture.item.crafting;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;

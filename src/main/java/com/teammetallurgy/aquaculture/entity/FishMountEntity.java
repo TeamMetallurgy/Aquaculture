@@ -85,7 +85,7 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
 
     @Override
     public boolean onValidSurface() {
-        if (!this.world.areCollisionShapesEmpty(this)) {
+        if (!this.world.hasNoCollisions(this)) {
             return false;
         } else {
             BlockState state = this.world.getBlockState(this.hangingPosition.offset(this.facingDirection.getOpposite()));
@@ -97,9 +97,10 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
     protected void updateBoundingBox() {
         if (this.facingDirection != null) {
             double d0 = 0.46875D;
-            this.posX = (double) this.hangingPosition.getX() + 0.5D - (double) this.facingDirection.getXOffset() * d0;
-            this.posY = (double) this.hangingPosition.getY() + 0.5D - (double) this.facingDirection.getYOffset() * d0;
-            this.posZ = (double) this.hangingPosition.getZ() + 0.5D - (double) this.facingDirection.getZOffset() * d0;
+            double posX = (double) this.hangingPosition.getX() + 0.5D - (double) this.facingDirection.getXOffset() * d0;
+            double posY = (double) this.hangingPosition.getY() + 0.5D - (double) this.facingDirection.getYOffset() * d0;
+            double posZ = (double) this.hangingPosition.getZ() + 0.5D - (double) this.facingDirection.getZOffset() * d0;
+            this.setRawPosition(posX, posY, posZ);
             double x1 = this.getWidthPixels() / 32.0D;
             double x2 = this.getWidthPixels() / 32.0D;
             double y1 = this.getHeightPixels() / 32.0D;
@@ -121,7 +122,7 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
                     z1 = (this.facingDirection.getZOffset() < 0 ? 3.0D : 1.0D) / 32.0D;
                     z2 = (this.facingDirection.getZOffset() > 0 ? 3.0D : 1.0D) / 32.0D;
             }
-            this.setBoundingBox(new AxisAlignedBB(this.posX - x1, this.posY - y1, this.posZ - z1, this.posX + x2, this.posY + y2, this.posZ + z2));
+            this.setBoundingBox(new AxisAlignedBB(posX - x1, posY - y1, posZ - z1, posX + x2, posY + y2, posZ + z2));
         }
     }
 
@@ -302,7 +303,7 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
         if (!this.world.isRemote) {
             if (this.getDisplayedItem().isEmpty()) {
                 Item heldItem = heldStack.getItem();
-                EntityType entityType = ForgeRegistries.ENTITIES.getValue(heldItem.getRegistryName());
+                EntityType<?> entityType = ForgeRegistries.ENTITIES.getValue(heldItem.getRegistryName());
                 if (entityType != EntityType.PIG && AquacultureAPI.FISH_DATA.getFish().contains(heldItem)) {
                     this.setDisplayedItem(heldStack);
                     if (!player.abilities.isCreativeMode) {

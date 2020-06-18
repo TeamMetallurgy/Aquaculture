@@ -55,11 +55,6 @@ public class TackleBoxBlock extends ContainerBlock implements IWaterLoggable {
     }
 
     @Override
-    public boolean hasCustomBreakingProgress(BlockState state) {
-        return true;
-    }
-
-    @Override
     @Nonnull
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.ENTITYBLOCK_ANIMATED;
@@ -80,14 +75,15 @@ public class TackleBoxBlock extends ContainerBlock implements IWaterLoggable {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+    @Nonnull
+    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
         if (world.isRemote) {
-            return true;
+            return ActionResultType.SUCCESS;
         } else {
             INamedContainerProvider container = this.getContainer(state, world, pos);
             if (container != null && player instanceof ServerPlayerEntity) {
                 ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-                if (player.isSneaking()) {
+                if (player.isCrouching()) {
                     TileEntity tileEntity = world.getTileEntity(pos);
                     if (tileEntity != null) {
                         StackHelper.giveItem(serverPlayer, StackHelper.storeTEInStack(new ItemStack(this), tileEntity));
@@ -98,7 +94,7 @@ public class TackleBoxBlock extends ContainerBlock implements IWaterLoggable {
                     NetworkHooks.openGui(serverPlayer, container, pos);
                 }
             }
-            return true;
+            return ActionResultType.SUCCESS;
         }
     }
 

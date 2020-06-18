@@ -19,6 +19,11 @@
             }
           ],
           "name": "aquaculture:neptunes_bounty"
+        },
+        {
+          "_comment": "50% chance of getting fish, to make Neptunium rarer without making vanilla loot a lot rarer",
+          "type": "minecraft:loot_table",
+          "name": "aquaculture:gameplay/fishing/fish"
         }
       ]
     }

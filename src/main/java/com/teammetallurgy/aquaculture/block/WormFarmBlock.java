@@ -1,6 +1,9 @@
 package com.teammetallurgy.aquaculture.block;
 
+import com.teammetallurgy.aquaculture.api.AquacultureAPI;
 import com.teammetallurgy.aquaculture.init.AquaItems;
+import com.teammetallurgy.aquaculture.loot.FishWeightHandler;
+import com.teammetallurgy.aquaculture.misc.AquaConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ComposterBlock;
@@ -10,15 +13,15 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -28,11 +31,32 @@ public class WormFarmBlock extends ComposterBlock {
 
     public WormFarmBlock() {
         super(Block.Properties.create(Material.WOOD).hardnessAndResistance(0.6F).sound(SoundType.WOOD));
-        CHANCES.put(AquaItems.ALGAE.asItem(), 0.3F);
+    }
+
+    public static void addCompostables() {
+        registerCompostable(AquaItems.ALGAE.asItem(), 0.3F);
+        if (AquaConfig.BASIC_OPTIONS.compostableFish.get()) {
+            for (Item fish : AquacultureAPI.FISH_DATA.getFish()) {
+                double weight = AquacultureAPI.FISH_DATA.getMinWeight(fish);
+                ItemStack fishStack = new ItemStack(fish);
+                if (fishStack.getTag() != null && fishStack.getTag().contains("fishWeight")) {
+                    weight = fishStack.getTag().getDouble("fishWeight");
+                }
+                float chance = MathHelper.clamp((FishWeightHandler.getFilletAmountFromWeight(weight) * 0.25F), 0.05F, 0.65F);
+                registerCompostable(fish, chance);
+            }
+        }
+    }
+
+    public static void registerCompostable(Item item, float chance) {
+        if (!CHANCES.containsKey(item) && CHANCES.size() < 256) {
+            CHANCES.put(item, chance);
+        }
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, @Nonnull World world, @Nonnull BlockPos pos, PlayerEntity player, @Nonnull Hand hand, BlockRayTraceResult raytrace) {
+    @Nonnull
+    public ActionResultType onBlockActivated(BlockState state, @Nonnull World world, @Nonnull BlockPos pos, PlayerEntity player, @Nonnull Hand hand, BlockRayTraceResult raytrace) {
         int level = state.get(LEVEL);
         ItemStack heldStack = player.getHeldItem(hand);
 
@@ -44,7 +68,7 @@ public class WormFarmBlock extends ComposterBlock {
                     heldStack.shrink(1);
                 }
             }
-            return true;
+            return ActionResultType.SUCCESS;
         } else if (level > 0) {
             if (!world.isRemote) {
                 double x = (double) (world.rand.nextFloat() * 0.7F) + 0.15000000596046448D;
@@ -56,14 +80,14 @@ public class WormFarmBlock extends ComposterBlock {
             }
             world.setBlockState(pos, state.with(LEVEL, state.get(LEVEL) - 1), 3);
             world.playSound(null, pos, SoundEvents.BLOCK_COMPOSTER_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
-            return true;
+            return ActionResultType.SUCCESS;
         } else {
-            return false;
+            return ActionResultType.FAIL;
         }
     }
 
     @Override
-    public void tick(BlockState state, @Nonnull World world, @Nonnull BlockPos pos, Random random) {
+    public void tick(BlockState state, @Nonnull ServerWorld world, @Nonnull BlockPos pos, Random random) {
     }
     
     private static boolean addItem(BlockState state, IWorld world, BlockPos pos, @Nonnull ItemStack stack) {

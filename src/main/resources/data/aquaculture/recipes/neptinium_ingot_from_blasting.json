@@ -33,6 +33,9 @@
     },
     {
       "item": "aquaculture:neptunium_sword"
+    },
+    {
+      "item": "aquaculture:neptunium_bow"
     }
   ],
   "result": "aquaculture:neptunium_ingot",

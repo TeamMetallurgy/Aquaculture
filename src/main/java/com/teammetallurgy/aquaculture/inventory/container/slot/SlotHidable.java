@@ -9,6 +9,8 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+import javax.annotation.Nonnull;
+
 public class SlotHidable extends SlotItemHandler {
     private final SlotFishingRod fishingRod;
 
@@ -20,6 +22,11 @@ public class SlotHidable extends SlotItemHandler {
     @Override
     public IItemHandler getItemHandler() {
         return this.fishingRod.rodHandler;
+    }
+
+    @Override
+    public boolean isItemValid(@Nonnull ItemStack stack) {
+        return this.fishingRod.getHasStack();
     }
 
     @Override

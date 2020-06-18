@@ -32,8 +32,8 @@ import static com.teammetallurgy.aquaculture.misc.AquaConfig.Helper;
 @Mod.EventBusSubscriber(modid = Aquaculture.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 @ObjectHolder(Aquaculture.MOD_ID)
 public class AquaEntities {
-    private static List<EntityType> entities = Lists.newArrayList();
-    private static List<EntityType> mobs = Lists.newArrayList();
+    private static List<EntityType<?>> entities = Lists.newArrayList();
+    private static List<EntityType<?>> mobs = Lists.newArrayList();
     public static final EntityType<AquaFishingBobberEntity> BOBBER = register("bobber", EntityType.Builder.<AquaFishingBobberEntity>create(EntityClassification.MISC)
             .disableSerialization()
             .disableSummoning()
@@ -56,7 +56,7 @@ public class AquaEntities {
 
     @SubscribeEvent
     public static void registerEntities(RegistryEvent.Register<EntityType<?>> event) {
-        for (EntityType entity : entities) {
+        for (EntityType<?> entity : entities) {
             event.getRegistry().register(entity);
         }
     }
@@ -83,13 +83,13 @@ public class AquaEntities {
     }
 
     public static void setSpawnPlacement() {
-        EntitySpawnPlacementRegistry.register(BOX_TURTLE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, TurtleLandEntity::func_223316_b);
-        EntitySpawnPlacementRegistry.register(ARRAU_TURTLE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, TurtleLandEntity::func_223316_b);
-        EntitySpawnPlacementRegistry.register(STARSHELL_TURTLE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, TurtleLandEntity::func_223316_b);
+        EntitySpawnPlacementRegistry.register(BOX_TURTLE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, TurtleLandEntity::canAnimalSpawn);
+        EntitySpawnPlacementRegistry.register(ARRAU_TURTLE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, TurtleLandEntity::canAnimalSpawn);
+        EntitySpawnPlacementRegistry.register(STARSHELL_TURTLE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, TurtleLandEntity::canAnimalSpawn);
     }
 
     public static void addEntitySpawns() {
-        for (EntityType entityType : mobs) {
+        for (EntityType<?> entityType : mobs) {
             String name = Objects.requireNonNull(entityType.getRegistryName()).getPath();
             String subCategory = Helper.getSubConfig(AquaConfig.Spawn.SPAWN_OPTIONS, name);
             BiomeDictionaryHelper.addSpawn(entityType, Helper.get(subCategory, "min"), Helper.get(subCategory, "max"), Helper.get(subCategory, "weight"), Helper.get(subCategory, "include"), Helper.get(subCategory, "exclude"));
