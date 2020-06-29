@@ -16,7 +16,6 @@
         ]
       }
     },
-   "criteria": {
     "has_vanilla_rod": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
