@@ -6,12 +6,22 @@
     ]
   },
   "criteria": {
-    "has_items": {
+    "has_gold": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "tag": "forge:ingots/gold"
+          }
+        ]
+      }
+    },
+    "has_vanilla_rod": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:fishing_rod"
           }
         ]
       }
@@ -25,7 +35,8 @@
   },
   "requirements": [
     [
-      "has_items",
+      "has_gold",
+      "has_vanilla_rod",
       "has_the_recipe"
     ]
   ]
