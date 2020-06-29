@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "aquaculture:gold_nugget_from_smelting"
+    ]
+  },
+  "criteria": {
+    "has_fishing_rod": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "aquaculture:gold_fishing_rod"
+          }
+        ]
+      }
+    },
+    "has_fillet_knife": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "aquaculture:gold_fillet_knife"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "aquaculture:gold_nugget_from_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_fishing_rod",
+      "has_fillet_knife",
+      "has_the_recipe"
+    ]
+  ]
+}

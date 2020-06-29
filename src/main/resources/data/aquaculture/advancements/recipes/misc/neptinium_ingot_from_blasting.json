@@ -1,0 +1,153 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "aquaculture:neptinium_ingot_from_blasting"
+    ]
+  },
+  "criteria": {
+    "has_axe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "aquaculture:neptunium_axe"
+          }
+        ]
+      }
+    },
+    "has_boots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "aquaculture:neptunium_boots"
+          }
+        ]
+      }
+    },
+    "has_chestplate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "aquaculture:neptunium_chestplate"
+          }
+        ]
+      }
+    },
+    "has_fillet_knife": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "aquaculture:neptunium_fillet_knife"
+          }
+        ]
+      }
+    },
+    "has_fishing_rod": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "aquaculture:neptunium_fishing_rod"
+          }
+        ]
+      }
+    },
+    "has_helmet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "aquaculture:neptunium_helmet"
+          }
+        ]
+      }
+    },
+    "has_hoe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "aquaculture:neptunium_hoe"
+          }
+        ]
+      }
+    },
+    "has_leggings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "aquaculture:neptunium_leggings"
+          }
+        ]
+      }
+    },
+    "has_pickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "aquaculture:neptunium_pickaxe"
+          }
+        ]
+      }
+    },
+    "has_shovel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "aquaculture:neptunium_shovel"
+          }
+        ]
+      }
+    },
+    "has_sword": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "aquaculture:neptunium_sword"
+          }
+        ]
+      }
+    },
+    "has_bow": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "aquaculture:neptunium_bow"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "aquaculture:neptinium_ingot_blasting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_axe",
+      "has_boots",
+      "has_chestplate",
+      "has_fillet_knife",
+      "has_fishing_rod",
+      "has_helmet",
+      "has_hoe",
+      "has_leggings",
+      "has_pickaxe",
+      "has_shovel",
+      "has_sword",
+      "has_bow",
+      "has_the_recipe"
+    ]
+  ]
+}
