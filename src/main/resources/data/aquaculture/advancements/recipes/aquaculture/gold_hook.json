@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "aquaculture:gold_hook"
+    ]
+  },
+  "criteria": {
+    "has_items": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "aquaculture:iron_hook"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "aquaculture:gold_hook"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_items",
+      "has_alt_items",
+      "has_the_recipe"
+    ]
+  ]
+}
