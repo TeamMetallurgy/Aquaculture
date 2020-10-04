@@ -40,6 +40,10 @@ public class AquaFishingRodItem extends FishingRodItem {
         this.material = material;
     }
 
+    public IItemTier getItemMaterial() {
+        return material;
+    }
+
     @Override
     public int getItemEnchantability() {
         return enchantability;
