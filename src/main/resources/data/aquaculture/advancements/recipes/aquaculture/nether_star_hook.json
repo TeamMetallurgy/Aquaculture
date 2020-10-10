@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "aquaculture:bobber"
+      "aquaculture:nether_star_hook"
     ]
   },
   "criteria": {
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:bobber"
+        "recipe": "aquaculture:nether_star_hook"
       }
     }
   },
