@@ -9,6 +9,7 @@ import com.teammetallurgy.aquaculture.init.AquaLootTables;
 import com.teammetallurgy.aquaculture.item.AquaFishingRodItem;
 import com.teammetallurgy.aquaculture.item.HookItem;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
+import com.teammetallurgy.aquaculture.misc.AquacultureSounds;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
@@ -169,7 +170,7 @@ public class AquaFishingBobberEntity extends FishingBobberEntity implements IEnt
                         if (!bait.isEmpty()) {
                             if (bait.attemptDamageItem(1, this.world.rand, null)) {
                                 bait.shrink(1);
-                                this.playSound(SoundEvents.ITEM_TRIDENT_HIT_GROUND, 0.7F, 0.2F);
+                                this.playSound(AquacultureSounds.bobberBait, 0.7F, 0.2F);
                             }
                             rodHandler.setStackInSlot(1, bait);
                         }
@@ -404,7 +405,7 @@ public class AquaFishingBobberEntity extends FishingBobberEntity implements IEnt
 
                 //Lava sound added
                 if (serverworld.getFluidState(this.getPosition()).isTagged(FluidTags.LAVA)) {
-                    this.playSound(SoundEvents.BLOCK_LAVA_EXTINGUISH, 1.00F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
+                    this.playSound(AquacultureSounds.bobberLava, 1.00F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
                     serverworld.spawnParticle(ParticleTypes.LAVA, this.getPosX(), boundingBox, this.getPosZ(), (int) (1.0F + this.getWidth() * 20.0F), this.getWidth(), 0.0D, this.getWidth(), 0.2D);
                 }
                 if (this.hasHook() && this.hook.getMaxCatchable() > 0) { //Added check
