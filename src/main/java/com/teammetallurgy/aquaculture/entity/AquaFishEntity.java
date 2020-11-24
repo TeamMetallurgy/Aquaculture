@@ -2,6 +2,7 @@ package com.teammetallurgy.aquaculture.entity;
 
 import com.teammetallurgy.aquaculture.entity.ai.goal.FollowTypeSchoolLeaderGoal;
 import com.teammetallurgy.aquaculture.init.AquaItems;
+import com.teammetallurgy.aquaculture.misc.AquacultureSounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.entity.EntitySize;
@@ -63,24 +64,24 @@ public class AquaFishEntity extends AbstractGroupFishEntity {
     @Nonnull
     protected SoundEvent getFlopSound() {
         if (AquaFishEntity.TYPES.get(this.getType()) == FishType.JELLYFISH) {
-            return SoundEvents.BLOCK_SLIME_BLOCK_STEP;
+            return AquacultureSounds.jellyfishFlop;
         }
-        return SoundEvents.ENTITY_COD_FLOP;
+        return AquacultureSounds.fishFlop;
     }
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_COD_AMBIENT;
+        return AquacultureSounds.fishAmbient;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_COD_DEATH;
+        return AquacultureSounds.fishDeath;
     }
 
     @Override
     protected SoundEvent getHurtSound(@Nonnull DamageSource damageSource) {
-        return SoundEvents.ENTITY_COD_HURT;
+        return AquacultureSounds.fishHurt;
     }
 
     @Override
@@ -95,7 +96,7 @@ public class AquaFishEntity extends AbstractGroupFishEntity {
         if (Objects.equals(this.getType().getRegistryName(), AquaItems.JELLYFISH.getRegistryName())) {
             if (this.isAlive()) {
                 if (this.getDistanceSq(player) < 1.0D && player.attackEntityFrom(DamageSource.causeMobDamage(this), 0.5F)) {
-                    this.playSound(SoundEvents.ENTITY_SLIME_ATTACK, 0.5F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+                    this.playSound(AquacultureSounds.fishCollide, 0.5F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
                     this.applyEnchantments(this, player);
                 }
             }
