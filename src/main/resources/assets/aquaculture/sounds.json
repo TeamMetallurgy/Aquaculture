@@ -1,0 +1,146 @@
+{
+	"tackle_box_open": {
+		"sounds": [
+			{
+				"type": "event",
+				"name": "minecraft:block.iron_door.open"
+			}
+		],
+		"subtitle": "aquaculture.subtitle.tackle_box_open"
+	},
+	"tackle_box_close": {
+		"sounds": [
+			{
+				"type": "event",
+				"name": "minecraft:block.iron_door.close"
+			}
+		],
+		"subtitle": "aquaculture.subtitle.tackle_box_close"
+	},
+	"worm_farm_empty": {
+		"sounds": [
+			{
+				"type": "event",
+				"name": "minecraft:block.composter.empty"
+			}
+		],
+		"subtitle": "aquaculture.subtitle.worm_farm_empty"
+	},
+	"fish_mount_removed": {
+		"sounds": [
+			{
+				"type": "event",
+				"name": "minecraft:entity.item_frame.remove_item"
+			}
+		],
+		"subtitle": "aquaculture.subtitle.fish_mount_removed"
+	},
+	"fish_mount_broken": {
+		"sounds": [
+			{
+				"type": "event",
+				"name": "minecraft:entity.item_frame.break"
+			}
+		],
+		"subtitle": "aquaculture.subtitle.fish_mount_broken"
+	},
+	"fish_mount_placed": {
+		"sounds": [
+			{
+				"type": "event",
+				"name": "minecraft:entity.item_frame.place"
+			}
+		],
+		"subtitle": "aquaculture.subtitle.fish_mount_placed"
+	},
+	"fish_mount_add_item": {
+		"sounds": [
+			{
+				"type": "event",
+				"name": "minecraft:entity.item_frame.add_item"
+			}
+		],
+		"subtitle": "aquaculture.subtitle.fish_mount_add_item"
+	},
+	"bobber_bait": {
+		"sounds": [
+			{
+				"type": "event",
+				"name": "minecraft:item.trident.hit_ground"
+			}
+		],
+		"subtitle": "aquaculture.subtitle.bobber_bait"
+	},
+	"bobber_note_catch": {
+		"sounds": [
+			{
+				"type": "event",
+				"name": "minecraft:entity.player.levelup"
+			}
+		],
+		"subtitle": "aquaculture.subtitle.bobber_note_catch"
+	},
+	"bobber_land_lava": {
+		"sounds": [
+			{
+				"type": "event",
+				"name": "minecraft:block.lava.extinguish"
+			}
+		],
+		"subtitle": "aquaculture.subtitle.bobber_land_lava"
+	},
+	"jellyfish_flop": {
+		"sounds": [
+			{
+				"type": "event",
+				"name": "minecraft:block.slime_block.step"
+			}
+		],
+		"subtitle": "aquaculture.subtitle.jellyfish_flop"
+	},
+	"fish_flop": {
+		"sounds": [
+			{
+				"type": "event",
+				"name": "minecraft:entity.cod.flop"
+			}
+		],
+		"subtitle": "aquaculture.subtitle.fish_flop"
+	},
+	"fish_ambient": {
+		"sounds": [
+			{
+				"type": "event",
+				"name": "minecraft:entity.cod.ambient"
+			}
+		],
+		"subtitle": "aquaculture.subtitle.fish_ambient"
+	},
+	"fish_death": {
+		"sounds": [
+			{
+				"type": "event",
+				"name": "minecraft:entity.cod.death"
+			}
+		],
+		"subtitle": "aquaculture.subtitle.fish_death"
+	},
+	"fish_hurt": {
+		"sounds": [
+			{
+				"type": "event",
+				"name": "minecraft:entity.cod.hurt"
+			}
+		],
+		"subtitle": "aquaculture.subtitle.fish_hurt"
+	},
+	"bottle_open": {
+		"sounds": [
+			{
+				"type": "event",
+				"name": "minecraft:block.glass.break"
+			}
+		],
+		"subtitle": "aquaculture.subtitle.bottle_open"
+	}
+}
