@@ -3,6 +3,7 @@ package com.teammetallurgy.aquaculture.block.tileentity;
 import com.teammetallurgy.aquaculture.block.TackleBoxBlock;
 import com.teammetallurgy.aquaculture.init.AquaBlocks;
 import com.teammetallurgy.aquaculture.inventory.container.TackleBoxContainer;
+import com.teammetallurgy.aquaculture.misc.AquacultureSounds;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -52,7 +53,7 @@ public class TackleBoxTileEntity extends IItemHandlerTEBase implements INamedCon
         this.numPlayersUsing = this.getNumbersOfPlayersUsing(this.world, this.ticksSinceSync, x, y, z, this.numPlayersUsing);
         this.prevLidAngle = this.lidAngle;
         if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F) {
-            this.playSound(SoundEvents.BLOCK_IRON_DOOR_OPEN);
+            this.playSound(AquacultureSounds.tackleBoxOpen);
         }
 
         if (this.numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < 1.0F) {
@@ -68,7 +69,7 @@ public class TackleBoxTileEntity extends IItemHandlerTEBase implements INamedCon
             }
 
             if (this.lidAngle < 0.5F && angle >= 0.5F) {
-                this.playSound(SoundEvents.BLOCK_IRON_DOOR_CLOSE);
+                this.playSound(AquacultureSounds.tacbleBoxClose);
             }
 
             if (this.lidAngle < 0.0F) {
