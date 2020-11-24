@@ -16,13 +16,16 @@ public final class AquacultureSounds{
     public static final SoundEvent wormFarmEmpty = registersound("worm_farm_empty");
     public static final SoundEvent fishMountRemoved = registersound("fish_mount_removed");
     public static final SoundEvent fismMountBroken = registersound("fish_mount_broken");
-    public static final SoundEvent fishMountFishPlaced = registersound("fish_mount_placed");
+    public static final SoundEvent fishMountPlaced = registersound("fish_mount_placed");
+    public static final SoundEvent fishMountFishPlaced = registersound("fish_mount_add_item");
     public static final SoundEvent bobberBait = registersound("bobber_bait");
+    public static final SoundEvent bobberLava = registersound("bobber_land_lava");
     public static final SoundEvent jellyfishFlop = registersound("jellyfish_flop");
     public static final SoundEvent fishFlop = registersound("fish_flop");
     public static final SoundEvent fishAmbient = registersound("fish_ambient");
     public static final SoundEvent fishDeath = registersound("fish_death");
     public static final SoundEvent fishHurt = registersound("fish_hurt");
+    public static final SoundEvent fishCollide = registersound("fish_collide");
     public static final SoundEvent bottleOpened = registersound("bottle_open");
 
     private static SoundEvent makeSoundEvent(String name) {
@@ -38,13 +41,16 @@ public final class AquacultureSounds{
         registry.register(wormFarmEmpty);
         registry.register(fishMountRemoved);
         registry.register(fismMountBroken);
+        registry.register(fishMountPlaced);
         registry.register(fishMountFishPlaced);
         registry.register(bobberBait);
+        registry.register(bobberLava);
         registry.register(jellyfishFlop);
         registry.register(fishFlop);
         registry.register(fishAmbient);
         registry.register(fishDeath);
         registry.register(fishHurt);
+        registry.register(fishCollide);
         registry.register(bottleOpened);
     }
 }
