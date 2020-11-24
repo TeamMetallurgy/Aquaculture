@@ -1,6 +1,7 @@
 package com.teammetallurgy.aquaculture.entity;
 
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
+import com.teammetallurgy.aquaculture.misc.AquacultureSounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.RedstoneDiodeBlock;
@@ -139,7 +140,7 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
         } else if (!source.isExplosion() && !this.getDisplayedItem().isEmpty()) {
             if (!this.world.isRemote) {
                 this.dropItemOrSelf(source.getTrueSource(), false);
-                this.playSound(SoundEvents.ENTITY_ITEM_FRAME_REMOVE_ITEM, 1.0F, 1.0F);
+                this.playSound(AquacultureSounds.fishMountRemoved, 1.0F, 1.0F);
             }
             return true;
         } else {
@@ -167,13 +168,13 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
 
     @Override
     public void onBroken(@Nullable Entity brokenEntity) {
-        this.playSound(SoundEvents.ENTITY_ITEM_FRAME_BREAK, 1.0F, 1.0F);
+        this.playSound(AquacultureSounds.fismMountBroken, 1.0F, 1.0F);
         this.dropItemOrSelf(brokenEntity, true);
     }
 
     @Override
     public void playPlaceSound() {
-        this.playSound(SoundEvents.ENTITY_ITEM_FRAME_PLACE, 1.0F, 1.0F);
+        this.playSound(AquacultureSounds.fishMountPlaced, 1.0F, 1.0F);
     }
 
     private void dropItemOrSelf(@Nullable Entity entity, boolean shouldDropSelf) {
@@ -231,7 +232,7 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
 
         this.getDataManager().set(ITEM, stack);
         if (!stack.isEmpty()) {
-            this.playSound(SoundEvents.ENTITY_ITEM_FRAME_ADD_ITEM, 1.0F, 1.0F);
+            this.playSound(AquacultureSounds.fishMountFishPlaced, 1.0F, 1.0F);
         }
 
         if (shouldUpdate && this.hangingPosition != null) {
