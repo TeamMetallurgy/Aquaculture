@@ -134,6 +134,15 @@
 		],
 		"subtitle": "aquaculture.subtitle.fish_hurt"
 	},
+	"fish_collide": {
+		"sounds": [
+			{
+				"type": "event",
+				"name": "minecraft:entity.slime.attack"
+			}
+		],
+		"subtitle": "aquaculture.subtitle.fish_collide"
+	},
 	"bottle_open": {
 		"sounds": [
 			{
