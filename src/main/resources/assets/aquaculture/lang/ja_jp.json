@@ -286,4 +286,22 @@
   "aquaculture.soul_sand_hook.tooltip.desc" : "魚を巻き取る時間が長くなります",
   "aquaculture.obsidian_note_hook.tooltip.title" : "アラート",
   "aquaculture.obsidian_note_hook.tooltip.desc" : "魚が近づくとアラートを鳴らします"
+  
+  "_comment": "Tooltip",
+  "aquaculture.subtitles.tackle_box_open": "タックルボックスが開く",
+  "aquaculture.subtitles.tackle_box_close": "タックルボックスが閉じる",
+  "aquaculture.subtitles.worm_farm_empty": "ワームファームを空にする",
+  "aquaculture.subtitles.fish_mount_removed": "魚額縁から魚が取られる",
+  "aquaculture.subtitles.fish_mount_broken": "魚額縁が壊れる",
+  "aquaculture.subtitles.fish_mount_placed": "魚額縁が置かれる",
+  "aquaculture.subtitles.fish_mount_add_item": "魚額縁に魚が入れられる", 
+  "aquaculture.subtitles.bobber_bait": "餌がなくなる",
+  "aquaculture.subtitles.bobber_note_catch": "魚は針に接近している",
+  "aquaculture.subtitles.bobber_land_lava": "浮きが溶岩中に沈む",
+  "aquaculture.subtitles.jellyfish_flop": "クラゲが死ぬ",
+  "aquaculture.subtitles.fish_ambient": "魚が泳ぐ",
+  "aquaculture.subtitles.fish_death": "魚が死ぬ",
+  "aquaculture.subtitles.fish_flop": "魚が跳ねる",
+  "aquaculture.subtitles.fish_hurt": "魚がダメージを受ける",
+  "aquaculture.subtitles.bottle_open": "瓶が粉々になる"
 }
