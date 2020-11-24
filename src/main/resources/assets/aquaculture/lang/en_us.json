@@ -286,4 +286,22 @@
   "aquaculture.soul_sand_hook.tooltip.desc" : "Increases how long you have to reel in fish",
   "aquaculture.obsidian_note_hook.tooltip.title" : "Alert",
   "aquaculture.obsidian_note_hook.tooltip.desc" : "Plays an alert when a fish is approaching"
+  
+  "_comment": "Tooltip",
+  "aquaculture.subtitles.tackle_box_open": "Tacckle Box opens",
+  "aquaculture.subtitles.tackle_box_close": "tackle Box closes",
+  "aquaculture.subtitles.worm_farm_empty": "Worm Farm empties",
+  "aquaculture.subtitles.fish_mount_removed": "Fish removed from Fish Mount",
+  "aquaculture.subtitles.fish_mount_broken": "Fish Mount broken",
+  "aquaculture.subtitles.fish_mount_placed": "Fish Mount pladed",
+  "aquaculture.subtitles.fish_mount_add_item": "Fish mounted on Mish Mount", 
+  "aquaculture.subtitles.bobber_bait": "Bait runs out",
+  "aquaculture.subtitles.bobber_note_catch": "Fish aproaching Hook",
+  "aquaculture.subtitles.bobber_land_lava": "Hook lands on Lava",
+  "aquaculture.subtitles.jellyfish_flop": "jellyfish flops",
+  "aquaculture.subtitles.fish_ambient": "Fish swims",
+  "aquaculture.subtitles.fish_death": "Fish dies",
+  "aquaculture.subtitles.fish_flop": "Fish flps",
+  "aquaculture.subtitles.fish_hurt": "fish hurts",
+  "aquaculture.subtitles.bottle_open": "Bottle breaks"
 }
