@@ -170,7 +170,7 @@ public class AquaFishingBobberEntity extends FishingBobberEntity implements IEnt
                         if (!bait.isEmpty()) {
                             if (bait.attemptDamageItem(1, this.world.rand, null)) {
                                 bait.shrink(1);
-                                this.playSound(AquacultureSounds.bobberBait, 0.7F, 0.2F);
+                                this.playSound(AquacultureSounds.BOBBER_BAIT_BREAK, 0.7F, 0.2F);
                             }
                             rodHandler.setStackInSlot(1, bait);
                         }
@@ -405,7 +405,7 @@ public class AquaFishingBobberEntity extends FishingBobberEntity implements IEnt
 
                 //Lava sound added
                 if (serverworld.getFluidState(this.getPosition()).isTagged(FluidTags.LAVA)) {
-                    this.playSound(AquacultureSounds.bobberLava, 1.00F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
+                    this.playSound(AquacultureSounds.BOBBER_LAND_IN_LAVA, 1.00F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
                     serverworld.spawnParticle(ParticleTypes.LAVA, this.getPosX(), boundingBox, this.getPosZ(), (int) (1.0F + this.getWidth() * 20.0F), this.getWidth(), 0.0D, this.getWidth(), 0.2D);
                 }
                 if (this.hasHook() && this.hook.getMaxCatchable() > 0) { //Added check
