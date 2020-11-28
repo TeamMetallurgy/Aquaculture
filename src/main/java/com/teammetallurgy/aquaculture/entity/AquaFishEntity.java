@@ -64,24 +64,24 @@ public class AquaFishEntity extends AbstractGroupFishEntity {
     @Nonnull
     protected SoundEvent getFlopSound() {
         if (AquaFishEntity.TYPES.get(this.getType()) == FishType.JELLYFISH) {
-            return AquacultureSounds.jellyfishFlop;
+            return AquacultureSounds.JELLYFISH_FLOP;
         }
-        return AquacultureSounds.fishFlop;
+        return AquacultureSounds.FISH_FLOP;
     }
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return AquacultureSounds.fishAmbient;
+        return AquacultureSounds.FISH_AMBIENT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return AquacultureSounds.fishDeath;
+        return AquacultureSounds.FISH_DEATH;
     }
 
     @Override
     protected SoundEvent getHurtSound(@Nonnull DamageSource damageSource) {
-        return AquacultureSounds.fishHurt;
+        return AquacultureSounds.FISH_HURT;
     }
 
     @Override
@@ -96,7 +96,7 @@ public class AquaFishEntity extends AbstractGroupFishEntity {
         if (Objects.equals(this.getType().getRegistryName(), AquaItems.JELLYFISH.getRegistryName())) {
             if (this.isAlive()) {
                 if (this.getDistanceSq(player) < 1.0D && player.attackEntityFrom(DamageSource.causeMobDamage(this), 0.5F)) {
-                    this.playSound(AquacultureSounds.fishCollide, 0.5F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+                    this.playSound(AquacultureSounds.FISH_COLLIDE, 0.5F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
                     this.applyEnchantments(this, player);
                 }
             }
