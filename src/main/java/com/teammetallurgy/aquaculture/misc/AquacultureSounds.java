@@ -1,7 +1,6 @@
 package com.teammetallurgy.aquaculture.misc;
 
 import com.teammetallurgy.aquaculture.Aquaculture;
-import com.teammetallurgy.aquaculture.api.fishing.Hooks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
@@ -28,6 +27,7 @@ public final class AquacultureSounds{
     public static final SoundEvent FISH_HURT = registersound("fish_hurt");
     public static final SoundEvent FISH_COLLIDE = registersound("fish_collide");
     public static final SoundEvent BOTTLE_OPEN = registersound("bottle_open");
+    public static final SoundEvent BOBBER_NOTE = registersound("bobber_note_catch");
 
     private static SoundEvent makeSoundEvent(String name) {
         ResourceLocation location = new ResourceLocation("aquaculture", name);
@@ -53,6 +53,6 @@ public final class AquacultureSounds{
         registry.register(FISH_HURT);
         registry.register(FISH_COLLIDE);
         registry.register(BOTTLE_OPEN);
-        registry.register(Hooks.BOBBER_NOTE);
+        registry.register(BOBBER_NOTE);
     }
 }
