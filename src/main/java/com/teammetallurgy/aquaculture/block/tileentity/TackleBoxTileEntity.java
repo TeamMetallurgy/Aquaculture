@@ -53,7 +53,7 @@ public class TackleBoxTileEntity extends IItemHandlerTEBase implements INamedCon
         this.numPlayersUsing = this.getNumbersOfPlayersUsing(this.world, this.ticksSinceSync, x, y, z, this.numPlayersUsing);
         this.prevLidAngle = this.lidAngle;
         if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F) {
-            this.playSound(AquacultureSounds.tackleBoxOpen);
+            this.playSound(AquacultureSounds.TACKLE_BOX_OPEN);
         }
 
         if (this.numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < 1.0F) {
@@ -69,7 +69,7 @@ public class TackleBoxTileEntity extends IItemHandlerTEBase implements INamedCon
             }
 
             if (this.lidAngle < 0.5F && angle >= 0.5F) {
-                this.playSound(AquacultureSounds.tacbleBoxClose);
+                this.playSound(AquacultureSounds.TACKLE_BOX_CLOSE);
             }
 
             if (this.lidAngle < 0.0F) {
