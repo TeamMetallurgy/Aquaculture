@@ -140,7 +140,7 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
         } else if (!source.isExplosion() && !this.getDisplayedItem().isEmpty()) {
             if (!this.world.isRemote) {
                 this.dropItemOrSelf(source.getTrueSource(), false);
-                this.playSound(AquacultureSounds.fishMountRemoved, 1.0F, 1.0F);
+                this.playSound(AquacultureSounds.FISH_MOUNT_REMOVED, 1.0F, 1.0F);
             }
             return true;
         } else {
@@ -168,13 +168,13 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
 
     @Override
     public void onBroken(@Nullable Entity brokenEntity) {
-        this.playSound(AquacultureSounds.fismMountBroken, 1.0F, 1.0F);
+        this.playSound(AquacultureSounds.FISH_MOUNT_BROKEN, 1.0F, 1.0F);
         this.dropItemOrSelf(brokenEntity, true);
     }
 
     @Override
     public void playPlaceSound() {
-        this.playSound(AquacultureSounds.fishMountPlaced, 1.0F, 1.0F);
+        this.playSound(AquacultureSounds.FISH_MOUNT_PLACED, 1.0F, 1.0F);
     }
 
     private void dropItemOrSelf(@Nullable Entity entity, boolean shouldDropSelf) {
@@ -232,7 +232,7 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
 
         this.getDataManager().set(ITEM, stack);
         if (!stack.isEmpty()) {
-            this.playSound(AquacultureSounds.fishMountFishPlaced, 1.0F, 1.0F);
+            this.playSound(AquacultureSounds.FISH_MOUNT_ADD_ITEM, 1.0F, 1.0F);
         }
 
         if (shouldUpdate && this.hangingPosition != null) {
