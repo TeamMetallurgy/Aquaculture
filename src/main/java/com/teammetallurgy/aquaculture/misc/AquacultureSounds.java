@@ -1,6 +1,7 @@
 package com.teammetallurgy.aquaculture.misc;
 
 import com.teammetallurgy.aquaculture.Aquaculture;
+import com.teammetallurgy.aquaculture.api.fishing.Hooks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
@@ -52,5 +53,6 @@ public final class AquacultureSounds{
         registry.register(FISH_HURT);
         registry.register(FISH_COLLIDE);
         registry.register(BOTTLE_OPEN);
+        registry.register(Hooks.BOBBER_NOTE);
     }
 }
