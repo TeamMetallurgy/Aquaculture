@@ -11,22 +11,22 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 @Mod.EventBusSubscriber(modid = Aquaculture.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class AquacultureSounds{
-    public static final SoundEvent tackleBoxOpen = registersound("tackle_box_open");
-    public static final SoundEvent tacbleBoxClose = registersound("tackle_box_close");
-    public static final SoundEvent wormFarmEmpty = registersound("worm_farm_empty");
-    public static final SoundEvent fishMountRemoved = registersound("fish_mount_removed");
-    public static final SoundEvent fismMountBroken = registersound("fish_mount_broken");
-    public static final SoundEvent fishMountPlaced = registersound("fish_mount_placed");
-    public static final SoundEvent fishMountFishPlaced = registersound("fish_mount_add_item");
-    public static final SoundEvent bobberBait = registersound("bobber_bait");
-    public static final SoundEvent bobberLava = registersound("bobber_land_lava");
-    public static final SoundEvent jellyfishFlop = registersound("jellyfish_flop");
-    public static final SoundEvent fishFlop = registersound("fish_flop");
-    public static final SoundEvent fishAmbient = registersound("fish_ambient");
-    public static final SoundEvent fishDeath = registersound("fish_death");
-    public static final SoundEvent fishHurt = registersound("fish_hurt");
-    public static final SoundEvent fishCollide = registersound("fish_collide");
-    public static final SoundEvent bottleOpened = registersound("bottle_open");
+    public static final SoundEvent TACKLE_BOX_OPEN = registersound("tackle_box_open");
+    public static final SoundEvent TACKLE_BOX_CLOSE = registersound("tackle_box_close");
+    public static final SoundEvent WORM_FARM_EMPTY = registersound("worm_farm_empty");
+    public static final SoundEvent FISH_MOUNT_REMOVED = registersound("fish_mount_removed");
+    public static final SoundEvent FISH_MOUNT_BROKEN = registersound("fish_mount_broken");
+    public static final SoundEvent FISH_MOUNT_PLACED = registersound("fish_mount_placed");
+    public static final SoundEvent FISH_MOUNT_ADD_ITEM = registersound("fish_mount_add_item");
+    public static final SoundEvent BOBBER_BAIT_BREAK = registersound("bobber_bait");
+    public static final SoundEvent BOBBER_LAND_IN_LAVA = registersound("bobber_land_lava");
+    public static final SoundEvent JELLYFISH_FLOP = registersound("jellyfish_flop");
+    public static final SoundEvent FISH_FLOP = registersound("fish_flop");
+    public static final SoundEvent FISH_AMBIENT = registersound("fish_ambient");
+    public static final SoundEvent FISH_DEATH = registersound("fish_death");
+    public static final SoundEvent FISH_HURT = registersound("fish_hurt");
+    public static final SoundEvent FISH_COLLIDE = registersound("fish_collide");
+    public static final SoundEvent BOTTLE_OPEN = registersound("bottle_open");
 
     private static SoundEvent makeSoundEvent(String name) {
         ResourceLocation location = new ResourceLocation("aquaculture", name);
@@ -36,21 +36,21 @@ public final class AquacultureSounds{
     @SubscribeEvent
     public static void registerSounds(Register<SoundEvent> event) {
         IForgeRegistry<SoundEvent> registry = event.getRegistry();
-        registry.register(tackleBoxOpen);
-        registry.register(tacbleBoxClose);
-        registry.register(wormFarmEmpty);
-        registry.register(fishMountRemoved);
-        registry.register(fismMountBroken);
-        registry.register(fishMountPlaced);
-        registry.register(fishMountFishPlaced);
-        registry.register(bobberBait);
-        registry.register(bobberLava);
-        registry.register(jellyfishFlop);
-        registry.register(fishFlop);
-        registry.register(fishAmbient);
-        registry.register(fishDeath);
-        registry.register(fishHurt);
-        registry.register(fishCollide);
-        registry.register(bottleOpened);
+        registry.register(TACKLE_BOX_OPEN);
+        registry.register(TACKLE_BOX_CLOSE);
+        registry.register(WORM_FARM_EMPTY);
+        registry.register(FISH_MOUNT_REMOVED);
+        registry.register(FISH_MOUNT_BROKEN);
+        registry.register(FISH_MOUNT_PLACED);
+        registry.register(FISH_MOUNT_ADD_ITEM);
+        registry.register(BOBBER_BAIT_BREAK);
+        registry.register(BOBBER_LAND_IN_LAVA);
+        registry.register(JELLYFISH_FLOP);
+        registry.register(FISH_FLOP);
+        registry.register(FISH_AMBIENT);
+        registry.register(FISH_DEATH);
+        registry.register(FISH_HURT);
+        registry.register(FISH_COLLIDE);
+        registry.register(BOTTLE_OPEN);
     }
 }
