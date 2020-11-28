@@ -24,7 +24,7 @@ public class ItemMessageInABottle extends Item {
     @Nonnull
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, @Nonnull Hand hand) {
         ItemStack heldStack = player.getHeldItem(hand);
-        world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AquacultureSounds.bottleOpened, SoundCategory.PLAYERS, 0.5F, 0.4F / (rand.nextFloat() * 0.4F + 0.8F));
+        world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AquacultureSounds.BOTTLE_OPEN , SoundCategory.PLAYERS, 0.5F, 0.4F / (rand.nextFloat() * 0.4F + 0.8F));
 
         int messageRoll = rand.nextInt(29) + 1;
 
