@@ -23,10 +23,11 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
+import sun.misc.Unsafe;
 
 import javax.annotation.Nonnull;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,18 +95,26 @@ public class FishRegistry {
 
             setFinalStatic(catItems, StackHelper.mergeIngredient(CatEntity.BREEDING_ITEMS, StackHelper.ingredientFromStackList(aquaFish)));
             setFinalStatic(ocelotItems, StackHelper.mergeIngredient(OcelotEntity.BREEDING_ITEMS, StackHelper.ingredientFromStackList(aquaFish)));
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
     }
 
-    static void setFinalStatic(Field field, Object newValue) throws Exception {
-        field.setAccessible(true);
+    static MethodHandles.Lookup implLookup;
 
-        Field modifiersField = Field.class.getDeclaredField("modifiers");
-        modifiersField.setAccessible(true);
-        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+    static {
+        try {
+            Field unsafeField = Unsafe.class.getDeclaredField("theUnsafe");
+            unsafeField.setAccessible(true);
+            Unsafe unsafe = (Unsafe) unsafeField.get(null);
+            Field implLookupField = MethodHandles.Lookup.class.getDeclaredField("IMPL_LOOKUP");
+            implLookup = (MethodHandles.Lookup) unsafe.getObject(unsafe.staticFieldBase(implLookupField), unsafe.staticFieldOffset(implLookupField));
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
 
-        field.set(null, newValue);
+    static void setFinalStatic(Field field, Object newValue) throws Throwable {
+        implLookup.findStaticSetter(field.getDeclaringClass(), field.getName(), field.getType()).invoke(newValue);
     }
 }
