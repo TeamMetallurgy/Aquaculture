@@ -286,4 +286,23 @@
   "aquaculture.soul_sand_hook.tooltip.desc" : "물고기를 낚아채는 시간이 길어집니다.",
   "aquaculture.obsidian_note_hook.tooltip.title" : "경보",
   "aquaculture.obsidian_note_hook.tooltip.desc" : "물고기가 다가오면 경보를 울립니다."
+  
+  "_comment": "자막",
+  "aquaculture.subtitles.tackle_box_open": "낚시 도구 상자를 엽니다.",
+  "aquaculture.subtitles.tackle_box_close": "낚시 도구 상자를 닫습니다.",
+  "aquaculture.subtitles.worm_farm_empty": "지렁이 사육기가 비어 있습니다.",
+  "aquaculture.subtitles.fish_mount_removed": "어상자에서 물고기를 제거했습니다.",
+  "aquaculture.subtitles.fish_mount_broken": "어상자가 부러졌습니다.",
+  "aquaculture.subtitles.fish_mount_placed": "어상자를 설치했습니다.",
+  "aquaculture.subtitles.fish_mount_add_item": "물고기들이 어상자에 올라탔습니다.", 
+  "aquaculture.subtitles.bobber_bait": "미끼가 떨어집니다.",
+  "aquaculture.subtitles.bobber_note_catch": "낚시 바늘을 잡으세요.",
+  "aquaculture.subtitles.bobber_land_lava": "갈고리가 용암에 떨어집니다.",
+  "aquaculture.subtitles.jellyfish_flop": "해파리가 퐁당거립니다.",
+  "aquaculture.subtitles.fish_ambient": "물고기가 헤엄칩니다.",
+  "aquaculture.subtitles.fish_death": "물고기는 죽습니다.",
+  "aquaculture.subtitles.fish_flop": "물고기가 펄럭입니다.",
+  "aquaculture.subtitles.fish_hurt": "물고기가 아픕니다.",
+  "aquaculture.subtitles.fish_collide": "물고기가 충돌합니다.",
+  "aquaculture.subtitles.bottle_open": "병이 깨집니다."
 }
