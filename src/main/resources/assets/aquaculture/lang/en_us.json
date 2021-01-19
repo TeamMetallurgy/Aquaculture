@@ -288,7 +288,7 @@
   "aquaculture.obsidian_note_hook.tooltip.desc" : "Plays an alert when a fish is approaching",
   
   "_comment": "Subtitle",
-  "aquaculture.subtitles.tackle_box_open": "Tacckle Box opens",
+  "aquaculture.subtitles.tackle_box_open": "Tackle Box opens",
   "aquaculture.subtitles.tackle_box_close": "tackle Box closes",
   "aquaculture.subtitles.worm_farm_empty": "Worm Farm empties",
   "aquaculture.subtitles.fish_mount_removed": "Fish removed from Fish Mount",
