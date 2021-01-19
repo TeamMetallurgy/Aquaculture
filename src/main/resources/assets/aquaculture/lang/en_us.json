@@ -289,7 +289,7 @@
   
   "_comment": "Subtitle",
   "aquaculture.subtitles.tackle_box_open": "Tackle Box opens",
-  "aquaculture.subtitles.tackle_box_close": "tackle Box closes",
+  "aquaculture.subtitles.tackle_box_close": "Tackle Box closes",
   "aquaculture.subtitles.worm_farm_empty": "Worm Farm empties",
   "aquaculture.subtitles.fish_mount_removed": "Fish removed from Fish Mount",
   "aquaculture.subtitles.fish_mount_broken": "Fish Mount broken",
@@ -298,7 +298,7 @@
   "aquaculture.subtitles.bobber_bait": "Bait runs out",
   "aquaculture.subtitles.bobber_note_catch": "Fish aproaching Hook",
   "aquaculture.subtitles.bobber_land_lava": "Hook lands on Lava",
-  "aquaculture.subtitles.jellyfish_flop": "jellyfish flops",
+  "aquaculture.subtitles.jellyfish_flop": "Jellyfish flops",
   "aquaculture.subtitles.fish_ambient": "Fish swims",
   "aquaculture.subtitles.fish_death": "Fish dies",
   "aquaculture.subtitles.fish_flop": "Fish flps",
