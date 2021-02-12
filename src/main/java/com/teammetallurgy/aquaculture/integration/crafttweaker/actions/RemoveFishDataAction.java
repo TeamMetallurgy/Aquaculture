@@ -7,15 +7,14 @@ import net.minecraft.item.Item;
 public class RemoveFishDataAction implements IUndoableAction {
 
     private final Item fish;
-    private final boolean fillet;
 
+    private boolean fillet;
     private double min;
     private double max;
     private int filletAmount;
 
-    public RemoveFishDataAction(Item fish, boolean fillet) {
+    public RemoveFishDataAction(Item fish) {
         this.fish = fish;
-        this.fillet = fillet;
     }
 
     @Override
@@ -23,7 +22,8 @@ public class RemoveFishDataAction implements IUndoableAction {
         this.min = AquacultureAPI.FISH_DATA.getMinWeight(fish, 0);
         this.max = AquacultureAPI.FISH_DATA.getMaxWeight(fish, 0);
         this.filletAmount = AquacultureAPI.FISH_DATA.getFilletAmount(fish, 1);
-        AquacultureAPI.FISH_DATA.remove(fish, fillet);
+        this.fillet = AquacultureAPI.FISH_DATA.hasFilletAmount(fish);
+        AquacultureAPI.FISH_DATA.remove(fish, this.fillet);
     }
 
     @Override

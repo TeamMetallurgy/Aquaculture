@@ -22,8 +22,8 @@ public class CTFishData {
     }
 
     @ZenCodeType.Method
-    public static void remove(Item fish, boolean fillet) {
-        CraftTweakerAPI.apply(new RemoveFishDataAction(fish, fillet));
+    public static void remove(Item fish) {
+        CraftTweakerAPI.apply(new RemoveFishDataAction(fish));
     }
 
 }
