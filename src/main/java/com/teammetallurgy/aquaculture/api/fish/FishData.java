@@ -13,20 +13,24 @@ public class FishData {
     private final ConcurrentHashMap<Item, Integer> FILLET_AMOUNT = new ConcurrentHashMap<>();
 
     public void addWeight(Item fish, double min, double max) {
-        if (!WEIGHT_MAX.containsKey(fish)) {
-            WEIGHT_MIN.put(fish, min);
-            WEIGHT_MAX.put(fish, max);
-        } else {
-            Aquaculture.LOG.error(fish.getRegistryName() + " already have a fish weight assigned to it");
-        }
+        WEIGHT_MIN.put(fish, min);
+        WEIGHT_MAX.put(fish, max);
     }
 
     public double getMinWeight(Item fish) {
         return WEIGHT_MIN.get(fish);
     }
 
+    public double getMinWeight(Item fish, double defaultValue) {
+        return WEIGHT_MIN.getOrDefault(fish, defaultValue);
+    }
+
     public double getMaxWeight(Item fish) {
         return WEIGHT_MAX.get(fish);
+    }
+
+    public double getMaxWeight(Item fish, double defaultValue) {
+        return WEIGHT_MAX.getOrDefault(fish, defaultValue);
     }
 
     public boolean hasWeight(Item fish) {
@@ -49,10 +53,14 @@ public class FishData {
     }
 
     public void addFilletAmount(Item fish, int filletAmount) {
-        if (!FILLET_AMOUNT.containsKey(fish)) {
-            FILLET_AMOUNT.put(fish, filletAmount);
-        } else {
-            Aquaculture.LOG.error(fish.getRegistryName() + " already have a fish fillet amount assigned to it");
+        FILLET_AMOUNT.put(fish, filletAmount);
+    }
+    
+    public void remove(Item fish, boolean fillet){
+        WEIGHT_MIN.remove(fish);
+        WEIGHT_MAX.remove(fish);
+        if(fillet){
+            FILLET_AMOUNT.remove(fish);
         }
     }
 
@@ -62,6 +70,10 @@ public class FishData {
 
     public int getFilletAmount(Item fish) {
         return FILLET_AMOUNT.get(fish);
+    }
+
+    public int getFilletAmount(Item fish, int defaultValue) {
+        return FILLET_AMOUNT.getOrDefault(fish, defaultValue);
     }
 
     public static int getFilletAmountFromWeight(double weight) {
