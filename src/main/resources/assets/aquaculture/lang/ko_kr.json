@@ -284,7 +284,7 @@
   "aquaculture.soul_sand_hook.tooltip.title" : "유혹",
   "aquaculture.soul_sand_hook.tooltip.desc" : "물고기를 낚아채는 시간이 길어집니다.",
   "aquaculture.obsidian_note_hook.tooltip.title" : "경보",
-  "aquaculture.obsidian_note_hook.tooltip.desc" : "물고기가 다가오면 경보를 울립니다."
+  "aquaculture.obsidian_note_hook.tooltip.desc" : "물고기가 다가오면 경보를 울립니다.",
   
   "_comment": "자막",
   "aquaculture.subtitles.tackle_box_open": "낚시 도구 상자를 엽니다.",
