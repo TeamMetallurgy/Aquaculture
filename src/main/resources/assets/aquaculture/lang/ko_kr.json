@@ -190,6 +190,7 @@
   "entity.aquaculture.jungle_fish_mount": "정글나무 표본액자",
   "entity.aquaculture.acacia_fish_mount": "아카시아나무 표본액자",
   "entity.aquaculture.dark_oak_fish_mount": "짙은 참나무 표본액자",
+  "entity.aquaculture.water_arrow": "화살",
   
   "_comment": "병 속의 편지",
   "aquaculture.message1": "생선은 어떻게 잡는거야?",
@@ -232,7 +233,7 @@
   "aquaculture.shift" : "[SHIFT]",
   "aquaculture.unbreakable" : "부서지지 않음",
   "aquaculture.universal" : "공통",
-  "aquaculture.loot.open" : "수용됨",
+  "aquaculture.loot.open" : "상자가 열렸습니다!",
   "aquaculture.neptunium_fishing_rod.tooltip.title" : "넵튠의 노래",
   "aquaculture.neptunium_fishing_rod.tooltip.desc" : "물고기가 더 물기 쉬워집니다.",
   "aquaculture.neptunium_helmet.tooltip.title" : "넵튠의 시선",
@@ -284,7 +285,7 @@
   "aquaculture.soul_sand_hook.tooltip.title" : "유혹",
   "aquaculture.soul_sand_hook.tooltip.desc" : "물고기를 낚아채는 시간이 길어집니다.",
   "aquaculture.obsidian_note_hook.tooltip.title" : "경보",
-  "aquaculture.obsidian_note_hook.tooltip.desc" : "물고기가 다가오면 경보를 울립니다.",
+  "aquaculture.obsidian_note_hook.tooltip.desc" : "물고기가 다가오면 경보를 울립니다."
   
   "_comment": "자막",
   "aquaculture.subtitles.tackle_box_open": "낚시 도구 상자를 엽니다.",
