@@ -2,6 +2,7 @@
   "itemGroup.aquaculture": "아쿠아컬쳐",
 
   "_comment": "블록",
+  "block.aquaculture.fish_trap": "통발",
   "block.aquaculture.neptunium_block": "넵투늄 블록",
   "block.aquaculture.neptunes_bounty": "넵튠의 보상",
   "block.aquaculture.tackle_box": "낚시 도구 상자",
@@ -64,7 +65,7 @@
 
   "_comment": "넵투늄",
   "item.aquaculture.neptunium_nugget": "넵투늄 조각",
-  "item.aquaculture.neptunium_ingot": "넵투늄괴",
+  "item.aquaculture.neptunium_ingot": "넵투늄 주괴",
   "item.aquaculture.neptunium_pickaxe": "넵투늄 곡괭이",
   "item.aquaculture.neptunium_shovel": "넵투늄 삽",
   "item.aquaculture.neptunium_axe": "넵투늄 도끼",
@@ -144,10 +145,10 @@
   "item.aquaculture.red_grouper_bucket": "붉바리가 담긴 양동이",
   "item.aquaculture.tuna_bucket": "참치가 담긴 양동이",
   
-    "_comment": "스폰 알",
-  "item.aquaculture.box_turtle_spawn_egg": "상자거북 스폰 알",
-  "item.aquaculture.arrau_turtle_spawn_egg": "아라우거북 스폰 알",
-  "item.aquaculture.starshell_turtle_spawn_egg": "스타셀거북 스폰 알",
+    "_comment": "생성 알",
+  "item.aquaculture.box_turtle_spawn_egg": "상자거북 생성 알",
+  "item.aquaculture.arrau_turtle_spawn_egg": "아라우거북 생성 알",
+  "item.aquaculture.starshell_turtle_spawn_egg": "스타셀거북 생성 알",
 
   "_comment": "엔티티",
   "entity.aquaculture.atlantic_cod": "대서양대구",
