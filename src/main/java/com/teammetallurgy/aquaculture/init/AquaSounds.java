@@ -22,6 +22,7 @@ public final class AquaSounds {
     public static final SoundEvent BOBBER_LAND_IN_LAVA = registerSound("bobber_land_lava");
     public static final SoundEvent JELLYFISH_FLOP = registerSound("jellyfish_flop");
     public static final SoundEvent FISH_FLOP = registerSound("fish_flop");
+    public static final SoundEvent FISH_AMBIENT = registerSound("fish_ambient");
     public static final SoundEvent FISH_DEATH = registerSound("fish_death");
     public static final SoundEvent FISH_HURT = registerSound("fish_hurt");
     public static final SoundEvent JELLYFISH_COLLIDE = registerSound("jellyfish_collide");
@@ -47,6 +48,7 @@ public final class AquaSounds {
         registry.register(BOBBER_LAND_IN_LAVA);
         registry.register(JELLYFISH_FLOP);
         registry.register(FISH_FLOP);
+        registry.register(FISH_AMBIENT);
         registry.register(FISH_DEATH);
         registry.register(FISH_HURT);
         registry.register(JELLYFISH_COLLIDE);
