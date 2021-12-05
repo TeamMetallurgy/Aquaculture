@@ -67,7 +67,12 @@ public class AquaFishEntity extends AbstractSchoolingFish {
         }
         return AquaSounds.FISH_FLOP;
     }
-
+    
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return AquaSounds.FISH_AMBIENT;
+    }
+    
     @Override
     protected SoundEvent getDeathSound() {
         return AquaSounds.FISH_DEATH;
