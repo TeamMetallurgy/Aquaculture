@@ -107,6 +107,15 @@
 		],
 		"subtitle": "aquaculture.subtitles.fish_flop"
 	},
+	"fish_ambient": {
+		"sounds": [
+			{
+				"type": "event",
+				"name": "aquaculture:silence"
+			}
+		],
+		"subtitle": "aquaculture.subtitles.fish_ambient"
+	},
 	"fish_death": {
 		"sounds": [
 			{
