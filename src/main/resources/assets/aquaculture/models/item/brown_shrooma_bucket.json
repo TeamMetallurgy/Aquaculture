@@ -1,6 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "aquaculture:item/brown_shrooma_bucket"
+        "layer0": "aquaculture:item/lower_bucket",
+        "layer1": "aquaculture:item/bucket_content/brown_shrooma"
     }
 }
