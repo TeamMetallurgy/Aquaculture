@@ -8,6 +8,11 @@ buildscript {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
     }
 }
+
+plugins {
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+}
+
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'maven-publish'
 
@@ -70,7 +75,21 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
     compileOnly fg.deobf("com.blamejared.crafttweaker:CraftTweaker-${minecraft_version}:${ct_version}")
+
+    implementation "net.bytebuddy:byte-buddy:1.12.12"
+    shadow("net.bytebuddy:byte-buddy:1.12.12")
 }
+
+shadowJar {
+    classifier ''
+    configurations = [project.configurations.shadow]
+    relocate("net.bytebuddy", "com.teammetallurgy.aquaculture.libs.net.bytebuddy")
+}
+
+reobf {
+    shadowJar {}
+}
+shadowJar.finalizedBy('reobfShadowJar')
 
 jar {
     manifest {
