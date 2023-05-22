@@ -1,6 +1,6 @@
 # [Aquaculture 2](https://minecraft.curseforge.com/projects/aquaculture)
 
-An expansion of Minecraft's fishing system. You never know what you'll catch. Every biome is home to tons of unique fish you can only catch in that biome, and there's a myriad of new loot items you can randomly catch while fishing.
+An enhancement of Minecraft’s piscatorial system. The catch is always a surprise. Each biome harbors countless fish that are exclusive to its environment, and a plethora of new loot items await you as you cast your line.
 
 How to get Aquaculture through maven
 ---
