@@ -33,8 +33,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.entity.IEntityAdditionalSpawnData;
-import net.neoforged.neoforge.network.PlayMessages;
+import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,7 +42,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-public class FishMountEntity extends HangingEntity implements IEntityAdditionalSpawnData {
+public class FishMountEntity extends HangingEntity implements IEntityWithComplexSpawn {
     private static final Logger PRIVATE_LOGGER = LogManager.getLogger();
     private static final EntityDataAccessor<ItemStack> ITEM = SynchedEntityData.defineId(FishMountEntity.class, EntityDataSerializers.ITEM_STACK);
     private float itemDropChance = 1.0F;
@@ -56,10 +55,6 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
     public FishMountEntity(EntityType<? extends FishMountEntity> type, Level world, BlockPos blockPos, Direction direction) {
         super(type, world, blockPos);
         this.setDirection(direction);
-    }
-
-    public FishMountEntity(PlayMessages.SpawnEntity spawnPacket, Level world) {
-        this((EntityType<? extends FishMountEntity>) BuiltInRegistries.ENTITY_TYPE.get(spawnPacket.getAdditionalData().readResourceLocation()), world);
     }
 
     @Override

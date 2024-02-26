@@ -39,7 +39,7 @@ public class FishRegistry {
     public static DeferredItem<Item> registerFishMount(@Nonnull String name) {
         DeferredHolder<EntityType<?>, EntityType<FishMountEntity>> fishMount = AquaEntities.ENTITY_DEFERRED.register(name, () -> EntityType.Builder.<FishMountEntity>of(FishMountEntity::new, MobCategory.MISC)
                 .sized(0.5F, 0.5F)
-                .setCustomClientFactory(FishMountEntity::new).build(Aquaculture.MOD_ID + ":" + name));
+                .build(Aquaculture.MOD_ID + ":" + name));
         DeferredItem<Item> fishMountItem = AquaItems.registerWithTab(() -> new FishMountItem(fishMount), name);
         fishMounts.add(fishMount);
         return fishMountItem;

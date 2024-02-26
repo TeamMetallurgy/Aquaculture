@@ -21,19 +21,16 @@ import java.util.function.Supplier;
 @Mod.EventBusSubscriber(modid = Aquaculture.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AquaEntities {
     public static final DeferredRegister<EntityType<?>> ENTITY_DEFERRED = DeferredRegister.create(Registries.ENTITY_TYPE, Aquaculture.MOD_ID);
-    public static final DeferredHolder<EntityType<?>, EntityType<AquaFishingBobberEntity>> BOBBER = register("bobber", () -> EntityType.Builder.<AquaFishingBobberEntity>createNothing(MobCategory.MISC)
+    public static final DeferredHolder<EntityType<?>, EntityType<AquaFishingBobberEntity>> BOBBER = register("bobber", () -> EntityType.Builder.<AquaFishingBobberEntity>of(AquaFishingBobberEntity::new, MobCategory.MISC)
             .noSave()
             .noSummon()
             .sized(0.25F, 0.25F)
             .setTrackingRange(4)
-            .setUpdateInterval(5)
-            .setCustomClientFactory(AquaFishingBobberEntity::new));
+            .setUpdateInterval(5));
     public static final DeferredHolder<EntityType<?>, EntityType<WaterArrowEntity>> WATER_ARROW = register("water_arrow", () -> EntityType.Builder.<WaterArrowEntity>of(WaterArrowEntity::new, MobCategory.MISC)
-            .sized(0.5F, 0.5F)
-            .setCustomClientFactory(WaterArrowEntity::new));
+            .sized(0.5F, 0.5F));
     public static final DeferredHolder<EntityType<?>, EntityType<SpectralWaterArrowEntity>> SPECTRAL_WATER_ARROW = register("spectral_water_arrow", () -> EntityType.Builder.<SpectralWaterArrowEntity>of(SpectralWaterArrowEntity::new, MobCategory.MISC)
-            .sized(0.5F, 0.5F)
-            .setCustomClientFactory(SpectralWaterArrowEntity::new));
+            .sized(0.5F, 0.5F));
     public static final DeferredHolder<EntityType<?>, EntityType<TurtleLandEntity>> BOX_TURTLE = registerMob("box_turtle", 0x7F8439, 0x5D612A,
             () -> EntityType.Builder.of(TurtleLandEntity::new, MobCategory.CREATURE)
                     .sized(0.5F, 0.25F));

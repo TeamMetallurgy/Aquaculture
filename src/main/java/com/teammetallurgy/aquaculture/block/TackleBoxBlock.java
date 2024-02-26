@@ -41,7 +41,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
-import net.neoforged.neoforge.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -107,7 +106,7 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
                         world.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.6F, 0.8F);
                     }
                 } else {
-                    NetworkHooks.openScreen(serverPlayer, container, pos);
+                    serverPlayer.openMenu(container, pos);
                 }
             }
             return InteractionResult.SUCCESS;
