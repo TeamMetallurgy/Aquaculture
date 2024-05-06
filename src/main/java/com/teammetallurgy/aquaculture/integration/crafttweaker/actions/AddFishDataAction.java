@@ -1,9 +1,9 @@
-/*
 package com.teammetallurgy.aquaculture.integration.crafttweaker.actions;
 
 import com.blamejared.crafttweaker.api.action.base.IUndoableAction;
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class AddFishDataAction implements IUndoableAction {
     private final Item fish;
@@ -38,7 +38,7 @@ public class AddFishDataAction implements IUndoableAction {
 
     @Override
     public String describe() {
-        return "Adding FishData for: " + this.fish.getRegistryName() + " with min: " + this.min + ", max: " + this.max + " and fillet amount of: " + this.filletAmount;
+        return "Adding FishData for: " + ForgeRegistries.ITEMS.getKey(this.fish) + " with min: " + this.min + ", max: " + this.max + " and fillet amount of: " + this.filletAmount;
     }
 
     @Override
@@ -52,6 +52,6 @@ public class AddFishDataAction implements IUndoableAction {
 
     @Override
     public String describeUndo() {
-        return "Undoing removal of FishData for: " + this.fish.getRegistryName();
+        return "Undoing removal of FishData for: " + ForgeRegistries.ITEMS.getKey(this.fish);
     }
-}*/
+}

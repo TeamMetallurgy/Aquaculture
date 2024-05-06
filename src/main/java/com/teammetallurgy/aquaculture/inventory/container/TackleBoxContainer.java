@@ -138,8 +138,11 @@ public class TackleBoxContainer extends AbstractContainerMenu {
             Slot slot = this.slots.get(slotId);
             if (slot == this.slotBait) {
                 SlotItemHandler slotHandler = (SlotItemHandler) slot;
-                if (slotHandler.mayPlace(player.containerMenu.getCarried())) {
-                    slotHandler.set(ItemStack.EMPTY); //Set to empty, to allow new bait to get put in
+                ItemStack mouseStack = player.containerMenu.getCarried();
+                if (slotHandler.mayPlace(mouseStack)) {
+                    if (slot.getItem().isDamaged() || slot.getItem().isEmpty() || slot.getItem().getItem() != mouseStack.getItem()) {
+                        slotHandler.set(ItemStack.EMPTY); //Set to empty, to allow new bait to get put in
+                    }
                 }
             }
         }

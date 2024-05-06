@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -71,7 +72,7 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
     }
 
     @Override
-    protected void setDirection(Direction direction) {
+    public void setDirection(@Nonnull Direction direction) {
         Validate.notNull(direction);
         this.direction = direction;
         if (direction.getAxis().isHorizontal()) {
@@ -326,6 +327,12 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
     @Override
     public ItemStack getPickedResult(HitResult target) {
         return !this.getDisplayedItem().isEmpty() ? this.getDisplayedItem() : new ItemStack(this.getItem());
+    }
+
+    @Override
+    public void recreateFromPacket(@Nonnull ClientboundAddEntityPacket packet) {
+        super.recreateFromPacket(packet);
+        this.setDirection(Direction.from3DDataValue(packet.getData()));
     }
 
     @Override

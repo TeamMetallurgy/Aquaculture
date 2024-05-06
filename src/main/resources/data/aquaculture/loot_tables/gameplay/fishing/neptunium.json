@@ -23,9 +23,14 @@
           "name": "aquaculture:neptunes_bounty"
         },
         {
-          "_comment": "50% chance of getting vanilla treasure, to make Neptunium rarer without making vanilla loot a lot rarer",
+          "_comment": "33% chance of getting vanilla treasure, to make Neptunium rarer without making vanilla loot a lot rarer",
           "type": "minecraft:loot_table",
           "name": "minecraft:gameplay/fishing/treasure"
+        },
+        {
+          "_comment": "33% chance of getting a neptunium nugget",
+          "type": "minecraft:item",
+          "name": "aquaculture:neptunium_nugget"
         }
       ]
     }

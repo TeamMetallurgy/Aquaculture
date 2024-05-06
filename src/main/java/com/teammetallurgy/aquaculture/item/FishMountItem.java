@@ -57,6 +57,6 @@ public class FishMountItem extends HangingEntityItem {
 
     @Override
     protected boolean mayPlace(@Nonnull Player player, @Nonnull Direction direction, @Nonnull ItemStack stack, @Nonnull BlockPos pos) {
-        return !player.level.isOutsideBuildHeight(pos) && player.mayUseItemAt(pos, direction, stack);
+        return !player.level.isOutsideBuildHeight(pos) && player.mayUseItemAt(pos, direction, stack) && (direction != Direction.UP && direction != Direction.DOWN);
     }
 }

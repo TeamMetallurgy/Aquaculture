@@ -47,7 +47,7 @@ public class AquaItems {
     public static final RegistryObject<Item> IRON_FILLET_KNIFE = register(() -> new ItemFilletKnife(Tiers.IRON), "iron_fillet_knife");
     public static final RegistryObject<Item> GOLD_FILLET_KNIFE = register(() -> new ItemFilletKnife(Tiers.GOLD), "gold_fillet_knife");
     public static final RegistryObject<Item> DIAMOND_FILLET_KNIFE = register(() -> new ItemFilletKnife(Tiers.DIAMOND), "diamond_fillet_knife");
-    public static final RegistryObject<Item> NEPTINIUM_FILLET_KNIFE = register(() -> new ItemFilletKnife(AquacultureAPI.MATS.NEPTUNIUM), "neptunium_fillet_knife");
+    public static final RegistryObject<Item> NEPTUNIUM_FILLET_KNIFE = register(() -> new ItemFilletKnife(AquacultureAPI.MATS.NEPTUNIUM), "neptunium_fillet_knife");
 
     // Misc
     public static final RegistryObject<Item> DRIFTWOOD = register(SimpleItem::new, "driftwood");
@@ -66,35 +66,35 @@ public class AquaItems {
     public static final RegistryObject<Item> SUSHI = register(() -> new Item(new Item.Properties().tab(Aquaculture.GROUP).food(AquaFoods.SUSHI)), "sushi");
 
     // Fish
-    public static final RegistryObject<Item> ATLANTIC_COD = FishRegistry.register(FishItem::new, "atlantic_cod");
+    public static final RegistryObject<Item> ATLANTIC_COD = FishRegistry.register(() -> new FishItem(FishItem.LARGE_FISH_RAW), "atlantic_cod");
     public static final RegistryObject<Item> BLACKFISH = FishRegistry.register(FishItem::new, "blackfish");
-    public static final RegistryObject<Item> PACIFIC_HALIBUT = FishRegistry.register(FishItem::new, "pacific_halibut", FishType.HALIBUT);
-    public static final RegistryObject<Item> ATLANTIC_HALIBUT = FishRegistry.register(FishItem::new, "atlantic_halibut", FishType.HALIBUT);
-    public static final RegistryObject<Item> ATLANTIC_HERRING = FishRegistry.register(FishItem::new, "atlantic_herring", FishType.SMALL);
+    public static final RegistryObject<Item> PACIFIC_HALIBUT = FishRegistry.register(() -> new FishItem(FishItem.LARGE_FISH_RAW), "pacific_halibut", FishType.HALIBUT);
+    public static final RegistryObject<Item> ATLANTIC_HALIBUT = FishRegistry.register(() -> new FishItem(FishItem.LARGE_FISH_RAW), "atlantic_halibut", FishType.HALIBUT);
+    public static final RegistryObject<Item> ATLANTIC_HERRING = FishRegistry.register(() -> new FishItem(FishItem.SMALL_FISH_RAW), "atlantic_herring", FishType.SMALL);
     public static final RegistryObject<Item> PINK_SALMON = FishRegistry.register(FishItem::new, "pink_salmon");
     public static final RegistryObject<Item> POLLOCK = FishRegistry.register(FishItem::new, "pollock");
     public static final RegistryObject<Item> RAINBOW_TROUT = FishRegistry.register(FishItem::new, "rainbow_trout");
     public static final RegistryObject<Item> BAYAD = FishRegistry.register(FishItem::new, "bayad", FishType.CATFISH);
-    public static final RegistryObject<Item> BOULTI = FishRegistry.register(FishItem::new, "boulti", FishType.SMALL);
-    public static final RegistryObject<Item> CAPITAINE = FishRegistry.register(FishItem::new, "capitaine");
-    public static final RegistryObject<Item> SYNODONTIS = FishRegistry.register(FishItem::new, "synodontis", FishType.SMALL);
+    public static final RegistryObject<Item> BOULTI = FishRegistry.register(() -> new FishItem(FishItem.SMALL_FISH_RAW), "boulti", FishType.SMALL);
+    public static final RegistryObject<Item> CAPITAINE = FishRegistry.register(() -> new FishItem(FishItem.LARGE_FISH_RAW), "capitaine");
+    public static final RegistryObject<Item> SYNODONTIS = FishRegistry.register(() -> new FishItem(FishItem.SMALL_FISH_RAW), "synodontis", FishType.SMALL);
     public static final RegistryObject<Item> SMALLMOUTH_BASS = FishRegistry.register(FishItem::new, "smallmouth_bass");
-    public static final RegistryObject<Item> BLUEGILL = FishRegistry.register(FishItem::new, "bluegill", FishType.SMALL);
+    public static final RegistryObject<Item> BLUEGILL = FishRegistry.register(() -> new FishItem(FishItem.SMALL_FISH_RAW), "bluegill", FishType.SMALL);
     public static final RegistryObject<Item> BROWN_TROUT = FishRegistry.register(FishItem::new, "brown_trout");
     public static final RegistryObject<Item> CARP = FishRegistry.register(FishItem::new, "carp", FishType.LARGE);
-    public static final RegistryObject<Item> CATFISH = FishRegistry.register(FishItem::new, "catfish", FishType.CATFISH);
+    public static final RegistryObject<Item> CATFISH = FishRegistry.register(() -> new FishItem(FishItem.LARGE_FISH_RAW), "catfish", FishType.CATFISH);
     public static final RegistryObject<Item> GAR = FishRegistry.register(FishItem::new, "gar", FishType.LONGNOSE);
     public static final RegistryObject<Item> MINNOW = FishRegistry.register(() -> AquacultureAPI.createBait(50, 1, Aquaculture.GROUP), "minnow", FishType.SMALL);
     public static final RegistryObject<Item> MUSKELLUNGE = FishRegistry.register(FishItem::new, "muskellunge", FishType.LONGNOSE);
-    public static final RegistryObject<Item> PERCH = FishRegistry.register(FishItem::new, "perch", FishType.SMALL);
-    public static final RegistryObject<Item> ARAPAIMA = FishRegistry.register(FishItem::new, "arapaima", FishType.LONGNOSE);
-    public static final RegistryObject<Item> PIRANHA = FishRegistry.register(FishItem::new, "piranha", FishType.SMALL);
+    public static final RegistryObject<Item> PERCH = FishRegistry.register(() -> new FishItem(FishItem.SMALL_FISH_RAW), "perch", FishType.SMALL);
+    public static final RegistryObject<Item> ARAPAIMA = FishRegistry.register(() -> new FishItem(FishItem.LARGE_FISH_RAW), "arapaima", FishType.LONGNOSE);
+    public static final RegistryObject<Item> PIRANHA = FishRegistry.register(() -> new FishItem(FishItem.SMALL_FISH_RAW), "piranha", FishType.SMALL);
     public static final RegistryObject<Item> TAMBAQUI = FishRegistry.register(FishItem::new, "tambaqui", FishType.LARGE);
-    public static final RegistryObject<Item> BROWN_SHROOMA = FishRegistry.register(FishItem::new, "brown_shrooma", FishType.SMALL);
-    public static final RegistryObject<Item> RED_SHROOMA = FishRegistry.register(FishItem::new, "red_shrooma", FishType.SMALL);
+    public static final RegistryObject<Item> BROWN_SHROOMA = FishRegistry.register(() -> new FishItem(FishItem.SMALL_FISH_RAW), "brown_shrooma", FishType.SMALL);
+    public static final RegistryObject<Item> RED_SHROOMA = FishRegistry.register(() -> new FishItem(FishItem.SMALL_FISH_RAW), "red_shrooma", FishType.SMALL);
     public static final RegistryObject<Item> JELLYFISH = FishRegistry.register(SimpleItem::new, "jellyfish", FishType.JELLYFISH);
     public static final RegistryObject<Item> RED_GROUPER = FishRegistry.register(FishItem::new, "red_grouper");
-    public static final RegistryObject<Item> TUNA = FishRegistry.register(FishItem::new, "tuna", FishType.LARGE);
+    public static final RegistryObject<Item> TUNA = FishRegistry.register(() -> new FishItem(FishItem.LARGE_FISH_RAW), "tuna", FishType.LARGE);
     public static final RegistryObject<Item> LEECH = register(() -> AquacultureAPI.createBait(35, 1, Aquaculture.GROUP), "leech");
     public static final RegistryObject<Item> GOLDFISH = register(SimpleItem::new, "goldfish");
     public static final RegistryObject<Item> BOX_TURTLE = register(SimpleItem::new, "box_turtle");

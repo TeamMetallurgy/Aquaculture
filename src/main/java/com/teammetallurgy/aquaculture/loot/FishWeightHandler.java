@@ -101,25 +101,25 @@ public class FishWeightHandler {
         AquacultureAPI.FISH_DATA.add(BLACKFISH.get(), 1, 28, 2);
         AquacultureAPI.FISH_DATA.add(PACIFIC_HALIBUT.get(), 25, 550, 12);
         AquacultureAPI.FISH_DATA.add(ATLANTIC_HALIBUT.get(), 50, 710, 14);
-        AquacultureAPI.FISH_DATA.add(ATLANTIC_HERRING.get(), 0.5, 2.4);
+        AquacultureAPI.FISH_DATA.add(ATLANTIC_HERRING.get(), 0.5, 2.4, 1);
         AquacultureAPI.FISH_DATA.add(PINK_SALMON.get(), 1.5, 15, 2);
         AquacultureAPI.FISH_DATA.add(POLLOCK.get(), 3, 46, 2);
         AquacultureAPI.FISH_DATA.add(RAINBOW_TROUT.get(), 2, 27, 2);
         AquacultureAPI.FISH_DATA.add(BAYAD.get(), 5, 145, 4);
         AquacultureAPI.FISH_DATA.add(BOULTI.get(), 1, 9.5, 1);
         AquacultureAPI.FISH_DATA.add(CAPITAINE.get(), 20, 440, 10);
-        AquacultureAPI.FISH_DATA.add(SYNODONTIS.get(), 0.5, 2.5);
+        AquacultureAPI.FISH_DATA.add(SYNODONTIS.get(), 0.5, 2.5, 1);
         AquacultureAPI.FISH_DATA.add(SMALLMOUTH_BASS.get(), 1, 12, 2);
-        AquacultureAPI.FISH_DATA.add(BLUEGILL.get(), 0.8, 4.5);
+        AquacultureAPI.FISH_DATA.add(BLUEGILL.get(), 0.8, 4.5, 1);
         AquacultureAPI.FISH_DATA.add(BROWN_TROUT.get(), 1.5, 44, 2);
         AquacultureAPI.FISH_DATA.add(CARP.get(), 2, 40, 2);
         AquacultureAPI.FISH_DATA.add(CATFISH.get(), 10, 220, 6);
         AquacultureAPI.FISH_DATA.add(GAR.get(), 8, 100, 4);
         AquacultureAPI.FISH_DATA.add(MINNOW.get(), 0.2, 1.5, 0);
         AquacultureAPI.FISH_DATA.add(MUSKELLUNGE.get(), 5, 70, 3);
-        AquacultureAPI.FISH_DATA.add(PERCH.get(), 0.5, 6);
+        AquacultureAPI.FISH_DATA.add(PERCH.get(), 0.5, 6, 1);
         AquacultureAPI.FISH_DATA.add(ARAPAIMA.get(), 20, 440, 10);
-        AquacultureAPI.FISH_DATA.add(PIRANHA.get(), 0.5, 7.7);
+        AquacultureAPI.FISH_DATA.add(PIRANHA.get(), 0.5, 7.7, 1);
         AquacultureAPI.FISH_DATA.add(TAMBAQUI.get(), 7, 97, 3);
         AquacultureAPI.FISH_DATA.add(BROWN_SHROOMA.get(), 1, 5, 0);
         AquacultureAPI.FISH_DATA.add(RED_SHROOMA.get(), 1, 5, 0);
@@ -132,6 +132,6 @@ public class FishWeightHandler {
         AquacultureAPI.FISH_DATA.add(Items.COD, 12, 211, 4);
         AquacultureAPI.FISH_DATA.add(Items.SALMON, 0.6, 15, 2);
         AquacultureAPI.FISH_DATA.add(Items.TROPICAL_FISH, 0.01, 1, 0);
-        AquacultureAPI.FISH_DATA.add(Items.PUFFERFISH, 1, 25);
+        AquacultureAPI.FISH_DATA.add(Items.PUFFERFISH, 1, 25, 1);
     }
 }

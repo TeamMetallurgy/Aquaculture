@@ -86,8 +86,7 @@ public class AquaBiomeModifiers {
 
         private void debugOutput(Holder<Biome> biomeHolder, String s) {
             if (AquaConfig.BASIC_OPTIONS.debugMode.get()) {
-                Aquaculture.LOG.info("Fish: " + ForgeRegistries.ENTITY_TYPES.getKey(spawn.type));
-                Aquaculture.LOG.info(s + ": " + biomeHolder.unwrapKey().get().location());
+                Aquaculture.LOG.info("Fish: " + ForgeRegistries.ENTITY_TYPES.getKey(spawn.type) + " | " + s + ": " + biomeHolder.unwrapKey().get().location());
             }
         }
 

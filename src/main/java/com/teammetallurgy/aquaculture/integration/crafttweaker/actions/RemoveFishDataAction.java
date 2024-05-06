@@ -1,9 +1,9 @@
-/*
 package com.teammetallurgy.aquaculture.integration.crafttweaker.actions;
 
 import com.blamejared.crafttweaker.api.action.base.IUndoableAction;
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class RemoveFishDataAction implements IUndoableAction {
     private final Item fish;
@@ -25,7 +25,7 @@ public class RemoveFishDataAction implements IUndoableAction {
 
     @Override
     public String describe() {
-        return "Removing FishData for: " + this.fish.getRegistryName();
+        return "Removing FishData for: " + ForgeRegistries.ITEMS.getKey(this.fish);
     }
 
     @Override
@@ -39,6 +39,6 @@ public class RemoveFishDataAction implements IUndoableAction {
 
     @Override
     public String describeUndo() {
-        return "Undoing removal of FishData for: " + this.fish.getRegistryName();
+        return "Undoing removal of FishData for: " + ForgeRegistries.ITEMS.getKey(this.fish);
     }
-}*/
+}
