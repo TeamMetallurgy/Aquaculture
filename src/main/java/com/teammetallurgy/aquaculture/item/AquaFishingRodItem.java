@@ -23,6 +23,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
@@ -57,6 +58,9 @@ public class AquaFishingRodItem extends FishingRodItem {
     @Nonnull
     public InteractionResultHolder<ItemStack> use(@Nonnull Level level, Player player, @Nonnull InteractionHand hand) {
         ItemStack heldStack = player.getItemInHand(hand);
+
+        if (player instanceof FakePlayer) return InteractionResultHolder.fail(heldStack);
+
         boolean isAdminRod = AquaConfig.BASIC_OPTIONS.debugMode.get() && this.tier == AquacultureAPI.MATS.NEPTUNIUM;
         int lureSpeed;
         int damage = this.getDamage(heldStack);

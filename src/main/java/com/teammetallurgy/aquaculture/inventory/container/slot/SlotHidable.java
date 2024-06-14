@@ -20,6 +20,7 @@ public class SlotHidable extends SlotItemHandler {
     }
 
     @Override
+    @Nonnull
     public IItemHandler getItemHandler() {
         return this.fishingRod.rodHandler;
     }
