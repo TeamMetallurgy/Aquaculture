@@ -1,13 +1,12 @@
 package com.teammetallurgy.aquaculture;
 
+import com.teammetallurgy.aquaculture.api.AquaArmorMaterials;
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
 import com.teammetallurgy.aquaculture.api.fishing.Hooks;
-import com.teammetallurgy.aquaculture.block.WormFarmBlock;
 import com.teammetallurgy.aquaculture.client.ClientHandler;
 import com.teammetallurgy.aquaculture.init.*;
 import com.teammetallurgy.aquaculture.item.AquaFishingRodItem;
 import com.teammetallurgy.aquaculture.item.crafting.ConditionFactory;
-import com.teammetallurgy.aquaculture.item.crafting.FishFilletRecipe;
 import com.teammetallurgy.aquaculture.loot.AquaBiomeModifiers;
 import com.teammetallurgy.aquaculture.loot.FishWeightHandler;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
@@ -19,7 +18,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -47,14 +46,14 @@ public class Aquaculture {
             }).build()
     );
 
-    public Aquaculture(IEventBus modBus) {
+    public Aquaculture(ModContainer modContainer, IEventBus modBus) {
         instance = this;
         modBus.addListener(this::setupCommon);
         modBus.addListener(this::setupClient);
         this.registerDeferredRegistries(modBus);
         modBus.addListener(this::registerCapabilities);
         modBus.addListener(this::addItemsToTabs);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AquaConfig.spec);
+        modContainer.registerConfig(ModConfig.Type.COMMON, AquaConfig.spec);
         AquacultureAPI.Tags.init();
 
         AquaBiomeModifiers.BIOME_MODIFIER_SERIALIZERS_DEFERRED.register("mob_spawn", AquaBiomeModifiers.MobSpawnBiomeModifier::makeCodec);
@@ -64,11 +63,6 @@ public class Aquaculture {
     private void setupCommon(FMLCommonSetupEvent event) {
         event.enqueueWork(Hooks::load);
         event.enqueueWork(FishWeightHandler::registerFishData);
-        event.enqueueWork(WormFarmBlock::addCompostables);
-        event.enqueueWork(AquaRecipes::registerBrewingRecipes);
-        if (AquaConfig.BASIC_OPTIONS.aqFishToBreedCats.get()) {
-            event.enqueueWork(FishRegistry::addCatBreeding);
-        }
     }
 
     private void setupClient(FMLClientSetupEvent event) {
@@ -76,14 +70,16 @@ public class Aquaculture {
     }
 
     public void registerDeferredRegistries(IEventBus modBus) {
+        AquaArmorMaterials.ARMOR_MATERIAL_DEFERRED.register(modBus);
         AquaBlocks.BLOCK_DEFERRED.register(modBus);
         AquaItems.ITEM_DEFERRED.register(modBus);
+        AquaDataComponents.DATA_COMPONENT_TYPE_DEFERRED.register(modBus);
         CREATIVE_TABS.register(modBus);
         AquaBlockEntities.BLOCK_ENTITY_DEFERRED.register(modBus);
         AquaEntities.ENTITY_DEFERRED.register(modBus);
         AquaSounds.SOUND_EVENT_DEFERRED.register(modBus);
         AquaGuis.MENU_DEFERRED.register(modBus);
-        FishFilletRecipe.IRECIPE_SERIALIZERS_DEFERRED.register(modBus);
+        AquaRecipeSerializers.IRECIPE_SERIALIZERS_DEFERRED.register(modBus);
         AquaBiomeModifiers.BIOME_MODIFIER_SERIALIZERS_DEFERRED.register(modBus);
         ConditionFactory.CONDITION_CODECS.register(modBus);
     }

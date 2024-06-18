@@ -22,13 +22,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
 import javax.annotation.Nonnull;
-import java.util.function.Supplier;
 
 public class AquaFishBucket extends MobBucketItem {
-    private final Supplier<? extends EntityType<?>> fishType;
+    private final EntityType<?> fishType;
 
-    public AquaFishBucket(Supplier<? extends EntityType<?>> entityType, Properties properties) {
-        super(entityType, () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, properties);
+    public AquaFishBucket(EntityType<?> entityType, Properties properties) {
+        super(entityType, Fluids.WATER, SoundEvents.BUCKET_EMPTY_FISH, properties);
         this.fishType = entityType;
     }
 
@@ -48,7 +47,7 @@ public class AquaFishBucket extends MobBucketItem {
                     return super.use(world, player, hand);
                 } else if (world.mayInteract(player, pos) && player.mayUseItemAt(pos, raytrace.getDirection(), heldStack)) {
                     if (world instanceof ServerLevel) {
-                        Entity fishEntity = this.fishType.get().spawn((ServerLevel) world, heldStack, null, pos, MobSpawnType.BUCKET, true, false);
+                        Entity fishEntity = this.fishType.spawn((ServerLevel) world, heldStack, null, pos, MobSpawnType.BUCKET, true, false);
                         if (fishEntity != null) {
                             ((AbstractFish) fishEntity).setFromBucket(true);
                         }

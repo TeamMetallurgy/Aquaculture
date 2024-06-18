@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "aquaculture:neptunium_ingot"
+    }
+  },
+  "result": {
+    "id": "aquaculture:neptunium_block"
+  }
+}

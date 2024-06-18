@@ -6,7 +6,7 @@
     "minCount": 1,
     "maxCount": 1
   },
-  "includeBiomes": ["#minecraft:is_ocean", "#minecraft:is_beach"],
-  "excludeBiomes": ["#forge:is_hot"],
+  "includeBiomes": ["#c:is_ocean", "#c:is_beach"],
+  "excludeBiomes": ["#c:is_hot"],
   "and": false
 }

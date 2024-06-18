@@ -6,7 +6,7 @@
     "minCount": 1,
     "maxCount": 1
   },
-  "includeBiomes": ["#minecraft:is_jungle"],
+  "includeBiomes": ["#c:is_jungle"],
   "excludeBiomes": ["#aquaculture:empty"],
   "and": false
 }

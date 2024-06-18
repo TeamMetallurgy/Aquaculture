@@ -12,9 +12,9 @@ import net.minecraft.resources.ResourceLocation;
 import javax.annotation.Nonnull;
 
 public class TurtleLandRenderer extends MobRenderer<TurtleLandEntity, TurtleLandModel<TurtleLandEntity>> {
-    private static final ResourceLocation BOX_TURTLE = new ResourceLocation(Aquaculture.MOD_ID, "textures/entity/turtle/box_turtle.png");
-    private static final ResourceLocation ARRAU_TURTLE = new ResourceLocation(Aquaculture.MOD_ID, "textures/entity/turtle/arrau_turtle.png");
-    private static final ResourceLocation STARSHELL_TURTLE = new ResourceLocation(Aquaculture.MOD_ID, "textures/entity/turtle/starshell_turtle.png");
+    private static final ResourceLocation BOX_TURTLE = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/turtle/box_turtle.png");
+    private static final ResourceLocation ARRAU_TURTLE = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/turtle/arrau_turtle.png");
+    private static final ResourceLocation STARSHELL_TURTLE = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/turtle/starshell_turtle.png");
 
     public TurtleLandRenderer(EntityRendererProvider.Context context) {
         super(context, new TurtleLandModel<>(context.bakeLayer(ClientHandler.TURTLE_LAND_LAYER)), 0.25F);

@@ -1,7 +1,9 @@
 package com.teammetallurgy.aquaculture.inventory.container.slot;
 
+import com.teammetallurgy.aquaculture.init.AquaDataComponents;
 import com.teammetallurgy.aquaculture.item.AquaFishingRodItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
@@ -29,8 +31,11 @@ public class SlotFishingRod extends SlotItemHandler {
         if (rodHandler == null) {
             this.rodHandler = AquaFishingRodItem.FishingRodEquipmentHandler.EMPTY;
         } else {
-            if (!stack.isEmpty() && stack.hasTag() && stack.getTag() != null && stack.getTag().contains("Inventory")) {
-                this.rodHandler.deserializeNBT(stack.getTag().getCompound("Inventory")); //Reload
+            ItemContainerContents rodInventory = stack.get(AquaDataComponents.ROD_INVENTORY);
+            if (!stack.isEmpty() && rodInventory!= null && stack.has(AquaDataComponents.ROD_INVENTORY)) {
+                for (int slot = 0; slot < rodInventory.getSlots(); slot++) {
+                    this.rodHandler.setStackInSlot(slot, rodInventory.getStackInSlot(slot)); //Reload
+                }
             }
         }
     }

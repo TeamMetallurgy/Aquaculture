@@ -31,7 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import javax.annotation.Nonnull;
 
 public class TackleBoxRenderer <T extends TackleBoxBlockEntity> implements BlockEntityRenderer<T> {
-    private static final ResourceLocation TACKLE_BOX_TEXTURE = new ResourceLocation(Aquaculture.MOD_ID, "textures/entity/tileentity/tackle_box.png");
+    private static final ResourceLocation TACKLE_BOX_TEXTURE = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/tileentity/tackle_box.png");
     private static final RenderType TACKLE_BOX_RENDER = RenderType.entityCutout(TACKLE_BOX_TEXTURE);
     private final ModelPart base;
     private final ModelPart lid;

@@ -6,7 +6,7 @@
     "minCount": 1,
     "maxCount": 8
   },
-  "includeBiomes": ["#forge:is_mushroom"],
+  "includeBiomes": ["#c:is_mushroom"],
   "excludeBiomes": ["#aquaculture:empty"],
   "and": false
 }

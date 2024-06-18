@@ -12,47 +12,44 @@ import com.teammetallurgy.aquaculture.client.renderer.tileentity.TackleBoxRender
 import com.teammetallurgy.aquaculture.entity.AquaFishEntity;
 import com.teammetallurgy.aquaculture.entity.FishMountEntity;
 import com.teammetallurgy.aquaculture.init.*;
-import com.teammetallurgy.aquaculture.item.DyeableItem;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.color.item.ItemColors;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.SpectralArrowRenderer;
 import net.minecraft.client.renderer.entity.TippableArrowRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
-@Mod.EventBusSubscriber(modid = Aquaculture.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Aquaculture.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public class ClientHandler {
-    public static final ModelLayerLocation TACKLE_BOX = new ModelLayerLocation(new ResourceLocation(Aquaculture.MOD_ID, "tackle_box"), "tackle_box");
-    public static final ModelLayerLocation TURTLE_LAND_LAYER = new ModelLayerLocation(new ResourceLocation(Aquaculture.MOD_ID, "turtle_land"), "turtle_land");
-    public static final ModelLayerLocation SMALL_MODEL = new ModelLayerLocation(new ResourceLocation(Aquaculture.MOD_ID, "small_model"), "small_model");
-    public static final ModelLayerLocation MEDIUM_MODEL = new ModelLayerLocation(new ResourceLocation(Aquaculture.MOD_ID, "medium_model"), "medium_model");
-    public static final ModelLayerLocation LARGE_MODEL = new ModelLayerLocation(new ResourceLocation(Aquaculture.MOD_ID, "large_model"), "large_model");
-    public static final ModelLayerLocation LONGNOSE_MODEL = new ModelLayerLocation(new ResourceLocation(Aquaculture.MOD_ID, "longnose_model"), "longnose_model");
-    public static final ModelLayerLocation CATFISH_MODEL = new ModelLayerLocation(new ResourceLocation(Aquaculture.MOD_ID, "catfish_model"), "catfish_model");
-    public static final ModelLayerLocation JELLYFISH_MODEL = new ModelLayerLocation(new ResourceLocation(Aquaculture.MOD_ID, "jellyfish_model"), "jellyfish_model");
+    public static final ModelLayerLocation TACKLE_BOX = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "tackle_box"), "tackle_box");
+    public static final ModelLayerLocation TURTLE_LAND_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "turtle_land"), "turtle_land");
+    public static final ModelLayerLocation SMALL_MODEL = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "small_model"), "small_model");
+    public static final ModelLayerLocation MEDIUM_MODEL = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "medium_model"), "medium_model");
+    public static final ModelLayerLocation LARGE_MODEL = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "large_model"), "large_model");
+    public static final ModelLayerLocation LONGNOSE_MODEL = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "longnose_model"), "longnose_model");
+    public static final ModelLayerLocation CATFISH_MODEL = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "catfish_model"), "catfish_model");
+    public static final ModelLayerLocation JELLYFISH_MODEL = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "jellyfish_model"), "jellyfish_model");
 
     public static void setupClient() {
-        MenuScreens.register(AquaGuis.TACKLE_BOX.get(), TackleBoxScreen::new);
         BlockEntityRenderers.register(AquaBlockEntities.NEPTUNES_BOUNTY.get(), NeptunesBountyRenderer::new);
         BlockEntityRenderers.register(AquaBlockEntities.TACKLE_BOX.get(), TackleBoxRenderer::new);
 
-        //Item Colors
-        ItemColors itemColor = Minecraft.getInstance().getItemColors();
-        itemColor.register((stack, tintIndex) -> tintIndex > 0 ? -1 : ((DyeableItem) stack.getItem()).getColor(stack), AquaItems.FISHING_LINE.get(), AquaItems.BOBBER.get());
         registerFishingRodModelProperties(AquaItems.IRON_FISHING_ROD.get());
         registerFishingRodModelProperties(AquaItems.GOLD_FISHING_ROD.get());
         registerFishingRodModelProperties(AquaItems.DIAMOND_FISHING_ROD.get());
@@ -61,10 +58,21 @@ public class ClientHandler {
     }
 
     @SubscribeEvent
+    public static void registerMenuScreen(RegisterMenuScreensEvent event) {
+        event.register(AquaGuis.TACKLE_BOX.get(), TackleBoxScreen::new);
+    }
+
+    @SubscribeEvent
+    public static void registerColors(RegisterColorHandlersEvent.Item event) {
+        event.register((stack, tintIndex) -> tintIndex > 0 ? -1 : DyedItemColor.getOrDefault(stack, FastColor.ARGB32.color(0, 0, 0)), AquaItems.FISHING_LINE.get());
+        event.register((stack, tintIndex) -> tintIndex > 0 ? -1 : DyedItemColor.getOrDefault(stack, FastColor.ARGB32.color(193, 38, 38)), AquaItems.BOBBER.get());
+    }
+
+    @SubscribeEvent
     public static void registerEntityRenders(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(AquaEntities.BOBBER.get(), AquaBobberRenderer::new);
         for (DeferredHolder<EntityType<?>, EntityType<AquaFishEntity>> fish : FishRegistry.fishEntities) {
-            event.registerEntityRenderer(fish.get(), (context) -> new AquaFishRenderer(context, BuiltInRegistries.ENTITY_TYPE.getKey(fish.get()).equals(new ResourceLocation(Aquaculture.MOD_ID, "jellyfish"))));
+            event.registerEntityRenderer(fish.get(), (context) -> new AquaFishRenderer(context, BuiltInRegistries.ENTITY_TYPE.getKey(fish.get()).equals(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "jellyfish"))));
         }
         event.registerEntityRenderer(AquaEntities.WATER_ARROW.get(), TippableArrowRenderer::new);
         event.registerEntityRenderer(AquaEntities.SPECTRAL_WATER_ARROW.get(), SpectralArrowRenderer::new);
@@ -90,16 +98,16 @@ public class ClientHandler {
 
     @SubscribeEvent
     public static void registerModels(ModelEvent.RegisterAdditional event) {
-        event.register(FishMountRenderer.OAK);
-        event.register(FishMountRenderer.SPRUCE);
-        event.register(FishMountRenderer.BIRCH);
-        event.register(FishMountRenderer.JUNGLE);
-        event.register(FishMountRenderer.ACACIA);
-        event.register(FishMountRenderer.DARK_OAK);
+        event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/oak_fish_mount")));
+        event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/spruce_fish_mount")));
+        event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/birch_fish_mount")));
+        event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/jungle_fish_mount")));
+        event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/acacia_fish_mount")));
+        event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/dark_oak_fish_mount")));
     }
 
     public static void registerFishingRodModelProperties(Item fishingRod) {
-        ItemProperties.register(fishingRod, new ResourceLocation("cast"), (stack, level, entity, i) -> {
+        ItemProperties.register(fishingRod, ResourceLocation.withDefaultNamespace("cast"), (stack, level, entity, i) -> {
             if (entity == null) {
                 return 0.0F;
             } else {
@@ -114,13 +122,13 @@ public class ClientHandler {
     }
 
     public static void registerBowModelProperties(Item bow) {
-        ItemProperties.register(bow, new ResourceLocation("pull"), (stack, level, entity, i) -> {
+        ItemProperties.register(bow, ResourceLocation.withDefaultNamespace("pull"), (stack, level, entity, i) -> {
             if (entity == null) {
                 return 0.0F;
             } else {
-                return entity.getUseItem() != stack ? 0.0F : (float) (stack.getUseDuration() - entity.getUseItemRemainingTicks()) / 20.0F;
+                return entity.getUseItem() != stack ? 0.0F : (float) (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
             }
         });
-        ItemProperties.register(bow, new ResourceLocation("pulling"), (stack, level, entity, i) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
+        ItemProperties.register(bow, ResourceLocation.withDefaultNamespace("pulling"), (stack, level, entity, i) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
     }
 }

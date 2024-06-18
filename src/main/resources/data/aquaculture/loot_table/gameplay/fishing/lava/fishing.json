@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:fishing",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "weight": 10,
+          "quality": -2,
+          "value": "aquaculture:gameplay/fishing/lava/junk"
+        },
+        {
+          "type": "minecraft:loot_table",
+          "weight": 5,
+          "quality": 2,
+          "value": "aquaculture:gameplay/fishing/lava/treasure"
+        },
+        {
+          "type": "minecraft:loot_table",
+          "weight": 85,
+          "quality": -1,
+          "value": "aquaculture:gameplay/fishing/lava/fish"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "aquaculture:gameplay/fishing/lava/fishing"
+}

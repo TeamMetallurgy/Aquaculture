@@ -22,6 +22,6 @@ public class NeptunesBountyRenderer extends ChestRenderer<NeptunesBountyBlockEnt
     @Override
     @Nonnull
     protected Material getMaterial(@Nonnull NeptunesBountyBlockEntity tileEntity, @Nonnull ChestType chestType) {
-        return new Material(Sheets.CHEST_SHEET, new ResourceLocation(Aquaculture.MOD_ID, "entity/tileentity/neptunes_bounty"));
+        return new Material(Sheets.CHEST_SHEET, ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "entity/tileentity/neptunes_bounty"));
     }
 }

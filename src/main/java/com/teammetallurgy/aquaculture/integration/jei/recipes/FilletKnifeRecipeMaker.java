@@ -26,7 +26,7 @@ public class FilletKnifeRecipeMaker {
                 ItemStack output = new ItemStack(AquaItems.FISH_FILLET.get(), AquacultureAPI.FISH_DATA.getFilletAmount(fish));
                 ResourceLocation itemID = BuiltInRegistries.ITEM.getKey(fish);
                 if (itemID != null) {
-                    ResourceLocation id = new ResourceLocation(Aquaculture.MOD_ID, "fish_fillet." + itemID.getPath());
+                    ResourceLocation id = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "fish_fillet." + itemID.getPath());
                     ShapelessRecipe recipe = new ShapelessRecipe("aquaculture.fish_fillet", CraftingBookCategory.MISC, output, input);
                     recipes.add(new RecipeHolder<>(id, recipe));
                 }

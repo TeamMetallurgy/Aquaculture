@@ -6,7 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -14,11 +14,13 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerEntity;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -29,8 +31,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DiodeBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
@@ -58,13 +62,8 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     }
 
     @Override
-    protected float getEyeHeight(@Nonnull Pose pose, @Nonnull EntityDimensions size) {
-        return 0.0F;
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        this.getEntityData().define(ITEM, ItemStack.EMPTY);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(ITEM, ItemStack.EMPTY);
     }
 
     @Override
@@ -89,42 +88,19 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
             return false;
         } else {
             BlockState state = this.level().getBlockState(this.pos.relative(this.direction.getOpposite()));
-            return (state.isSolid() || this.direction.getAxis().isHorizontal() && DiodeBlock.isDiode(state)) && this.level().getEntities(this, this.getBoundingBox(), HANGING_ENTITY).isEmpty();
-        }
+            return (state.isSolid() || this.direction.getAxis().isHorizontal() && DiodeBlock.isDiode(state)) && this.level().getEntities(this, this.getBoundingBox(), HANGING_ENTITY).isEmpty();        }
     }
 
     @Override
-    protected void recalculateBoundingBox() {
-        if (this.direction != null) {
-            double d0 = 0.46875D;
-            double posX = (double) this.pos.getX() + 0.5D - (double) this.direction.getStepX() * d0;
-            double posY = (double) this.pos.getY() + 0.5D - (double) this.direction.getStepY() * d0;
-            double posZ = (double) this.pos.getZ() + 0.5D - (double) this.direction.getStepZ() * d0;
-            this.setPosRaw(posX, posY, posZ);
-            double x1 = this.getWidth() / 32.0D;
-            double x2 = this.getWidth() / 32.0D;
-            double y1 = this.getHeight() / 32.0D;
-            double y2 = this.getHeight() / 32.0D;
-            double z1 = this.getWidth() / 32.0D;
-            double z2 = this.getWidth() / 32.0D;
-            switch (this.direction.getAxis()) {
-                case X -> {
-                    x1 = (this.direction.getStepX() < 0 ? 3.0D : 1.0D) / 32.0D;
-                    x2 = (this.direction.getStepX() > 0 ? 3.0D : 1.0D) / 32.0D;
-                }
-                case Y -> {
-                    y1 = (this.direction.getStepY() < 0 ? 3.0D : 1.0D) / 32.0D;
-                    y2 = (this.direction.getStepY() > 0 ? 3.0D : 1.0D) / 32.0D;
-                    z1 = 8.0D / 32.0D;
-                    z2 = 8.0D / 32.0D;
-                }
-                case Z -> {
-                    z1 = (this.direction.getStepZ() < 0 ? 3.0D : 1.0D) / 32.0D;
-                    z2 = (this.direction.getStepZ() > 0 ? 3.0D : 1.0D) / 32.0D;
-                }
-            }
-            this.setBoundingBox(new AABB(posX - x1, posY - y1, posZ - z1, posX + x2, posY + y2, posZ + z2));
-        }
+    @Nonnull
+    protected AABB calculateBoundingBox(@Nonnull BlockPos pos, @Nonnull Direction direction) {
+        Vec3 vec3 = Vec3.atCenterOf(pos).relative(direction, -0.46875);
+        Direction.Axis axis = direction.getAxis();
+        double x = axis == Direction.Axis.X ? 0.0625 : 0.75;
+        double y = axis == Direction.Axis.Y ? 0.0625 : 0.5;
+        double z = axis == Direction.Axis.Z ? 0.0625 : 0.75;
+
+        return AABB.ofSize(vec3, x, y, z);
     }
 
     @Override
@@ -140,22 +116,13 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
         } else if (!source.is(DamageTypeTags.IS_EXPLOSION) && !this.getDisplayedItem().isEmpty()) {
             if (!this.level().isClientSide) {
                 this.dropItemOrSelf(source.getEntity(), false);
+                this.gameEvent(GameEvent.BLOCK_CHANGE, source.getEntity());
                 this.playSound(AquaSounds.FISH_MOUNT_REMOVED.get(), 1.0F, 1.0F);
             }
             return true;
         } else {
             return super.hurt(source, amount);
         }
-    }
-
-    @Override
-    public int getWidth() {
-        return 12;
-    }
-
-    @Override
-    public int getHeight() {
-        return 8;
     }
 
     @Override
@@ -170,6 +137,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     public void dropItem(@Nullable Entity brokenEntity) {
         this.playSound(AquaSounds.FISH_MOUNT_BROKEN.get(), 1.0F, 1.0F);
         this.dropItemOrSelf(brokenEntity, true);
+        this.gameEvent(GameEvent.BLOCK_CHANGE, entity);
     }
 
     @Override
@@ -178,29 +146,26 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     }
 
     private void dropItemOrSelf(@Nullable Entity entity, boolean shouldDropSelf) {
+        ItemStack displayedStack = this.getDisplayedItem();
+        this.setDisplayedItem(ItemStack.EMPTY);
         if (!this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
             if (entity == null) {
                 this.setDisplayedItem(ItemStack.EMPTY);
             }
-
         } else {
-            ItemStack displayStack = this.getDisplayedItem();
-            this.setDisplayedItem(ItemStack.EMPTY);
-            if (entity instanceof Player player) {
-                if (player.getAbilities().instabuild) {
-                    this.setDisplayedItem(ItemStack.EMPTY);
-                    return;
-                }
+            if (entity instanceof Player player && player.hasInfiniteMaterials()) {
+                this.setDisplayedItem(ItemStack.EMPTY);
+                return;
             }
 
             if (shouldDropSelf) {
                 this.spawnAtLocation(this.getItem());
             }
 
-            if (!displayStack.isEmpty()) {
-                displayStack = displayStack.copy();
+            if (!displayedStack.isEmpty()) {
+                displayedStack = displayedStack.copy();
                 if (this.random.nextFloat() < this.itemDropChance) {
-                    this.spawnAtLocation(displayStack);
+                    this.spawnAtLocation(displayedStack);
                 }
             }
         }
@@ -225,8 +190,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
 
     public void setDisplayedItemWithUpdate(@Nonnull ItemStack stack, boolean shouldUpdate) {
         if (!stack.isEmpty()) {
-            stack = stack.copy();
-            stack.setCount(1);
+            stack = stack.copyWithCount(1);
         }
 
         this.getEntityData().set(ITEM, stack);
@@ -236,13 +200,6 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
 
         if (shouldUpdate && this.pos != null) {
             this.level().updateNeighbourForOutputSignal(this.pos, Blocks.AIR);
-        }
-    }
-
-    @Override
-    public void setItemSlot(@Nonnull EquipmentSlot slot, @Nonnull ItemStack stack) {
-        if (slot == EquipmentSlot.MAINHAND) {
-            this.setDisplayedItem(stack);
         }
     }
 
@@ -265,7 +222,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     public void addAdditionalSaveData(@Nonnull CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         if (!this.getDisplayedItem().isEmpty()) {
-            compound.put("Item", this.getDisplayedItem().save(new CompoundTag()));
+            compound.put("Item", this.getDisplayedItem().save(this.registryAccess()));
             compound.putFloat("ItemDropChance", this.itemDropChance);
         }
         compound.putByte("Facing", (byte) this.direction.get3DDataValue());
@@ -274,19 +231,22 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     @Override
     public void readAdditionalSaveData(@Nonnull CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        CompoundTag nbt = compound.getCompound("Item");
-        if (nbt != null && !nbt.isEmpty()) {
-            ItemStack nbtStack = ItemStack.of(nbt);
-            if (nbtStack.isEmpty()) {
-                PRIVATE_LOGGER.warn("Unable to load item from: {}", nbt);
-            }
+        ItemStack stack;
 
-            ItemStack displayStack = this.getDisplayedItem();
-            if (!displayStack.isEmpty() && !ItemStack.matches(nbtStack, displayStack)) {
-                this.setDisplayedItem(ItemStack.EMPTY);
-            }
+        if (compound.contains("Item", 10)) {
+            CompoundTag nbt = compound.getCompound("Item");
+            stack = ItemStack.parse(this.registryAccess(), nbt).orElse(ItemStack.EMPTY);
+        } else {
+            stack = ItemStack.EMPTY;
+        }
 
-            this.setDisplayedItemWithUpdate(nbtStack, false);
+        ItemStack displayStack = this.getDisplayedItem();
+        if (!displayStack.isEmpty() && !ItemStack.matches(stack, displayStack)) {
+            this.setDisplayedItem(displayStack);
+        }
+
+        this.setDisplayedItemWithUpdate(stack, false);
+        if (!stack.isEmpty()) {
             if (compound.contains("ItemDropChance", 99)) {
                 this.itemDropChance = compound.getFloat("ItemDropChance");
             }
@@ -316,7 +276,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
 
     @Override
     @Nonnull
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity serverEntity) {
         return new ClientboundAddEntityPacket(this, this.direction.get3DDataValue(), this.getPos());
     }
 
@@ -327,7 +287,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     }
 
     @Override
-    public ItemStack getPickedResult(HitResult target) {
+    public ItemStack getPickedResult(@Nonnull HitResult target) {
         return !this.getDisplayedItem().isEmpty() ? this.getDisplayedItem() : new ItemStack(this.getItem());
     }
 
@@ -342,11 +302,11 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     }
 
     @Override
-    public void writeSpawnData(FriendlyByteBuf buffer) {
+    public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
         buffer.writeResourceLocation(Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(this.getType())));
     }
 
     @Override
-    public void readSpawnData(FriendlyByteBuf additionalData) {
+    public void readSpawnData(@Nonnull RegistryFriendlyByteBuf additionalData) {
     }
 }

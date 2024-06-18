@@ -1,0 +1,22 @@
+{
+  "conditions": [
+    {
+      "type": "aquaculture:neptunium_armor_enabled",
+      "value": true
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "S S",
+    "S S"
+  ],
+  "key": {
+    "S": {
+      "tag": "c:ingots/neptunium"
+    }
+  },
+  "result": {
+    "id": "aquaculture:neptunium_leggings"
+  }
+}

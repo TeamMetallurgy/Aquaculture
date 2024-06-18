@@ -7,7 +7,7 @@
   ],
   "key": {
     "Q": {
-      "tag": "forge:gems/quartz"
+      "tag": "c:gems/quartz"
     },
     "O": {
       "item": "aquaculture:obsidian_hook"

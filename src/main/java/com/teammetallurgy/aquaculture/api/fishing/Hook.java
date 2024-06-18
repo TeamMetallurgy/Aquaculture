@@ -45,7 +45,7 @@ public class Hook {
         this.luckModifier = luckModifier;
         this.doubleCatchChance = doubleCatchChance;
         this.catchSound = catchSound;
-        this.texture = new ResourceLocation(modID, "textures/entity/rod/hook/" + name + "_hook" + ".png");
+        this.texture = ResourceLocation.fromNamespaceAndPath(modID, "textures/entity/rod/hook/" + name + "_hook" + ".png");
     }
 
     public String getName() {

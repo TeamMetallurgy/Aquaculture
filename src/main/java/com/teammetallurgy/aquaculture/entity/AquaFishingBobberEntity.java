@@ -14,7 +14,8 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -119,8 +120,8 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
                 CriteriaTriggers.FISHING_ROD_HOOKED.trigger((ServerPlayer) angler, stack, this, Collections.emptyList());
                 level.broadcastEntityEvent(this, (byte) 31);
                 rodDamage = this.getHookedIn() instanceof ItemEntity ? 3 : 5;
-            } else if ((this.nibble > 0 || isAdminRod) && level instanceof ServerLevel serverLevel)  {
-                LootParams lootParams = (new LootParams.Builder((ServerLevel)this.level())).withParameter(LootContextParams.ORIGIN, this.position()).withParameter(LootContextParams.TOOL, stack).withParameter(LootContextParams.THIS_ENTITY, this).withParameter(LootContextParams.KILLER_ENTITY, this.getOwner()).withParameter(LootContextParams.THIS_ENTITY, this).withLuck((float)this.luck + angler.getLuck()).create(LootContextParamSets.FISHING);
+            } else if ((this.nibble > 0 || isAdminRod) && level instanceof ServerLevel serverLevel) {
+                LootParams lootParams = (new LootParams.Builder((ServerLevel) this.level())).withParameter(LootContextParams.ORIGIN, this.position()).withParameter(LootContextParams.TOOL, stack).withParameter(LootContextParams.THIS_ENTITY, this).withParameter(LootContextParams.ATTACKING_ENTITY, this.getOwner()).withParameter(LootContextParams.THIS_ENTITY, this).withLuck((float) this.luck + angler.getLuck()).create(LootContextParamSets.FISHING);
 
                 List<ItemStack> lootEntries = getLoot(lootParams, serverLevel);
                 if (lootEntries.isEmpty()) {
@@ -162,10 +163,10 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
                         ItemStackHandler rodHandler = AquaFishingRodItem.getHandler(this.fishingRod);
                         ItemStack bait = rodHandler.getStackInSlot(1);
                         if (!bait.isEmpty()) {
-                            if (bait.hurt(1, level.random, null)) {
+                            bait.hurtAndBreak(1, serverLevel, null, item -> {
                                 bait.shrink(1);
                                 this.playSound(AquaSounds.BOBBER_BAIT_BREAK.get(), 0.7F, 0.2F);
-                            }
+                            });
                             rodHandler.setStackInSlot(1, bait);
                         }
                     }
@@ -197,7 +198,7 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
     }
 
     private List<ItemStack> getLoot(LootParams lootParams, ServerLevel serverLevel) {
-        ResourceLocation lootTableLocation;
+        ResourceKey<LootTable> lootTableLocation;
         if (this.isLavaHookInLava(this, serverLevel, this.blockPosition())) {
             if (serverLevel.getLevel().dimensionType().hasCeiling()) {
                 lootTableLocation = AquaLootTables.NETHER_FISHING;
@@ -207,7 +208,8 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
         } else {
             lootTableLocation = BuiltInLootTables.FISHING;
         }
-        LootTable lootTable = serverLevel.getServer().getLootData().getLootTable(lootTableLocation);
+
+        LootTable lootTable = serverLevel.getServer().reloadableRegistries().getLootTable(lootTableLocation);
         return lootTable.getRandomItems(lootParams);
     }
 
@@ -472,16 +474,16 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
     }
 
     @Override
-    public void writeSpawnData(@Nonnull FriendlyByteBuf buffer) {
+    public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
         buffer.writeInt(this.luck);
         buffer.writeUtf(this.hook.getName() == null ? "" : this.hook.getName());
-        buffer.writeItem(this.fishingLine);
-        buffer.writeItem(this.bobber);
-        buffer.writeItem(this.fishingRod);
+        ItemStack.OPTIONAL_STREAM_CODEC.encode(buffer, this.fishingLine);
+        ItemStack.OPTIONAL_STREAM_CODEC.encode(buffer, this.bobber);
+        ItemStack.OPTIONAL_STREAM_CODEC.encode(buffer, this.fishingRod);
     }
 
     @Override
-    public void readSpawnData(@Nonnull FriendlyByteBuf buf) {
+    public void readSpawnData(RegistryFriendlyByteBuf buf) {
         this.luck = buf.readInt();
         String hookName = buf.readUtf();
         if (hookName.isEmpty() || hookName == null) {
@@ -490,8 +492,8 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
             Item hookItem = Hook.HOOKS.get(hookName).get();
             this.hook = ((HookItem) hookItem).getHookType();
         }
-        this.fishingLine = buf.readItem();
-        this.bobber = buf.readItem();
-        this.fishingRod = buf.readItem();
+        this.fishingLine = ItemStack.OPTIONAL_STREAM_CODEC.decode(buf);
+        this.bobber = ItemStack.OPTIONAL_STREAM_CODEC.decode(buf);
+        this.fishingRod = ItemStack.OPTIONAL_STREAM_CODEC.decode(buf);
     }
 }

@@ -1,0 +1,28 @@
+{
+  "conditions": [
+    {
+      "type": "aquaculture:neptunium_items_enabled",
+      "value": true
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  N",
+    " NS",
+    "T S"
+  ],
+  "key": {
+    "S": {
+      "tag": "c:strings"
+    },
+    "T": {
+      "tag": "c:rods/wooden"
+    },
+    "N": {
+      "tag": "c:ingots/neptunium"
+    }	
+  },
+  "result": {
+    "id": "aquaculture:neptunium_fishing_rod"
+  }
+}

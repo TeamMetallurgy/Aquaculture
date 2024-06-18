@@ -1,6 +1,7 @@
 package com.teammetallurgy.aquaculture.block.blockentity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Nameable;
@@ -24,25 +25,25 @@ public abstract class IItemHandlerBEBase extends BlockEntity implements Nameable
     protected abstract IItemHandler createItemHandler();
 
     @Override
-    public void load(@Nonnull CompoundTag tag) {
+    protected void loadAdditional(@Nonnull CompoundTag tag, @Nonnull HolderLookup.Provider provider) {
         CompoundTag invTag = tag.getCompound("inv");
-        ((INBTSerializable<CompoundTag>) handler).deserializeNBT(invTag);
+        ((INBTSerializable<CompoundTag>) handler).deserializeNBT(provider, invTag);
         if (tag.contains("CustomName", 8)) {
-            this.customName = Component.Serializer.fromJson(tag.getString("CustomName"));
+            this.customName = parseCustomNameSafe(tag.getString("CustomName"), provider);
         }
-        super.load(tag);
+        super.loadAdditional(tag, provider);
     }
 
     @Override
-    public void saveAdditional(@Nonnull CompoundTag tag) {
-        CompoundTag compound = ((INBTSerializable<CompoundTag>) handler).serializeNBT();
+    protected void saveAdditional(@Nonnull CompoundTag tag, @Nonnull HolderLookup.Provider provider) {
+        CompoundTag compound = ((INBTSerializable<CompoundTag>) handler).serializeNBT(provider);
         if (compound != null) {
             tag.put("inv", compound);
         }
-        if (this.customName != null) {
-            tag.putString("CustomName", Component.Serializer.toJson(this.customName));
+        if (this.hasCustomName()) {
+            tag.putString("CustomName", Component.Serializer.toJson(this.customName, provider));
         }
-        super.saveAdditional(tag);
+        super.saveAdditional(tag, provider);
     }
 
     @Override

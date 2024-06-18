@@ -1,12 +1,13 @@
 package com.teammetallurgy.aquaculture.inventory.container.slot;
 
-import net.minecraft.nbt.CompoundTag;
+import com.teammetallurgy.aquaculture.init.AquaDataComponents;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
@@ -45,9 +46,13 @@ public class SlotHidable extends SlotItemHandler {
     public void setChanged() { //Save changes to the rod
         ItemStack stack = this.fishingRod.getItem();
         if (!stack.isEmpty()) {
-            CompoundTag tag = stack.getOrCreateTag();
-            tag.put("Inventory", ((ItemStackHandler) getItemHandler()).serializeNBT());
-            stack.setTag(tag);
+
+            NonNullList<ItemStack> list = NonNullList.create();
+            for (int slot = 0; slot < getItemHandler().getSlots(); slot++) {
+                list.add(getItemHandler().getStackInSlot(slot));
+            }
+
+            stack.set(AquaDataComponents.ROD_INVENTORY, ItemContainerContents.fromItems(list));
         }
     }
 }

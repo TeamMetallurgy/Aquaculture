@@ -8,6 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class SpectralWaterArrowEntity extends SpectralArrow {
 
@@ -15,8 +16,8 @@ public class SpectralWaterArrowEntity extends SpectralArrow {
         super(arrow, level);
     }
 
-    public SpectralWaterArrowEntity(Level level, LivingEntity livingEntity, ItemStack stack) {
-        super(level, livingEntity, stack);
+    public SpectralWaterArrowEntity(Level level, LivingEntity livingEntity, ItemStack stack, @Nullable ItemStack weapon) {
+        super(level, livingEntity, stack, weapon);
     }
 
     @Override

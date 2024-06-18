@@ -42,22 +42,22 @@ public class AquacultureAPI {
     }
 
     public static class Tags {
-        public static final TagKey<Item> KNIVES = tag("forge", "tools/knives");
+        public static final TagKey<Item> KNIVES = tag("c", "tools/knives");
         public static final TagKey<Item> FISHING_LINE = tag(Aquaculture.MOD_ID, "fishing_line");
         public static final TagKey<Item> BOBBER = tag(Aquaculture.MOD_ID, "bobber");
         public static final TagKey<Item> TACKLE_BOX = tag(Aquaculture.MOD_ID, "tackle_box");
         public static final TagKey<Item> TURTLE_EDIBLE = tag(Aquaculture.MOD_ID, "turtle_edible");
         public static final TagKey<Item> TOOLTIP = tag(Aquaculture.MOD_ID, "tooltip");
 
-        public static final TagKey<Biome> IS_TWILIGHT = biomeTag("forge","is_twilight");
-        public static final TagKey<Biome> EMPTY = biomeTag("aquaculture","is_twilight");
+        public static final TagKey<Biome> IS_TWILIGHT = biomeTag("c","is_twilight");
+        public static final TagKey<Biome> EMPTY = biomeTag("aquaculture","empty");
 
         public static TagKey<Item> tag(String modID, String name) {
-            return ItemTags.create(new ResourceLocation(modID, name));
+            return ItemTags.create(ResourceLocation.fromNamespaceAndPath(modID, name));
         }
 
         public static TagKey<Biome> biomeTag(String modID, String name) {
-            return TagKey.create(Registries.BIOME, new ResourceLocation(modID, name));
+            return TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(modID, name));
         }
 
         public static void init() {

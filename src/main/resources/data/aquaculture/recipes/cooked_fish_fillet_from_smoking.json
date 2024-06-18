@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smoking",
-  "ingredient": {
-    "item": "aquaculture:fish_fillet_raw"
-  },
-  "result": "aquaculture:fish_fillet_cooked",
-  "experience": 0.35,
-  "cookingtime": 100
-}

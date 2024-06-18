@@ -6,11 +6,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
 
-@Mod.EventBusSubscriber(modid = Aquaculture.MOD_ID)
+@EventBusSubscriber(modid = Aquaculture.MOD_ID)
 public class NeptunesMight {
 
     @SubscribeEvent

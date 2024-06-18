@@ -3,19 +3,13 @@ package com.teammetallurgy.aquaculture.entity;
 import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.entity.ai.goal.FollowTypeSchoolLeaderGoal;
 import com.teammetallurgy.aquaculture.init.AquaSounds;
-import com.teammetallurgy.aquaculture.misc.AquaConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.goal.FollowFlockLeaderGoal;
-import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -61,7 +55,7 @@ public class AquaFishEntity extends AbstractSchoolingFish {
     @Override
     @Nonnull
     public ItemStack getBucketItemStack() {
-        return new ItemStack(BuiltInRegistries.ITEM.get(new ResourceLocation(BuiltInRegistries.ENTITY_TYPE.getKey(this.getType()).toString() + "_bucket")));
+        return new ItemStack(BuiltInRegistries.ITEM.get(ResourceLocation.parse(BuiltInRegistries.ENTITY_TYPE.getKey(this.getType()) + "_bucket")));
     }
 
     @Override
@@ -89,19 +83,12 @@ public class AquaFishEntity extends AbstractSchoolingFish {
     }
 
     @Override
-    @Nonnull
-    public EntityDimensions getDimensions(@Nonnull Pose pose) {
-        return super.getDimensions(pose);
-    }
-
-    @Override
     public void playerTouch(@Nonnull Player player) {
         super.playerTouch(player);
-        if (Objects.equals(BuiltInRegistries.ENTITY_TYPE.getKey(this.getType()), new ResourceLocation(Aquaculture.MOD_ID, "jellyfish"))) {
+        if (Objects.equals(BuiltInRegistries.ENTITY_TYPE.getKey(this.getType()), ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "jellyfish"))) {
             if (this.isAlive()) {
                 if (this.distanceToSqr(player) < 1.0D && player.hurt(this.damageSources().mobAttack(this), 0.5F)) {
                     this.playSound(AquaSounds.JELLYFISH_COLLIDE.get(), 0.5F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
-                    this.doEnchantDamageEffects(this, player);
                 }
             }
         }
@@ -112,13 +99,6 @@ public class AquaFishEntity extends AbstractSchoolingFish {
         if (this.leader != null) {
             super.stopFollowing();
         }
-    }
-
-    public static boolean canSpawnHere(EntityType<? extends AbstractFish> fish, LevelAccessor world, MobSpawnType spawnReason, BlockPos pos, RandomSource random) {
-        int seaLevel = world.getSeaLevel();
-        int minY = seaLevel - AquaConfig.BASIC_OPTIONS.fishSpawnLevelModifier.get();
-        boolean isAllNeighborsSource = isSourceBlock(world, pos.north()) && isSourceBlock(world, pos.south()) && isSourceBlock(world, pos.west()) && isSourceBlock(world, pos.east());
-        return isSourceBlock(world, pos) && isAllNeighborsSource && pos.getY() >= minY && pos.getY() <= seaLevel;
     }
 
     private static boolean isSourceBlock(LevelAccessor world, BlockPos pos) {

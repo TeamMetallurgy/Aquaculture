@@ -17,7 +17,7 @@ public class JEIIntegration implements IModPlugin {
     @Override
     @Nonnull
     public ResourceLocation getPluginUid() {
-        return new ResourceLocation(Aquaculture.MOD_ID, "jei_support");
+        return ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "jei_support");
     }
 
     @Override

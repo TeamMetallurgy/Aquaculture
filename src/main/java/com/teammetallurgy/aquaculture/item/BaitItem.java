@@ -7,12 +7,10 @@ import javax.annotation.Nonnull;
 
 public class BaitItem extends Item {
     private final int lureSpeedModifier;
-    private final int durability;
 
     public BaitItem(int durability, int lureSpeedModifier) {
-        super(new Item.Properties().setNoRepair());
+        super(new Item.Properties().durability(durability).setNoRepair());
         this.lureSpeedModifier = lureSpeedModifier;
-        this.durability = durability;
     }
 
     public int getLureSpeedModifier() {
@@ -20,18 +18,8 @@ public class BaitItem extends Item {
     }
 
     @Override
-    public boolean canBeDepleted() {
-        return this.durability > 0;
-    }
-
-    @Override
-    public int getMaxDamage(ItemStack stack) {
-        return this.durability;
-    }
-
-    @Override
-    public int getBarWidth(@Nonnull ItemStack stack) {
-        return Math.round(13.0F - (float) stack.getDamageValue() * 13.0F / (float) this.durability);
+    public int getMaxStackSize(@Nonnull ItemStack stack) {
+        return 64;
     }
 
     @Override

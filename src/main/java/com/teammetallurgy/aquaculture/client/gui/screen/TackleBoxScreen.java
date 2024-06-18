@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Inventory;
 import javax.annotation.Nonnull;
 
 public class TackleBoxScreen extends AbstractContainerScreen<TackleBoxContainer> {
-    private static final ResourceLocation TACKLE_BOX_GUI = new ResourceLocation(Aquaculture.MOD_ID, "textures/gui/container/tackle_box.png");
+    private static final ResourceLocation TACKLE_BOX_GUI = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/gui/container/tackle_box.png");
 
     public TackleBoxScreen(TackleBoxContainer tackleBoxContainer, Inventory playerInventory, Component title) {
         super(tackleBoxContainer, playerInventory, title);

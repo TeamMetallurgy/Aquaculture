@@ -6,7 +6,7 @@
     "minCount": 1,
     "maxCount": 1
   },
-  "includeBiomes": ["#forge:is_dry"],
-  "excludeBiomes": ["#forge:is_cold"],
+  "includeBiomes": ["#c:is_dry"],
+  "excludeBiomes": ["#c:is_cold"],
   "and": false
 }

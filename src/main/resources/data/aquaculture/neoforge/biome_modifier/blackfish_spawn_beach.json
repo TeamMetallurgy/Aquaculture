@@ -6,7 +6,7 @@
     "minCount": 1,
     "maxCount": 4
   },
-  "includeBiomes": ["#forge:is_cold", "#minecraft:is_beach"],
+  "includeBiomes": ["#c:is_cold", "#c:is_beach"],
   "excludeBiomes": ["#aquaculture:empty"],
   "and": true
 }

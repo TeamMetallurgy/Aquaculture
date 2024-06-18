@@ -6,6 +6,7 @@ import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.entity.AquaFishEntity;
 import com.teammetallurgy.aquaculture.entity.FishMountEntity;
 import com.teammetallurgy.aquaculture.entity.FishType;
+import com.teammetallurgy.aquaculture.init.AquaDataComponents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
@@ -32,12 +33,6 @@ import java.math.MathContext;
 import java.text.DecimalFormat;
 
 public class FishMountRenderer extends EntityRenderer<FishMountEntity> {
-    public static final ModelResourceLocation OAK = new ModelResourceLocation(new ResourceLocation(Aquaculture.MOD_ID, "oak_fish_mount"), "");
-    public static final ModelResourceLocation SPRUCE = new ModelResourceLocation(new ResourceLocation(Aquaculture.MOD_ID, "spruce_fish_mount"), "");
-    public static final ModelResourceLocation BIRCH = new ModelResourceLocation(new ResourceLocation(Aquaculture.MOD_ID, "birch_fish_mount"), "");
-    public static final ModelResourceLocation JUNGLE = new ModelResourceLocation(new ResourceLocation(Aquaculture.MOD_ID, "jungle_fish_mount"), "");
-    public static final ModelResourceLocation ACACIA = new ModelResourceLocation(new ResourceLocation(Aquaculture.MOD_ID, "acacia_fish_mount"), "");
-    public static final ModelResourceLocation DARK_OAK = new ModelResourceLocation(new ResourceLocation(Aquaculture.MOD_ID, "dark_oak_fish_mount"), "");
     private final Minecraft mc = Minecraft.getInstance();
 
     public FishMountRenderer(EntityRendererProvider.Context context) {
@@ -60,9 +55,9 @@ public class FishMountRenderer extends EntityRenderer<FishMountEntity> {
 
         matrixStack.pushPose();
         matrixStack.translate(-0.5D, -0.5D, -0.5D);
-        ResourceLocation id = BuiltInRegistries.ENTITY_TYPE.getKey(fishMount.getType());
-        if (id != null) {
-            ModelResourceLocation location = new ModelResourceLocation(id, ""); //Calling this instead of the fields for mod support'
+        ResourceLocation entityTypeID = BuiltInRegistries.ENTITY_TYPE.getKey(fishMount.getType());
+        if (entityTypeID != null) {
+            ModelResourceLocation location = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/" + entityTypeID.getPath()), "standalone"); //Calling this instead of the fields for mod support'
             rendererDispatcher.getModelRenderer().renderModel(matrixStack.last(), buffer.getBuffer(Sheets.solidBlockSheet()), null, manager.getModel(location), 1.0F, 1.0F, 1.0F, i, OverlayTexture.NO_OVERLAY);
         }
         matrixStack.popPose();
@@ -114,12 +109,13 @@ public class FishMountRenderer extends EntityRenderer<FishMountEntity> {
     }
 
     @Override
-    protected void renderNameTag(@Nonnull FishMountEntity fishMount, @Nonnull Component name, @Nonnull PoseStack matrixStack, @Nonnull MultiBufferSource buffer, int i) {
-        super.renderNameTag(fishMount, fishMount.entity.getDisplayName(), matrixStack, buffer, i);
+    protected void renderNameTag(@Nonnull FishMountEntity fishMount, @Nonnull Component name, @Nonnull PoseStack matrixStack, @Nonnull MultiBufferSource buffer, int i, float partialTick) {
+        super.renderNameTag(fishMount, fishMount.entity.getDisplayName(), matrixStack, buffer, i, partialTick);
 
         ItemStack stack = fishMount.getDisplayedItem();
-        if (stack.hasTag() && stack.getTag() != null && stack.getTag().contains("fishWeight")) {
-            double weight = stack.getTag().getDouble("fishWeight");
+        Float fishWeight = stack.get(AquaDataComponents.FISH_WEIGHT.get());
+        if (stack.has(AquaDataComponents.FISH_WEIGHT) && fishWeight != null) {
+            float weight = fishWeight;
             String lb = weight == 1.0D ? " lb" : " lbs";
 
             DecimalFormat df = new DecimalFormat("#,###.##");
@@ -129,9 +125,9 @@ public class FishMountRenderer extends EntityRenderer<FishMountEntity> {
             matrixStack.pushPose();
             matrixStack.translate(0.0D, -0.25D, 0.0D); //Adjust weight label height
             if (bd.doubleValue() > 999) {
-                super.renderNameTag(fishMount, Component.translatable("aquaculture.fishWeight.weight", df.format((int) bd.doubleValue()) + lb), matrixStack, buffer, i - 100);
+                super.renderNameTag(fishMount, Component.translatable("aquaculture.fishWeight.weight", df.format((int) bd.doubleValue()) + lb), matrixStack, buffer, i - 100, partialTick);
             } else {
-                super.renderNameTag(fishMount, Component.translatable("aquaculture.fishWeight.weight", bd + lb), matrixStack, buffer, i);
+                super.renderNameTag(fishMount, Component.translatable("aquaculture.fishWeight.weight", bd + lb), matrixStack, buffer, i, partialTick);
             }
             matrixStack.popPose();
         }

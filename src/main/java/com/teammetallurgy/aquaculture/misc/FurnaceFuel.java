@@ -4,10 +4,10 @@ import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.init.AquaItems;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.furnace.FurnaceFuelBurnTimeEvent;
 
-@Mod.EventBusSubscriber(modid = Aquaculture.MOD_ID)
+@EventBusSubscriber(modid = Aquaculture.MOD_ID)
 public class FurnaceFuel {
 
     @SubscribeEvent

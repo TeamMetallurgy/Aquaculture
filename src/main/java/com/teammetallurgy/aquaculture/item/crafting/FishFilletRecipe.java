@@ -1,44 +1,40 @@
 package com.teammetallurgy.aquaculture.item.crafting;
 
-import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
 import com.teammetallurgy.aquaculture.api.fish.FishData;
+import com.teammetallurgy.aquaculture.init.AquaDataComponents;
 import com.teammetallurgy.aquaculture.init.AquaItems;
+import com.teammetallurgy.aquaculture.init.AquaRecipeSerializers;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FishFilletRecipe extends CustomRecipe {
-    public static final DeferredRegister<RecipeSerializer<?>> IRECIPE_SERIALIZERS_DEFERRED = DeferredRegister.create(Registries.RECIPE_SERIALIZER, Aquaculture.MOD_ID);
-    private static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> FISH_FILLET_SERIALIZER = registerRecipeSerializer("crafting_special_fish_fillet", new SimpleCraftingRecipeSerializer<>(FishFilletRecipe::new));
 
-    private FishFilletRecipe(CraftingBookCategory craftingBookCategory) {
+    public FishFilletRecipe(CraftingBookCategory craftingBookCategory) {
         super(craftingBookCategory);
     }
 
     @Override
-    public boolean matches(@Nonnull CraftingContainer craftingInventory, @Nonnull Level world) {
+    public boolean matches(@Nonnull CraftingInput craftingInventory, @Nonnull Level world) {
         ItemStack stack = ItemStack.EMPTY;
         List<ItemStack> list = new ArrayList<>();
 
-        for (int i = 0; i < craftingInventory.getContainerSize(); ++i) {
+        for (int i = 0; i < craftingInventory.size(); ++i) {
             ItemStack slotStack = craftingInventory.getItem(i);
             if (!slotStack.isEmpty()) {
                 if (AquacultureAPI.FISH_DATA.hasFilletAmount(slotStack.getItem())) {
@@ -59,11 +55,11 @@ public class FishFilletRecipe extends CustomRecipe {
 
     @Override
     @Nonnull
-    public ItemStack assemble(@Nonnull CraftingContainer craftingInventory, RegistryAccess registryAccess) {
+    public ItemStack assemble(@Nonnull CraftingInput craftingInventory, @Nonnull HolderLookup.Provider provider) {
         ItemStack fish = ItemStack.EMPTY;
         Item knife = null;
 
-        for (int i = 0; i < craftingInventory.getContainerSize(); ++i) {
+        for (int i = 0; i < craftingInventory.size(); ++i) {
             ItemStack stackSlot = craftingInventory.getItem(i);
             if (!stackSlot.isEmpty()) {
                 Item item = stackSlot.getItem();
@@ -82,8 +78,9 @@ public class FishFilletRecipe extends CustomRecipe {
         }
         if (!fish.isEmpty() && knife != null) {
             int filletAmount = AquacultureAPI.FISH_DATA.getFilletAmount(fish.getItem());
-            if (AquaConfig.BASIC_OPTIONS.randomWeight.get() && fish.getTag() != null && fish.getTag().contains("fishWeight")) {
-                filletAmount = FishData.getFilletAmountFromWeight(fish.getTag().getDouble("fishWeight"));
+            Float fishWeight = fish.get(AquaDataComponents.FISH_WEIGHT.get());
+            if (AquaConfig.BASIC_OPTIONS.randomWeight.get() && fish.has(AquaDataComponents.FISH_WEIGHT) && fishWeight != null) {
+                filletAmount = FishData.getFilletAmountFromWeight(fishWeight);
             }
             if (isKnifeNeptunium(knife)) {
                 filletAmount += filletAmount * (25.0F / 100.0F);
@@ -96,15 +93,18 @@ public class FishFilletRecipe extends CustomRecipe {
 
     @Override
     @Nonnull
-    public NonNullList<ItemStack> getRemainingItems(CraftingContainer craftingInventory) {
-        NonNullList<ItemStack> list = NonNullList.withSize(craftingInventory.getContainerSize(), ItemStack.EMPTY);
+    public NonNullList<ItemStack> getRemainingItems(CraftingInput craftingInventory) {
+        NonNullList<ItemStack> list = NonNullList.withSize(craftingInventory.size(), ItemStack.EMPTY);
         for (int i = 0; i < list.size(); ++i) {
             ItemStack stack = craftingInventory.getItem(i);
             if (stack.is(AquacultureAPI.Tags.KNIVES)) {
                 ItemStack knife = stack.copy();
                 if (!isKnifeNeptunium(knife.getItem())) {
-                    if (knife.hurt(1, RandomSource.create(), null)) {
-                        knife.shrink(1);
+                    MinecraftServer server = ServerLifecycleHooks.getCurrentServer(); //Workaround
+                    if (server != null) {
+                        knife.hurtAndBreak(1, server.overworld(), null, item -> {
+                            knife.shrink(1);
+                        });
                     }
                 }
                 list.set(i, knife);
@@ -120,15 +120,11 @@ public class FishFilletRecipe extends CustomRecipe {
     @Override
     @Nonnull
     public RecipeSerializer<?> getSerializer() {
-        return FISH_FILLET_SERIALIZER.get();
+        return AquaRecipeSerializers.FISH_FILLET_SERIALIZER.get();
     }
 
     @Override
     public boolean canCraftInDimensions(int width, int height) {
         return width * height >= 2;
-    }
-
-    public static DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> registerRecipeSerializer(String name, RecipeSerializer<?> serializer) {
-        return IRECIPE_SERIALIZERS_DEFERRED.register(name, () -> serializer);
     }
 }

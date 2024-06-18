@@ -1,0 +1,102 @@
+{
+  "type": "minecraft:fishing",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "aquaculture:driftwood"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "name": "aquaculture:fish_bones"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "aquaculture:tin_can"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 6,
+          "name": "aquaculture:box"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "name": "aquaculture:lockbox"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "aquaculture:treasure_chest"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "name": "aquaculture:goldfish"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "aquaculture:message_in_a_bottle"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "aquaculture:biome_tag_check",
+              "predicate": {
+                "include": ["c:is_aquatic", "c:is_beach", "c:is_swamp"],
+                "exclude": ["c:is_snowy"]
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:location_check",
+                "predicate": {
+                  "biome": "minecraft:deep_frozen_ocean"
+                }
+              }
+            }
+          ],
+          "weight": 10,
+          "name": "minecraft:seagrass"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "aquaculture:biome_tag_check",
+              "predicate": {
+                "include": ["c:is_ocean", "c:is_beach"],
+                "exclude": ["c:is_hot", "c:is_snowy"]
+              }
+            }
+          ],
+          "weight": 9,
+          "name": "minecraft:kelp"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "aquaculture:biome_tag_check",
+              "predicate": {
+                "exclude": ["c:is_ocean", "c:is_beach"]
+              }
+            }
+          ],
+          "weight": 10,
+          "name": "aquaculture:algae"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "aquaculture:gameplay/fishing/junk"
+}

@@ -12,7 +12,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.biome.Biome;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
@@ -22,11 +21,10 @@ import java.util.stream.Collectors;
 
 public record BiomeTagPredicate(Optional<PositionPredicate> position, Optional<List<TagKey<Biome>>> include, Optional<List<TagKey<Biome>>> exclude, Optional<Boolean> and) {
     public static final Codec<BiomeTagPredicate> CODEC = RecordCodecBuilder.create(rb -> rb.group(
-                            ExtraCodecs.strictOptionalField(PositionPredicate.CODEC, "position").forGetter(BiomeTagPredicate::position),
-                            ExtraCodecs.strictOptionalField(Codec.list(TagKey.codec(Registries.BIOME)), "include").forGetter(BiomeTagPredicate::include),
-                            ExtraCodecs.strictOptionalField(Codec.list(TagKey.codec(Registries.BIOME)), "exclude").forGetter(BiomeTagPredicate::exclude),
-                            ExtraCodecs.strictOptionalField(Codec.BOOL, "and").forGetter(BiomeTagPredicate::and)
-                    )
+                            PositionPredicate.CODEC.optionalFieldOf("position").forGetter(BiomeTagPredicate::position),
+                            Codec.list(TagKey.codec(Registries.BIOME)).optionalFieldOf("include").forGetter(BiomeTagPredicate::include),
+                            Codec.list(TagKey.codec(Registries.BIOME)).optionalFieldOf("exclude").forGetter(BiomeTagPredicate::exclude),
+                            Codec.BOOL.optionalFieldOf("and").forGetter(BiomeTagPredicate::and))
                     .apply(rb, BiomeTagPredicate::new)
     );
     private static final HashMap<CheckType, Set<Holder<Biome>>> CACHE = new HashMap<>();
@@ -110,9 +108,9 @@ public record BiomeTagPredicate(Optional<PositionPredicate> position, Optional<L
     public static record PositionPredicate(MinMaxBounds.Doubles x, MinMaxBounds.Doubles y, MinMaxBounds.Doubles z) {
         public static final Codec<PositionPredicate> CODEC = RecordCodecBuilder.create(
                 p_299107_ -> p_299107_.group(
-                                ExtraCodecs.strictOptionalField(MinMaxBounds.Doubles.CODEC, "x", MinMaxBounds.Doubles.ANY).forGetter(PositionPredicate::x),
-                                ExtraCodecs.strictOptionalField(MinMaxBounds.Doubles.CODEC, "y", MinMaxBounds.Doubles.ANY).forGetter(PositionPredicate::y),
-                                ExtraCodecs.strictOptionalField(MinMaxBounds.Doubles.CODEC, "z", MinMaxBounds.Doubles.ANY).forGetter(PositionPredicate::z)
+                                MinMaxBounds.Doubles.CODEC.optionalFieldOf("x", MinMaxBounds.Doubles.ANY).forGetter(PositionPredicate::x),
+                                MinMaxBounds.Doubles.CODEC.optionalFieldOf("y", MinMaxBounds.Doubles.ANY).forGetter(PositionPredicate::y),
+                                MinMaxBounds.Doubles.CODEC.optionalFieldOf("z", MinMaxBounds.Doubles.ANY).forGetter(PositionPredicate::z)
                         )
                         .apply(p_299107_, PositionPredicate::new)
         );

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "fish_mount",
+  "pattern": [
+    "BHB",
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:birch_button"
+    },
+    "H": {
+      "item": "aquaculture:iron_hook"
+    }
+  },
+  "result": {
+    "id": "aquaculture:birch_fish_mount"
+  }
+}

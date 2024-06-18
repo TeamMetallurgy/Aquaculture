@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "aquaculture:neptunium_ingot"
+    }
+  ],
+  "result": {
+    "id": "aquaculture:neptunium_nugget",
+    "count": 9
+  }
+}

@@ -28,7 +28,7 @@ public final class AquaSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> BOBBER_NOTE = registerSound("bobber_note_catch");
 
     private static DeferredHolder<SoundEvent, SoundEvent> registerSound(String name) {
-        ResourceLocation resourceLocation = new ResourceLocation(Aquaculture.MOD_ID, name);
+        ResourceLocation resourceLocation = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, name);
         return SOUND_EVENT_DEFERRED.register(name, () -> SoundEvent.createVariableRangeEvent(resourceLocation));
     }
 }

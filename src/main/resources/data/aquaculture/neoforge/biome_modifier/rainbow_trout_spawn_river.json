@@ -6,7 +6,7 @@
     "minCount": 2,
     "maxCount": 4
   },
-  "includeBiomes": ["#minecraft:is_river"],
-  "excludeBiomes": ["#forge:is_hot"],
+  "includeBiomes": ["#c:is_river"],
+  "excludeBiomes": ["#c:is_hot"],
   "and": false
 }

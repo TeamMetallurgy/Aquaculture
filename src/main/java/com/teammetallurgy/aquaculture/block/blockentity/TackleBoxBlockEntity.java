@@ -14,7 +14,6 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -81,9 +80,8 @@ public class TackleBoxBlockEntity extends IItemHandlerBEBase implements MenuProv
 
     public static boolean canBePutInTackleBox(@Nonnull ItemStack stack) {
         Item item = stack.getItem();
-        boolean isDyeable = item instanceof DyeableLeatherItem;
         return stack.is(AquacultureAPI.Tags.TACKLE_BOX) || item instanceof HookItem || item instanceof BaitItem ||
-                stack.is(AquacultureAPI.Tags.FISHING_LINE) && isDyeable || stack.is(AquacultureAPI.Tags.BOBBER) && isDyeable;
+                stack.is(AquacultureAPI.Tags.FISHING_LINE) || stack.is(AquacultureAPI.Tags.BOBBER);
     }
 
     @Nullable

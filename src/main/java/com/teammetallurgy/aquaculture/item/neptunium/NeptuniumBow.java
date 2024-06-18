@@ -20,18 +20,19 @@ public class NeptuniumBow extends BowItem {
 
     @Override
     @Nonnull
-    public AbstractArrow customArrow(@Nonnull AbstractArrow arrowEntity, @Nonnull ItemStack stack) {
+    public AbstractArrow customArrow(@Nonnull AbstractArrow arrowEntity, @Nonnull ItemStack projectileStack, @Nonnull ItemStack weaponStack) {
         Entity shooter = arrowEntity.getOwner();
+
         if (arrowEntity.getType() == EntityType.ARROW) {
             if (shooter instanceof LivingEntity) {
-                return new WaterArrowEntity(arrowEntity.level(), (LivingEntity) shooter, stack.copyWithCount(1));
+                return new WaterArrowEntity(arrowEntity.level(), (LivingEntity) shooter, projectileStack.copyWithCount(1), weaponStack);
             }
         }
         if (arrowEntity.getType() == EntityType.SPECTRAL_ARROW) {
             if (shooter instanceof LivingEntity) {
-                return new SpectralWaterArrowEntity(arrowEntity.level(), (LivingEntity) shooter, stack.copyWithCount(1));
+                return new SpectralWaterArrowEntity(arrowEntity.level(), (LivingEntity) shooter, projectileStack.copyWithCount(1), weaponStack);
             }
         }
-        return super.customArrow(arrowEntity, stack);
+        return super.customArrow(arrowEntity, projectileStack, weaponStack);
     }
 }

@@ -6,12 +6,12 @@ import com.teammetallurgy.aquaculture.init.AquaBlockEntities;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
@@ -26,7 +26,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class NeptunesBountyBlock extends ChestBlock {
@@ -64,13 +63,10 @@ public class NeptunesBountyBlock extends ChestBlock {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(@Nonnull ItemStack stack, @Nullable BlockGetter world, @Nonnull List<Component> tooltip, @Nonnull TooltipFlag flag) {
-        super.appendHoverText(stack, world, tooltip, flag);
-        CompoundTag tag = stack.getTagElement("BlockEntityTag");
-        if (tag != null) {
-            if (tag.contains("Items", 9)) {
-                tooltip.add(Component.literal("???????").withStyle(ChatFormatting.ITALIC));
-            }
+    public void appendHoverText(@Nonnull ItemStack stack, @Nonnull Item.TooltipContext context, @Nonnull List<Component> tooltip, @Nonnull TooltipFlag flag) {
+        super.appendHoverText(stack, context, tooltip, flag);
+        if (stack.has(DataComponents.CONTAINER_LOOT)) {
+            tooltip.add(Component.literal("???????").withStyle(ChatFormatting.ITALIC));
         }
     }
 }

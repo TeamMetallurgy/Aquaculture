@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "neptunium_ingot",
+  "ingredients": [
+    {
+      "item": "aquaculture:neptunium_block"
+    }
+  ],
+  "result": {
+    "id": "aquaculture:neptunium_ingot",
+    "count": 9
+  }
+}

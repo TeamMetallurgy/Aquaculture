@@ -1,0 +1,25 @@
+{
+  "conditions": [
+    {
+      "type": "aquaculture:neptunium_items_enabled",
+      "value": true
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  I",
+    " I ",
+    "S  "
+  ],
+  "key": {
+    "S": {
+      "tag": "c:rods/wooden"
+    },
+    "I": {
+      "tag": "c:ingots/neptunium"
+    }	
+  },
+  "result": {
+    "id": "aquaculture:neptunium_fillet_knife"
+  }
+}

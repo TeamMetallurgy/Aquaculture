@@ -6,6 +6,6 @@
     "minCount": 1,
     "maxCount": 2
   },
-  "includeBiomes": "#forge:is_swamp",
+  "includeBiomes": "#c:is_swamp",
   "excludeBiomes": "#aquaculture:empty"
 }

@@ -28,9 +28,9 @@ public class JellyfishLayer<T extends LivingEntity> extends RenderLayer<T, Jelly
             this.getParentModel().copyPropertiesTo(this.jellyfishModel);
             this.jellyfishModel.prepareMobModel(jellyfish, p_225628_5_, p_225628_6_, p_225628_7_);
             this.jellyfishModel.setupAnim(jellyfish, p_225628_5_, p_225628_6_, p_225628_8_, p_225628_9_, p_225628_10_);
-            VertexConsumer lvt_11_1_ = buffer.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(jellyfish)));
+            VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(jellyfish)));
             this.jellyfishModel.parts().forEach((p_228272_8_) -> {
-                p_228272_8_.render(matrixStack, lvt_11_1_, i, LivingEntityRenderer.getOverlayCoords(jellyfish, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+                p_228272_8_.render(matrixStack, vertexConsumer, i, LivingEntityRenderer.getOverlayCoords(jellyfish, 0.0F));
             });
         }
     }

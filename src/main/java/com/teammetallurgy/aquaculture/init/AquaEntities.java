@@ -8,7 +8,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
@@ -18,7 +18,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber(modid = Aquaculture.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Aquaculture.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class AquaEntities {
     public static final DeferredRegister<EntityType<?>> ENTITY_DEFERRED = DeferredRegister.create(Registries.ENTITY_TYPE, Aquaculture.MOD_ID);
     public static final DeferredHolder<EntityType<?>, EntityType<AquaFishingBobberEntity>> BOBBER = register("bobber", () -> EntityType.Builder.<AquaFishingBobberEntity>of(AquaFishingBobberEntity::new, MobCategory.MISC)
@@ -33,12 +33,15 @@ public class AquaEntities {
             .sized(0.5F, 0.5F));
     public static final DeferredHolder<EntityType<?>, EntityType<TurtleLandEntity>> BOX_TURTLE = registerMob("box_turtle", 0x7F8439, 0x5D612A,
             () -> EntityType.Builder.of(TurtleLandEntity::new, MobCategory.CREATURE)
+                    .eyeHeight(0.1875F)
                     .sized(0.5F, 0.25F));
     public static final DeferredHolder<EntityType<?>, EntityType<TurtleLandEntity>> ARRAU_TURTLE = registerMob("arrau_turtle", 0x71857A, 0x4F6258,
             () -> EntityType.Builder.of(TurtleLandEntity::new, MobCategory.CREATURE)
+                    .eyeHeight(0.1875F)
                     .sized(0.5F, 0.25F));
     public static final DeferredHolder<EntityType<?>, EntityType<TurtleLandEntity>> STARSHELL_TURTLE = registerMob("starshell_turtle", 0xDCE2E5, 0x464645,
             () -> EntityType.Builder.of(TurtleLandEntity::new, MobCategory.CREATURE)
+                    .eyeHeight(0.1875F)
                     .sized(0.5F, 0.25F));
 
     private static <T extends Mob> DeferredHolder<EntityType<?>, EntityType<T>> registerMob(String name, int eggPrimary, int eggSecondary, Supplier<EntityType.Builder<T>> builder) {
@@ -49,18 +52,18 @@ public class AquaEntities {
     }
 
     public static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> register(String name, Supplier<EntityType.Builder<T>> builder) {
-        ResourceLocation location = new ResourceLocation(Aquaculture.MOD_ID, name);
+        ResourceLocation location = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, name);
         return ENTITY_DEFERRED.register(name, () -> builder.get().build(location.toString()));
     }
 
     @SubscribeEvent
     public static void setSpawnPlacement(SpawnPlacementRegisterEvent event) {
-        event.register(BOX_TURTLE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TurtleLandEntity::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
-        event.register(ARRAU_TURTLE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TurtleLandEntity::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
-        event.register(STARSHELL_TURTLE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TurtleLandEntity::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(BOX_TURTLE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TurtleLandEntity::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(ARRAU_TURTLE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TurtleLandEntity::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(STARSHELL_TURTLE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TurtleLandEntity::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
 
         for (DeferredHolder<EntityType<?>, EntityType<AquaFishEntity>> entityType : FishRegistry.fishEntities) {
-            event.register(entityType.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AquaFishEntity::canSpawnHere, SpawnPlacementRegisterEvent.Operation.AND);
+            event.register(entityType.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AquaFishEntity::checkSurfaceWaterAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         }
     }
 
@@ -69,5 +72,9 @@ public class AquaEntities {
         event.put(BOX_TURTLE.get(), TurtleLandEntity.createAttributes().build());
         event.put(ARRAU_TURTLE.get(), TurtleLandEntity.createAttributes().build());
         event.put(STARSHELL_TURTLE.get(), TurtleLandEntity.createAttributes().build());
+
+        for (DeferredHolder<EntityType<?>, EntityType<AquaFishEntity>> entityType : FishRegistry.fishEntities) {
+            event.put(entityType.get(), AquaFishEntity.createAttributes().build());
+        }
     }
 }

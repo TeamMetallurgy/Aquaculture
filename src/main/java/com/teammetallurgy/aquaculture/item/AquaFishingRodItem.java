@@ -4,30 +4,36 @@ import com.teammetallurgy.aquaculture.api.AquacultureAPI;
 import com.teammetallurgy.aquaculture.api.fishing.Hook;
 import com.teammetallurgy.aquaculture.api.fishing.Hooks;
 import com.teammetallurgy.aquaculture.entity.AquaFishingBobberEntity;
+import com.teammetallurgy.aquaculture.init.AquaDataComponents;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.common.ToolAction;
+import net.neoforged.neoforge.common.ToolActions;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class AquaFishingRodItem extends FishingRodItem {
@@ -62,25 +68,24 @@ public class AquaFishingRodItem extends FishingRodItem {
         if (player instanceof FakePlayer) return InteractionResultHolder.fail(heldStack);
 
         boolean isAdminRod = AquaConfig.BASIC_OPTIONS.debugMode.get() && this.tier == AquacultureAPI.MATS.NEPTUNIUM;
-        int lureSpeed;
         int damage = this.getDamage(heldStack);
         if (damage >= this.getMaxDamage(heldStack))
             return new InteractionResultHolder<>(InteractionResult.FAIL, heldStack);
         Hook hook = getHookType(heldStack);
         if (player.fishing != null) {
             if (!level.isClientSide) {
-                lureSpeed = player.fishing.retrieve(heldStack);
+                int retrieve = player.fishing.retrieve(heldStack);
                 int currentDamage = this.getMaxDamage(heldStack) - damage;
-                if (lureSpeed >= currentDamage) {
-                    lureSpeed = currentDamage;
+                if (retrieve >= currentDamage) {
+                    retrieve = currentDamage;
                 }
                 if (!isAdminRod) {
                     if (hook != Hooks.EMPTY && hook.getDurabilityChance() > 0) {
                         if (level.random.nextDouble() >= hook.getDurabilityChance()) {
-                            heldStack.hurt(lureSpeed, level.random, null);
+                            heldStack.hurtAndBreak(retrieve, player, LivingEntity.getSlotForHand(hand));
                         }
                     } else {
-                        heldStack.hurt(lureSpeed, level.random, null);
+                        heldStack.hurtAndBreak(retrieve, player, LivingEntity.getSlotForHand(hand));
                     }
                 }
             }
@@ -89,20 +94,20 @@ public class AquaFishingRodItem extends FishingRodItem {
             player.gameEvent(GameEvent.ITEM_INTERACT_FINISH);
         } else {
             level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FISHING_BOBBER_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.random.nextFloat() * 0.4F + 0.8F));
-            if (!level.isClientSide) {
+            if (level instanceof ServerLevel serverLevel) {
                 //Lure Speed
-                lureSpeed = EnchantmentHelper.getFishingSpeedBonus(heldStack);
-                if (this.tier == AquacultureAPI.MATS.NEPTUNIUM) lureSpeed += 1;
+                int timeReduction = (int) (EnchantmentHelper.getFishingTimeReduction(serverLevel, heldStack, player) * 20.0F);
+                if (this.tier == AquacultureAPI.MATS.NEPTUNIUM) timeReduction += 1;
                 ItemStack bait = getBait(heldStack);
                 if (!isAdminRod && !bait.isEmpty()) {
-                    lureSpeed += ((BaitItem) bait.getItem()).getLureSpeedModifier();
+                    timeReduction += ((BaitItem) bait.getItem()).getLureSpeedModifier();
                 }
-                lureSpeed = Math.min(5, lureSpeed);
+                timeReduction = Math.min(5, timeReduction);
                 //Luck
-                int luck = EnchantmentHelper.getFishingLuckBonus(heldStack);
+                int luck = EnchantmentHelper.getFishingLuckBonus(serverLevel, heldStack, player);
                 if (hook != Hooks.EMPTY && hook.getLuckModifier() > 0) luck += hook.getLuckModifier();
 
-                level.addFreshEntity(new AquaFishingBobberEntity(player, level, luck, lureSpeed, hook, getFishingLine(heldStack), getBobber(heldStack), heldStack));
+                level.addFreshEntity(new AquaFishingBobberEntity(player, level, luck, timeReduction, hook, getFishingLine(heldStack), getBobber(heldStack), heldStack));
             }
             player.awardStat(Stats.ITEM_USED.get(this));
             player.gameEvent(GameEvent.ITEM_INTERACT_START);
@@ -115,19 +120,14 @@ public class AquaFishingRodItem extends FishingRodItem {
         return this.tier.getRepairIngredient().test(repair) || super.isValidRepairItem(toRepair, repair);
     }
 
+    @Override
+    public boolean canPerformAction(@Nonnull ItemStack stack, @Nonnull ToolAction toolAction) {
+        return ToolActions.DEFAULT_FISHING_ROD_ACTIONS.contains(toolAction);
+    }
+
     @Nonnull
     public static Hook getHookType(@Nonnull ItemStack fishingRod) {
         Hook hook = Hooks.EMPTY;
-        /*ItemStackHandler rodHandler = (ItemStackHandler) fishingRod.getCapability(Capabilities.ItemHandler.ITEM);
-        if (rodHandler != null) {
-            if (!fishingRod.isEmpty() && fishingRod.hasTag() && fishingRod.getTag() != null && fishingRod.getTag().contains("Inventory")) {
-                rodHandler.deserializeNBT(fishingRod.getTag().getCompound("Inventory")); //Reload
-                if (!fishingRod.isEmpty() && fishingRod.hasTag() && fishingRod.getTag() != null) {
-                    rodHandler.deserializeNBT(fishingRod.getTag()); //Reload
-                }
-            }
-        }*/
-
         ItemStack hookStack = getHandler(fishingRod).getStackInSlot(0);
         if (hookStack.getItem() instanceof HookItem) {
             hook = ((HookItem) hookStack.getItem()).getHookType();
@@ -155,8 +155,11 @@ public class AquaFishingRodItem extends FishingRodItem {
         if (rodHandler == null) {
             rodHandler = FishingRodEquipmentHandler.EMPTY;
         } else {
-            if (!fishingRod.isEmpty() && fishingRod.hasTag() && fishingRod.getTag() != null && fishingRod.getTag().contains("Inventory")) {
-                rodHandler.deserializeNBT(fishingRod.getTag().getCompound("Inventory")); //Reload
+            ItemContainerContents rodInventory = fishingRod.get(AquaDataComponents.ROD_INVENTORY);
+            if (!fishingRod.isEmpty() && rodInventory != null && fishingRod.has(AquaDataComponents.ROD_INVENTORY)) {
+                for (int slot = 0; slot < rodInventory.getSlots(); slot++) {
+                    rodHandler.setStackInSlot(slot, rodInventory.getStackInSlot(slot)); //Reload
+                }
             }
         }
         return rodHandler;
@@ -164,7 +167,7 @@ public class AquaFishingRodItem extends FishingRodItem {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(@Nonnull ItemStack stack, @Nullable Level level, @Nonnull List<Component> tooltips, @Nonnull TooltipFlag tooltipFlag) {
+    public void appendHoverText(@Nonnull ItemStack stack, @Nonnull Item.TooltipContext tooltipContext, @Nonnull List<Component> tooltips, @Nonnull TooltipFlag tooltipFlag) {
         if (this.getDamage(stack) >= this.getMaxDamage(stack)) {
             MutableComponent broken = Component.translatable("aquaculture.fishing_rod.broken");
             tooltips.add(broken.withStyle(broken.getStyle().withItalic(true).withColor(ChatFormatting.GRAY)));
@@ -175,7 +178,7 @@ public class AquaFishingRodItem extends FishingRodItem {
             MutableComponent hookColor = Component.translatable(hook.getItem().getDescriptionId());
             tooltips.add(hookColor.withStyle(hookColor.getStyle().withColor(hook.getColor())));
         }
-        super.appendHoverText(stack, level, tooltips, tooltipFlag);
+        super.appendHoverText(stack, tooltipContext, tooltips, tooltipFlag);
     }
 
     public static class FishingRodEquipmentHandler extends ItemStackHandler {
@@ -197,17 +200,23 @@ public class AquaFishingRodItem extends FishingRodItem {
             return switch (slot) {
                 case 0 -> stack.getItem() instanceof HookItem;
                 case 1 -> stack.getItem() instanceof BaitItem;
-                case 2 -> stack.is(AquacultureAPI.Tags.FISHING_LINE) && stack.getItem() instanceof DyeableLeatherItem;
-                case 3 -> stack.is(AquacultureAPI.Tags.BOBBER) && stack.getItem() instanceof DyeableLeatherItem;
+                case 2 -> stack.is(AquacultureAPI.Tags.FISHING_LINE) && stack.is(ItemTags.DYEABLE);
+                case 3 -> stack.is(AquacultureAPI.Tags.BOBBER) && stack.is(ItemTags.DYEABLE);
                 default -> false;
             };
         }
 
         @Override
         protected void onContentsChanged(int slot) {
-            CompoundTag tag = this.stack.getOrCreateTag();
-            tag.put("Inventory", this.serializeNBT());
-            this.stack.setTag(tag);
+            ItemContainerContents rodInventory = stack.get(AquaDataComponents.ROD_INVENTORY);
+            if (!stack.isEmpty() && rodInventory != null && stack.has(AquaDataComponents.ROD_INVENTORY)) {
+                NonNullList<ItemStack> list = NonNullList.create();
+                for (int i = 0; i < getSlots(); i++) {
+                    list.add(getStackInSlot(i));
+                }
+
+                stack.set(AquaDataComponents.ROD_INVENTORY, ItemContainerContents.fromItems(list));
+            }
         }
     }
 }

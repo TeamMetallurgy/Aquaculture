@@ -1,0 +1,109 @@
+{
+  "values": {
+    "aquaculture:algae": {
+      "chance": 0.3
+    },
+    "aquaculture:atlantic_halibut": {
+      "chance": 0.65
+    },
+    "aquaculture:minnow": {
+      "chance": 0.05
+    },
+    "aquaculture:pink_salmon": {
+      "chance": 0.05
+    },
+    "aquaculture:piranha": {
+      "chance": 0.05
+    },
+    "aquaculture:rainbow_trout": {
+      "chance": 0.25
+    },
+    "aquaculture:synodontis": {
+      "chance": 0.05
+    },
+    "aquaculture:gar": {
+      "chance": 0.25
+    },
+    "aquaculture:catfish": {
+      "chance": 0.5
+    },
+    "aquaculture:pacific_halibut": {
+      "chance": 0.5
+    },
+    "aquaculture:muskellunge": {
+      "chance": 0.25
+    },
+    "minecraft:cod": {
+      "chance": 0.5
+    },
+    "minecraft:tropical_fish": {
+      "chance": 0.05
+    },
+    "minecraft:salmon": {
+      "chance": 0.05
+    },
+    "aquaculture:bluegill": {
+      "chance": 0.05
+    },
+    "aquaculture:arapaima": {
+      "chance": 0.5
+    },
+    "aquaculture:atlantic_herring": {
+      "chance": 0.05
+    },
+    "aquaculture:carp": {
+      "chance": 0.25
+    },
+    "aquaculture:pollock": {
+      "chance": 0.25
+    },
+    "aquaculture:brown_shrooma": {
+      "chance": 0.05
+    },
+    "minecraft:pufferfish": {
+      "chance": 0.05
+    },
+    "aquaculture:brown_trout": {
+      "chance": 0.05
+    },
+    "aquaculture:capitaine": {
+      "chance": 0.5
+    },
+    "aquaculture:perch": {
+      "chance": 0.05
+    },
+    "aquaculture:jellyfish": {
+      "chance": 0.25
+    },
+    "aquaculture:tambaqui": {
+      "chance": 0.25
+    },
+    "aquaculture:smallmouth_bass": {
+      "chance": 0.05
+    },
+    "aquaculture:bayad": {
+      "chance": 0.25
+    },
+    "aquaculture:goldfish": {
+      "chance": 0.05
+    },
+    "aquaculture:boulti": {
+      "chance": 0.05
+    },
+    "aquaculture:red_shrooma": {
+      "chance": 0.05
+    },
+    "aquaculture:red_grouper": {
+      "chance": 0.25
+    },
+    "aquaculture:blackfish": {
+      "chance": 0.05
+    },
+    "aquaculture:tuna": {
+      "chance": 0.5
+    },
+    "aquaculture:atlantic_cod": {
+      "chance": 0.5
+    }
+  }
+}

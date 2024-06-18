@@ -2,7 +2,7 @@ package com.teammetallurgy.aquaculture.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -13,15 +13,16 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
 public class LootBoxItem extends Item {
-    private final ResourceLocation lootTable;
+    private final ResourceKey<LootTable> lootTable;
 
-    public LootBoxItem(ResourceLocation lootTable) {
+    public LootBoxItem(ResourceKey<LootTable> lootTable) {
         super(new Item.Properties());
         this.lootTable = lootTable;
     }
@@ -34,9 +35,9 @@ public class LootBoxItem extends Item {
 
         if (world instanceof ServerLevel serverLevel) {
             LootParams.Builder builder = new LootParams.Builder(serverLevel);
-            List<ItemStack> loot = serverLevel.getServer().getLootData().getLootTable(this.lootTable).getRandomItems(builder.create(LootContextParamSets.EMPTY));
+            List<ItemStack> loot = serverLevel.getServer().reloadableRegistries().getLootTable(this.lootTable).getRandomItems(builder.create(LootContextParamSets.EMPTY));
             if (!loot.isEmpty()) {
-                ItemStack lootStack = loot.get(0);
+                ItemStack lootStack = loot.getFirst();
                 player.displayClientMessage(Component.translatable("aquaculture.loot.open", lootStack.getHoverName()).withStyle(ChatFormatting.YELLOW), true);
                 this.giveItem(player, lootStack);
                 heldStack.shrink(1);

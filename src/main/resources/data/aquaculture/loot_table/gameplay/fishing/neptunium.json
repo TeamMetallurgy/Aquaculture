@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:fishing",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_contents",
+              "component": "minecraft:container",
+              "entries": [
+                {
+                  "type": "minecraft:loot_table",
+                  "value": "aquaculture:box/neptunes_bounty"
+                }
+              ]
+            }
+          ],
+          "name": "aquaculture:neptunes_bounty"
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": "minecraft:gameplay/fishing/treasure"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aquaculture:neptunium_nugget"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "aquaculture:gameplay/fishing/neptunium"
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  C",
+    " C ",
+    "S  "
+  ],
+  "key": {
+    "S": {
+      "tag": "c:rods/wooden"
+    },
+    "C": {
+      "tag": "minecraft:planks"
+    }	
+  },
+  "result": {
+    "id": "aquaculture:wooden_fillet_knife"
+  }
+}

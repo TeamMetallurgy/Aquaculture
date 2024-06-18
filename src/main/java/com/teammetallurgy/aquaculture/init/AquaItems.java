@@ -23,22 +23,22 @@ public class AquaItems {
     public static final Collection<DeferredItem<Item>> SPAWN_EGGS = new ArrayList<>();
 
     //Fishing
-    public static final DeferredItem<Item> IRON_FISHING_ROD = registerWithTab(() -> new AquaFishingRodItem(Tiers.IRON, new Item.Properties().defaultDurability(125)), "iron_fishing_rod");
-    public static final DeferredItem<Item> GOLD_FISHING_ROD = registerWithTab(() -> new AquaFishingRodItem(Tiers.GOLD, new Item.Properties().defaultDurability(55)), "gold_fishing_rod");
-    public static final DeferredItem<Item> DIAMOND_FISHING_ROD = registerWithTab(() -> new AquaFishingRodItem(Tiers.DIAMOND, new Item.Properties().defaultDurability(450)), "diamond_fishing_rod");
-    public static final DeferredItem<Item> NEPTUNIUM_FISHING_ROD = registerWithTab(() -> new AquaFishingRodItem(AquacultureAPI.MATS.NEPTUNIUM, new Item.Properties().defaultDurability(1000)), "neptunium_fishing_rod");
+    public static final DeferredItem<Item> IRON_FISHING_ROD = registerWithTab(() -> new AquaFishingRodItem(Tiers.IRON, new Item.Properties().durability(125)), "iron_fishing_rod");
+    public static final DeferredItem<Item> GOLD_FISHING_ROD = registerWithTab(() -> new AquaFishingRodItem(Tiers.GOLD, new Item.Properties().durability(55)), "gold_fishing_rod");
+    public static final DeferredItem<Item> DIAMOND_FISHING_ROD = registerWithTab(() -> new AquaFishingRodItem(Tiers.DIAMOND, new Item.Properties().durability(450)), "diamond_fishing_rod");
+    public static final DeferredItem<Item> NEPTUNIUM_FISHING_ROD = registerWithTab(() -> new AquaFishingRodItem(AquacultureAPI.MATS.NEPTUNIUM, new Item.Properties().durability(1000)), "neptunium_fishing_rod");
     public static final DeferredItem<Item> WORM = registerWithTab(() -> AquacultureAPI.createBait(20, 1), "worm");
-    public static final DeferredItem<Item> FISHING_LINE = registerWithTab(() -> new DyeableItem(0), "fishing_line");
-    public static final DeferredItem<Item> BOBBER = registerWithTab(() -> new DyeableItem(13838890), "bobber");
+    public static final DeferredItem<Item> FISHING_LINE = registerWithTab(SimpleItem::new, "fishing_line");
+    public static final DeferredItem<Item> BOBBER = registerWithTab(SimpleItem::new, "bobber");
 
     // Neptunium
     public static final DeferredItem<Item> NEPTUNIUM_NUGGET = registerWithTab(SimpleItem::new, "neptunium_nugget");
     public static final DeferredItem<Item> NEPTUNIUM_INGOT = registerWithTab(SimpleItem::new, "neptunium_ingot");
     public static final DeferredItem<Item> NEPTUNIUM_PICKAXE = registerWithTab(() -> new NeptuniumPickaxe(AquacultureAPI.MATS.NEPTUNIUM, 1, -2.8F), "neptunium_pickaxe");
     public static final DeferredItem<Item> NEPTUNIUM_SHOVEL = registerWithTab(() -> new NeptuniumShovel(AquacultureAPI.MATS.NEPTUNIUM, 1.5F, -3.0F), "neptunium_shovel");
-    public static final DeferredItem<Item> NEPTUNIUM_AXE = registerWithTab(() -> new AxeItem(AquacultureAPI.MATS.NEPTUNIUM, 5.0F, -3.0F, new Item.Properties()), "neptunium_axe");
+    public static final DeferredItem<Item> NEPTUNIUM_AXE = registerWithTab(() -> new AxeItem(AquacultureAPI.MATS.NEPTUNIUM, new Item.Properties().attributes(AxeItem.createAttributes(AquacultureAPI.MATS.NEPTUNIUM, 5.0F, -3.0F))), "neptunium_axe");
     public static final DeferredItem<Item> NEPTUNIUM_HOE = registerWithTab(() -> new NeptuniumHoe(AquacultureAPI.MATS.NEPTUNIUM, -3, 0.2F), "neptunium_hoe");
-    public static final DeferredItem<Item> NEPTUNIUM_SWORD = registerWithTab(() -> new SwordItem(AquacultureAPI.MATS.NEPTUNIUM, 3, -2.4F, new Item.Properties()), "neptunium_sword");
+    public static final DeferredItem<Item> NEPTUNIUM_SWORD = registerWithTab(() -> new SwordItem(AquacultureAPI.MATS.NEPTUNIUM, new Item.Properties().attributes(SwordItem.createAttributes(AquacultureAPI.MATS.NEPTUNIUM, 3, -2.4F))), "neptunium_sword");
     public static final DeferredItem<Item> NEPTUNIUM_BOW = registerWithTab(NeptuniumBow::new, "neptunium_bow");
     public static final DeferredItem<Item> NEPTUNIUM_HELMET = registerWithTab(() -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorItem.Type.HELMET).setArmorTexture("neptunium_layer_1"), "neptunium_helmet");
     public static final DeferredItem<Item> NEPTUNIUM_PLATE = registerWithTab(() -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorItem.Type.CHESTPLATE).setArmorTexture("neptunium_layer_1"), "neptunium_chestplate");
@@ -66,7 +66,7 @@ public class AquaItems {
     // Food
     public static final DeferredItem<Item> FISH_FILLET = registerWithTab(() -> new Item(new Item.Properties().food(AquaFoods.FISH_RAW)), "fish_fillet_raw");
     public static final DeferredItem<Item> COOKED_FILLET = registerWithTab(() -> new Item(new Item.Properties().food(AquaFoods.FISH_FILLET)), "fish_fillet_cooked");
-    public static final DeferredItem<Item> TURTLE_SOUP = registerWithTab(() -> new BowlFoodItem(new Item.Properties().stacksTo(1).food(Foods.MUSHROOM_STEW)), "turtle_soup");
+    public static final DeferredItem<Item> TURTLE_SOUP = registerWithTab(() -> new Item(new Item.Properties().stacksTo(1).food(Foods.MUSHROOM_STEW)), "turtle_soup");
     public static final DeferredItem<Item> SUSHI = registerWithTab(() -> new Item(new Item.Properties().food(AquaFoods.SUSHI)), "sushi");
 
     // Fish

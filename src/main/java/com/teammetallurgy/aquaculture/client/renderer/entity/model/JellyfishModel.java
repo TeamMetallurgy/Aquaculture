@@ -51,7 +51,7 @@ public class JellyfishModel<T extends Entity> extends ListModel<T> {
     }
 
     @Override
-    public void renderToBuffer(@Nonnull PoseStack matrixStack, @Nonnull VertexConsumer builder, int p_225598_3_, int p_225598_4_, float p_225598_5_, float p_225598_6_, float p_225598_7_, float p_225598_8_) {
+    public void renderToBuffer(PoseStack p_103013_, VertexConsumer p_103014_, int p_103015_, int p_103016_, int p_350701_) {
         //Actual rendering done in the layer. Only way I could figure out to keep the transparency
     }
 

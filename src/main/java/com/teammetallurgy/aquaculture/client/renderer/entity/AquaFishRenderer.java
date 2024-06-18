@@ -21,7 +21,7 @@ import net.minecraft.util.Mth;
 import javax.annotation.Nonnull;
 
 public class AquaFishRenderer extends MobRenderer<AquaFishEntity, EntityModel<AquaFishEntity>> {
-    private static final ResourceLocation DEFAULT_LOCATION = new ResourceLocation(Aquaculture.MOD_ID, "textures/entity/fish/atlantic_cod.png");
+    private static final ResourceLocation DEFAULT_LOCATION = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/fish/atlantic_cod.png");
     private final TropicalFishModelB<AquaFishEntity> tropicalFishBModel;
     private final FishSmallModel<AquaFishEntity> smallModel;
     private final FishMediumModel<AquaFishEntity> mediumModel;
@@ -66,14 +66,14 @@ public class AquaFishRenderer extends MobRenderer<AquaFishEntity, EntityModel<Aq
     public ResourceLocation getTextureLocation(@Nonnull AquaFishEntity fishEntity) {
         ResourceLocation location = BuiltInRegistries.ENTITY_TYPE.getKey(fishEntity.getType());
         if (location != null) {
-            return new ResourceLocation(Aquaculture.MOD_ID, "textures/entity/fish/" + location.getPath() + ".png");
+            return ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/fish/" + location.getPath() + ".png");
         }
         return DEFAULT_LOCATION;
     }
 
     @Override
-    protected void setupRotations(@Nonnull AquaFishEntity fishEntity, @Nonnull PoseStack matrixStack, float ageInTicks, float rotationYaw, float partialTicks) {
-        super.setupRotations(fishEntity, matrixStack, ageInTicks, rotationYaw, partialTicks);
+    protected void setupRotations(@Nonnull AquaFishEntity fishEntity, @Nonnull PoseStack matrixStack, float ageInTicks, float rotationYaw, float partialTicks, float f) {
+        super.setupRotations(fishEntity, matrixStack, ageInTicks, rotationYaw, partialTicks, f);
         FishType fishType = fishEntity.getFishType();
         if (fishType != FishType.JELLYFISH) {
             float salmonRotation = 1.0F;

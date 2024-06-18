@@ -1,24 +1,19 @@
 package com.teammetallurgy.aquaculture.block;
 
 import com.mojang.serialization.MapCodec;
-import com.teammetallurgy.aquaculture.api.AquacultureAPI;
-import com.teammetallurgy.aquaculture.api.fish.FishData;
 import com.teammetallurgy.aquaculture.init.AquaItems;
 import com.teammetallurgy.aquaculture.init.AquaSounds;
-import com.teammetallurgy.aquaculture.misc.AquaConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -29,6 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -46,73 +42,52 @@ public class WormFarmBlock extends ComposterBlock {
         return CODEC;
     }
 
-    public static void addCompostables() {
-        registerCompostable(AquaItems.ALGAE.get().asItem(), 0.3F);
-        if (AquaConfig.BASIC_OPTIONS.compostableFish.get()) {
-            for (Item fish : AquacultureAPI.FISH_DATA.getFish()) {
-                double weight = AquacultureAPI.FISH_DATA.getMinWeight(fish);
-                ItemStack fishStack = new ItemStack(fish);
-                if (fishStack.getTag() != null && fishStack.getTag().contains("fishWeight")) {
-                    weight = fishStack.getTag().getDouble("fishWeight");
-                }
-                float chance = Mth.clamp((FishData.getFilletAmountFromWeight(weight) * 0.25F), 0.05F, 0.65F);
-                registerCompostable(fish, chance);
-            }
-        }
-    }
-
-    public static void registerCompostable(Item item, float chance) {
-        if (!COMPOSTABLES.containsKey(item) && COMPOSTABLES.size() < 256) {
-            COMPOSTABLES.put(item, chance);
-        }
-    }
-
     @Override
     @Nonnull
-    public InteractionResult use(BlockState state, @Nonnull Level world, @Nonnull BlockPos pos, Player player, @Nonnull InteractionHand hand, BlockHitResult raytrace) {
-        int level = state.getValue(LEVEL);
+    public ItemInteractionResult useItemOn(@Nonnull ItemStack stack, BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, Player player, @Nonnull InteractionHand hand, @Nonnull BlockHitResult blockHitResult) {
+        int stateLevel = state.getValue(LEVEL);
         ItemStack heldStack = player.getItemInHand(hand);
 
-        if (COMPOSTABLES.containsKey(heldStack.getItem())) {
-            if (level < 8 && !world.isClientSide) {
-                boolean addItem = WormFarmBlock.addItem(state, world, pos, heldStack);
-                world.levelEvent(1500, pos, addItem ? 1 : 0);
+        if (heldStack.getItemHolder().getData(NeoForgeDataMaps.COMPOSTABLES) != null) {
+            if (stateLevel < 8 && !level.isClientSide) {
+                boolean addItem = WormFarmBlock.addItem(state, level, pos, heldStack);
+                level.levelEvent(1500, pos, addItem ? 1 : 0);
                 if (!player.getAbilities().instabuild) {
                     heldStack.shrink(1);
                 }
             }
-            return InteractionResult.SUCCESS;
-        } else if (level > 0) {
-            if (!world.isClientSide) {
-                double x = (double) (world.random.nextFloat() * 0.7F) + 0.15000000596046448D;
-                double y = (double) (world.random.nextFloat() * 0.7F) + 0.06000000238418579D + 0.6D;
-                double z = (double) (world.random.nextFloat() * 0.7F) + 0.15000000596046448D;
-                ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX() + x, (double) pos.getY() + y, (double) pos.getZ() + z, new ItemStack(AquaItems.WORM.get()));
+            return ItemInteractionResult.SUCCESS;
+        } else if (stateLevel > 0) {
+            if (!level.isClientSide) {
+                double x = (double) (level.random.nextFloat() * 0.7F) + 0.15000000596046448D;
+                double y = (double) (level.random.nextFloat() * 0.7F) + 0.06000000238418579D + 0.6D;
+                double z = (double) (level.random.nextFloat() * 0.7F) + 0.15000000596046448D;
+                ItemEntity itemEntity = new ItemEntity(level, (double) pos.getX() + x, (double) pos.getY() + y, (double) pos.getZ() + z, new ItemStack(AquaItems.WORM.get()));
                 itemEntity.setDefaultPickUpDelay();
-                world.addFreshEntity(itemEntity);
+                level.addFreshEntity(itemEntity);
             }
-            world.setBlock(pos, state.setValue(LEVEL, state.getValue(LEVEL) - 1), 3);
-            world.playSound(null, pos, AquaSounds.WORM_FARM_EMPTY.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-            return InteractionResult.SUCCESS;
+            level.setBlock(pos, state.setValue(LEVEL, state.getValue(LEVEL) - 1), 3);
+            level.playSound(null, pos, AquaSounds.WORM_FARM_EMPTY.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+            return ItemInteractionResult.SUCCESS;
         } else {
-            return InteractionResult.FAIL;
+            return ItemInteractionResult.FAIL;
         }
     }
 
     @Override
-    public void tick(BlockState state, @Nonnull ServerLevel world, @Nonnull BlockPos pos, RandomSource random) {
+    public void tick(@Nonnull BlockState state, @Nonnull ServerLevel level, @Nonnull BlockPos pos, @Nonnull RandomSource random) {
     }
     
-    private static boolean addItem(BlockState state, LevelAccessor world, BlockPos pos, @Nonnull ItemStack stack) {
-        int level = state.getValue(LEVEL);
-        float chance = COMPOSTABLES.getFloat(stack.getItem());
-        if ((level != 0 || chance <= 0.0F) && world.getRandom().nextDouble() >= (double) chance) {
+    private static boolean addItem(BlockState state, LevelAccessor level, BlockPos pos, @Nonnull ItemStack stack) {
+        int stateLevel = state.getValue(LEVEL);
+        float chance = ComposterBlock.getValue(stack);
+        if ((stateLevel != 0 || chance <= 0.0F) && level.getRandom().nextDouble() >= (double) chance) {
             return false;
         } else {
-            int levelAdd = level + 1;
-            world.setBlock(pos, state.setValue(LEVEL, levelAdd), 3);
+            int levelAdd = stateLevel + 1;
+            level.setBlock(pos, state.setValue(LEVEL, levelAdd), 3);
             if (levelAdd == 7) {
-                world.scheduleTick(pos, state.getBlock(), 20);
+                level.scheduleTick(pos, state.getBlock(), 20);
             }
             return true;
         }
@@ -120,25 +95,25 @@ public class WormFarmBlock extends ComposterBlock {
 
     @Override
     @Nonnull
-    public WorldlyContainer getContainer(BlockState state, @Nonnull LevelAccessor world, @Nonnull BlockPos pos) {
+    public WorldlyContainer getContainer(BlockState state, @Nonnull LevelAccessor levelAccessor, @Nonnull BlockPos pos) {
         int level = state.getValue(LEVEL);
         if (level == 8) {
-            return new FullInventory(state, world, pos, new ItemStack(AquaItems.WORM.get()));
+            return new FullInventory(state, levelAccessor, pos, new ItemStack(AquaItems.WORM.get()));
         } else {
-            return level < 7 ? new PartialInventory(state, world, pos) : new EmptyInventory();
+            return level < 7 ? new PartialInventory(state, levelAccessor, pos) : new EmptyInventory();
         }
     }
 
     static class PartialInventory extends SimpleContainer implements WorldlyContainer {
         private final BlockState state;
-        private final LevelAccessor world;
+        private final LevelAccessor levelAccessor;
         private final BlockPos pos;
         private boolean inserted;
 
-        PartialInventory(BlockState state, LevelAccessor world, BlockPos pos) {
+        PartialInventory(BlockState state, LevelAccessor levelAccessor, BlockPos pos) {
             super(1);
             this.state = state;
-            this.world = world;
+            this.levelAccessor = levelAccessor;
             this.pos = pos;
         }
 
@@ -155,7 +130,7 @@ public class WormFarmBlock extends ComposterBlock {
 
         @Override
         public boolean canPlaceItemThroughFace(int index, @Nonnull ItemStack stack, @Nullable Direction direction) {
-            return !this.inserted && direction == Direction.UP && ComposterBlock.COMPOSTABLES.containsKey(stack.getItem());
+            return !this.inserted && direction == Direction.UP && ComposterBlock.getValue(stack) > 0;
         }
 
         @Override
@@ -168,7 +143,7 @@ public class WormFarmBlock extends ComposterBlock {
             ItemStack stack = this.getItem(0);
             if (!stack.isEmpty()) {
                 this.inserted = true;
-                WormFarmBlock.addItem(this.state, this.world, this.pos, stack);
+                WormFarmBlock.addItem(this.state, this.levelAccessor, this.pos, stack);
                 this.removeItemNoUpdate(0);
             }
 
