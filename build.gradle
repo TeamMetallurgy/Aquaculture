@@ -59,7 +59,7 @@ dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
     runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
-    //compileOnly "com.blamejared.crafttweaker:CraftTweaker-neoforge-${minecraft_version}:${ct_version}"
+    compileOnly "com.blamejared.crafttweaker:CraftTweaker-neoforge-${minecraft_version}:${ct_version}"
 }
 
 processResources {

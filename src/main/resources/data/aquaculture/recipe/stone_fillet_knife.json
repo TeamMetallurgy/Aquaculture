@@ -10,7 +10,7 @@
       "tag": "c:rods/wooden"
     },
     "C": {
-      "tag": "neoforge:cobblestone"
+      "tag": "minecraft:stone_tool_materials"
     }	
   },
   "result": {
