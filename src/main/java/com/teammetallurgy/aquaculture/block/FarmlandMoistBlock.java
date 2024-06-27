@@ -9,8 +9,8 @@ import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
-import net.neoforged.neoforge.common.IPlantable;
-import net.neoforged.neoforge.common.PlantType;
+import net.neoforged.neoforge.common.SpecialPlantable;
+import net.neoforged.neoforge.common.util.TriState;
 
 import javax.annotation.Nonnull;
 
@@ -29,9 +29,8 @@ public class FarmlandMoistBlock extends FarmBlock {
     }
 
     @Override
-    public boolean canSustainPlant(@Nonnull BlockState state, @Nonnull BlockGetter world, BlockPos pos, @Nonnull Direction facing, IPlantable plantable) {
-        PlantType type = plantable.getPlantType(world, pos.relative(facing));
-
-        return type == PlantType.CROP || type == PlantType.PLAINS;
+    @Nonnull
+    public TriState canSustainPlant(@Nonnull BlockState state, @Nonnull BlockGetter level, @Nonnull BlockPos soilPosition, @Nonnull Direction facing, @Nonnull BlockState plant) {
+        return TriState.TRUE;
     }
 }

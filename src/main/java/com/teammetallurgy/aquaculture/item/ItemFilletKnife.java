@@ -10,8 +10,8 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.common.ToolAction;
-import net.neoforged.neoforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -32,8 +32,8 @@ public class ItemFilletKnife extends SwordItem {
     }
 
     @Override
-    public boolean canPerformAction(@Nonnull ItemStack stack, @Nonnull ToolAction toolAction) {
-        return toolAction == ToolActions.SWORD_DIG;
+    public boolean canPerformAction(@Nonnull ItemStack stack, @Nonnull ItemAbility toolAction) {
+        return toolAction == ItemAbilities.SWORD_DIG;
     }
 
     @Override

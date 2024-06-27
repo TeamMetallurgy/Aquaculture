@@ -28,8 +28,8 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.common.ToolAction;
-import net.neoforged.neoforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
@@ -121,8 +121,8 @@ public class AquaFishingRodItem extends FishingRodItem {
     }
 
     @Override
-    public boolean canPerformAction(@Nonnull ItemStack stack, @Nonnull ToolAction toolAction) {
-        return ToolActions.DEFAULT_FISHING_ROD_ACTIONS.contains(toolAction);
+    public boolean canPerformAction(@Nonnull ItemStack stack, @Nonnull ItemAbility toolAction) {
+        return ItemAbilities.DEFAULT_FISHING_ROD_ACTIONS.contains(toolAction);
     }
 
     @Nonnull

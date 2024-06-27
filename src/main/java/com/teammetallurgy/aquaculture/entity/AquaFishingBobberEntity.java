@@ -42,8 +42,8 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.ToolActions;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.neoforged.neoforge.event.entity.player.ItemFishedEvent;
 import net.neoforged.neoforge.items.ItemStackHandler;
@@ -187,8 +187,8 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
     protected boolean shouldStopFishing(Player player) {
         ItemStack mainHand = player.getMainHandItem();
         ItemStack offHand = player.getOffhandItem();
-        boolean isMainHandRod = mainHand.canPerformAction(ToolActions.FISHING_ROD_CAST);
-        boolean isOffHandRod = offHand.canPerformAction(ToolActions.FISHING_ROD_CAST);
+        boolean isMainHandRod = mainHand.canPerformAction(ItemAbilities.FISHING_ROD_CAST);
+        boolean isOffHandRod = offHand.canPerformAction(ItemAbilities.FISHING_ROD_CAST);
         if (!player.isRemoved() && player.isAlive() && (isMainHandRod || isOffHandRod) && !(this.distanceToSqr(player) > 1024.0D)) {
             return false;
         } else {

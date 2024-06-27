@@ -20,6 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.ItemAbilities;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
@@ -158,7 +159,7 @@ public class AquaBobberRenderer extends EntityRenderer<AquaFishingBobberEntity> 
     private Vec3 getPlayerHandPos(Player player, float swingProgressSqrt, float partialTicks) { //Copied from FishingHookRenderer
         int i = player.getMainArm() == HumanoidArm.RIGHT ? 1 : -1;
         ItemStack itemstack = player.getMainHandItem();
-        if (!itemstack.canPerformAction(net.neoforged.neoforge.common.ToolActions.FISHING_ROD_CAST)) {
+        if (!itemstack.canPerformAction(ItemAbilities.FISHING_ROD_CAST)) {
             i = -i;
         }
 
