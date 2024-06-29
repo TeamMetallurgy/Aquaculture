@@ -4,12 +4,9 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.FarmBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
-import net.neoforged.neoforge.common.SpecialPlantable;
 import net.neoforged.neoforge.common.util.TriState;
 
 import javax.annotation.Nonnull;
@@ -30,7 +27,9 @@ public class FarmlandMoistBlock extends FarmBlock {
 
     @Override
     @Nonnull
-    public TriState canSustainPlant(@Nonnull BlockState state, @Nonnull BlockGetter level, @Nonnull BlockPos soilPosition, @Nonnull Direction facing, @Nonnull BlockState plant) {
-        return TriState.TRUE;
+    public TriState canSustainPlant(@Nonnull BlockState state, @Nonnull BlockGetter level, @Nonnull BlockPos soilPosition, @Nonnull Direction facing, @Nonnull BlockState plant) { //TODO Remove, once fix have been implemented in NeoForge.
+        return facing == Direction.UP && (plant.getBlock() instanceof CropBlock
+                                       || plant.getBlock() instanceof StemBlock)
+                ? TriState.TRUE : super.canSustainPlant(state, level, soilPosition, facing, plant);
     }
 }
