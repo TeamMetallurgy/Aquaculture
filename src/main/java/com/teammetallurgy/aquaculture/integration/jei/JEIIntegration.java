@@ -24,7 +24,7 @@ public class JEIIntegration implements IModPlugin {
     public void registerRecipes(@Nonnull IRecipeRegistration registration) {
         if (AquaConfig.BASIC_OPTIONS.showFilletRecipesInJEI.get()) {
 
-            registration.addRecipes(RecipeTypes.CRAFTING, FilletKnifeRecipeMaker.createFilletKnifeRecipes());
+            //registration.addRecipes(RecipeTypes.CRAFTING, FilletKnifeRecipeMaker.createFilletKnifeRecipes());
         }
     }
 }

@@ -31,7 +31,7 @@ public class NeptuniumArmor extends ArmorItem {
     private String texture;
 
     public NeptuniumArmor(Holder<ArmorMaterial> armorMaterial, ArmorItem.Type type) {
-        super(armorMaterial, type, new Item.Properties());
+        super(armorMaterial, type, new Item.Properties().durability(type.getDurability(35)));
     }
 
     @Override
