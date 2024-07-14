@@ -97,12 +97,13 @@ public class AquaFishingRodItem extends FishingRodItem {
             if (level instanceof ServerLevel serverLevel) {
                 //Lure Speed
                 int timeReduction = (int) (EnchantmentHelper.getFishingTimeReduction(serverLevel, heldStack, player) * 20.0F);
-                if (this.tier == AquacultureAPI.MATS.NEPTUNIUM) timeReduction += 1;
+                int scalingToAccountForLure = 100;
+                if (this.tier == AquacultureAPI.MATS.NEPTUNIUM) timeReduction += 1 * scalingToAccountForLure;
                 ItemStack bait = getBait(heldStack);
                 if (!isAdminRod && !bait.isEmpty()) {
-                    timeReduction += ((BaitItem) bait.getItem()).getLureSpeedModifier();
+                    timeReduction += ((BaitItem) bait.getItem()).getLureSpeedModifier() * scalingToAccountForLure;
                 }
-                timeReduction = Math.min(5, timeReduction);
+                //timeReduction = Math.min(5, timeReduction); This is breaking the Lure enchantment 
                 //Luck
                 int luck = EnchantmentHelper.getFishingLuckBonus(serverLevel, heldStack, player);
                 if (hook != Hooks.EMPTY && hook.getLuckModifier() > 0) luck += hook.getLuckModifier();

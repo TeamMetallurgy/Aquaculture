@@ -457,7 +457,7 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
             }
         } else {
             this.timeUntilLured = Mth.nextInt(this.random, 100, 600);
-            this.timeUntilLured -= this.lureSpeed * 20 * 5;
+            this.timeUntilLured -= this.lureSpeed;
         }
     }
 
