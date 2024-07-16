@@ -96,18 +96,19 @@ public class AquaFishingRodItem extends FishingRodItem {
             level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FISHING_BOBBER_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.random.nextFloat() * 0.4F + 0.8F));
             if (level instanceof ServerLevel serverLevel) {
                 //Lure Speed
-                int timeReduction = (int) (EnchantmentHelper.getFishingTimeReduction(serverLevel, heldStack, player) * 20.0F);
-                if (this.tier == AquacultureAPI.MATS.NEPTUNIUM) timeReduction += 1;
+                int lureSpeed = (int) (EnchantmentHelper.getFishingTimeReduction(serverLevel, heldStack, player) * 20.0F);
+                if (this.tier == AquacultureAPI.MATS.NEPTUNIUM) lureSpeed += 100;
                 ItemStack bait = getBait(heldStack);
                 if (!isAdminRod && !bait.isEmpty()) {
-                    timeReduction += ((BaitItem) bait.getItem()).getLureSpeedModifier();
+                    lureSpeed += (((BaitItem) bait.getItem()).getLureSpeedModifier() * 100);
                 }
-                timeReduction = Math.min(5, timeReduction);
+                lureSpeed = Math.min(500, lureSpeed);
+
                 //Luck
                 int luck = EnchantmentHelper.getFishingLuckBonus(serverLevel, heldStack, player);
                 if (hook != Hooks.EMPTY && hook.getLuckModifier() > 0) luck += hook.getLuckModifier();
 
-                level.addFreshEntity(new AquaFishingBobberEntity(player, level, luck, timeReduction, hook, getFishingLine(heldStack), getBobber(heldStack), heldStack));
+                level.addFreshEntity(new AquaFishingBobberEntity(player, level, luck, lureSpeed, hook, getFishingLine(heldStack), getBobber(heldStack), heldStack));
             }
             player.awardStat(Stats.ITEM_USED.get(this));
             player.gameEvent(GameEvent.ITEM_INTERACT_START);
