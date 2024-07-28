@@ -1,7 +1,7 @@
 {
   "tabs.aquaculture.tab": "水产业/水产品",
   
-  "_comment": "Blocks",
+  "_comment": "Blocs",
   "block.aquaculture.neptunium_block": "海王块",
   "block.aquaculture.neptunes_bounty": "海王恩惠",
   "block.aquaculture.tackle_box": "钓具箱",
@@ -104,6 +104,7 @@
   "item.aquaculture.jellyfish": "水母",
   "item.aquaculture.red_grouper": "赤点石斑鱼",
   "item.aquaculture.tuna": "金枪鱼",
+    "item.aquaculture.leech": "水蛭",
   "item.aquaculture.box_turtle": "箱龟",
   "item.aquaculture.arrau_turtle": "巨型侧颈龟",
   "item.aquaculture.starshell_turtle": "星壳龟",
@@ -185,6 +186,7 @@
   "entity.aquaculture.jungle_fish_mount": "丛林木鱼架",
   "entity.aquaculture.acacia_fish_mount": "金合欢木鱼架",
   "entity.aquaculture.dark_oak_fish_mount": "深色橡木鱼架",
+  "entity.aquaculture.water_arrow": "箭",
   
   "_comment": "Message In A Bottle",
   "aquaculture.message1": "我怎么爬上树去找鱼呢？",
