@@ -61,11 +61,11 @@ public class BiomeTagPredicate {
                     if (biomeHolder.isPresent()) {
                         CheckType checkType = CheckType.getOrCreate(this.include, this.exclude, this.and);
 
-                        Set<Holder<Biome>> validBiomes = CACHE.get(checkType);
-                        if (validBiomes == null) {
-                            validBiomes = getValidBiomes(serverLevel, checkType);
-                            CACHE.put(checkType, validBiomes);
-                        }
+                        Set<Holder<Biome>> validBiomes = getValidBiomes(serverLevel, checkType);
+//                        if (validBiomes == null) {
+//                            validBiomes = getValidBiomes(serverLevel, checkType);
+//                            CACHE.put(checkType, validBiomes);
+//                        }
                         return validBiomes.contains(biomeHolder.get());
                     }
                 }
@@ -92,7 +92,7 @@ public class BiomeTagPredicate {
             if (and) {
                 for (TagKey<Biome> tagKey : includeList) {
                     getBiomeFromTag(biomeRegistry, tagKey).forEach(a -> {
-                        List<TagKey<Biome>> tags = a.getTagKeys().collect(Collectors.toList());
+                        List<TagKey<Biome>> tags = a.tags().collect(Collectors.toList());
                         int beforeTagCount = tags.size();
                         tags.removeAll(includeList);
                         int afterTagCount = tags.size();

@@ -6,9 +6,7 @@ import com.teammetallurgy.aquaculture.entity.FishMountEntity;
 import com.teammetallurgy.aquaculture.entity.FishType;
 import com.teammetallurgy.aquaculture.item.AquaFishBucket;
 import com.teammetallurgy.aquaculture.item.FishMountItem;
-import com.teammetallurgy.aquaculture.loot.BiomeTagCheck;
 import com.teammetallurgy.aquaculture.misc.StackHelper;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.AbstractFish;
@@ -17,12 +15,10 @@ import net.minecraft.world.entity.animal.Ocelot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nonnull;
@@ -67,13 +63,6 @@ public class FishRegistry {
         AquaItems.ITEMS_FOR_TAB_LIST.add(bucket);
 
         return AquaItems.registerWithTab(initializer, name);
-    }
-
-    @SubscribeEvent
-    public static void registerFishies(RegisterEvent event) {
-        if (event.getRegistryKey().equals(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS)) {
-            Aquaculture.BIOME_TAG_CHECK = LootItemConditions.register(new ResourceLocation(Aquaculture.MOD_ID, "biome_tag_check").toString(), new BiomeTagCheck.BiomeTagCheckSerializer());
-        }
     }
 
     @SubscribeEvent

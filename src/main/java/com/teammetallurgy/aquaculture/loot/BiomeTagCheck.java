@@ -29,7 +29,7 @@ public class BiomeTagCheck implements LootItemCondition {
     @Override
     @Nonnull
     public LootItemConditionType getType() {
-        return Aquaculture.BIOME_TAG_CHECK;
+        return Aquaculture.BIOME_TAG_CHECK.get();
     }
 
     public static class BiomeTagCheckSerializer implements Serializer<BiomeTagCheck> {

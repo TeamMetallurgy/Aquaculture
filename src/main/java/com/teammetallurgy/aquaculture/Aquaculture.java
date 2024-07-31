@@ -7,6 +7,7 @@ import com.teammetallurgy.aquaculture.entity.AquaFishEntity;
 import com.teammetallurgy.aquaculture.init.*;
 import com.teammetallurgy.aquaculture.item.crafting.FishFilletRecipe;
 import com.teammetallurgy.aquaculture.loot.AquaBiomeModifiers;
+import com.teammetallurgy.aquaculture.loot.BiomeTagCheck;
 import com.teammetallurgy.aquaculture.loot.FishWeightHandler;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
 import cpw.mods.modlauncher.Environment;
@@ -39,7 +40,6 @@ public class Aquaculture {
     public static final boolean IS_DEV = Launcher.INSTANCE.environment().getProperty(Environment.Keys.VERSION.get()).filter(v -> v.equals("MOD_DEV")).isPresent();
     public final static String MOD_ID = "aquaculture";
     public static final Logger LOG = LogManager.getLogger(MOD_ID);
-    public static LootItemConditionType BIOME_TAG_CHECK;
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Aquaculture.MOD_ID);
     public static final RegistryObject<CreativeModeTab> GROUP = CREATIVE_TABS.register("tab", () -> new CreativeModeTab.Builder(CreativeModeTab.Row.TOP,0)
                     .icon(() -> new ItemStack(AquaItems.IRON_FISHING_ROD.get()))
@@ -48,6 +48,9 @@ public class Aquaculture {
                         AquaItems.ITEMS_FOR_TAB_LIST.forEach(registryObject -> tabOutput.accept(new ItemStack(registryObject.get())));
                     }).build()
     );
+
+    public static final DeferredRegister<LootItemConditionType> LOOT_CONDITION_TYPE_DEFERRED = DeferredRegister.create(Registries.LOOT_CONDITION_TYPE, Aquaculture.MOD_ID);
+    public static final RegistryObject<LootItemConditionType> BIOME_TAG_CHECK = LOOT_CONDITION_TYPE_DEFERRED.register("biome_tag_check", () -> new LootItemConditionType(new BiomeTagCheck.BiomeTagCheckSerializer()));
 
     public Aquaculture() {
         instance = this;
@@ -91,6 +94,7 @@ public class Aquaculture {
         AquaSounds.SOUND_EVENT_DEFERRED.register(modBus);
         AquaGuis.MENU_DEFERRED.register(modBus);
         FishFilletRecipe.IRECIPE_SERIALIZERS_DEFERRED.register(modBus);
+        LOOT_CONDITION_TYPE_DEFERRED.register(modBus);
         AquaBiomeModifiers.BIOME_MODIFIER_SERIALIZERS_DEFERRED.register(modBus);
     }
 
