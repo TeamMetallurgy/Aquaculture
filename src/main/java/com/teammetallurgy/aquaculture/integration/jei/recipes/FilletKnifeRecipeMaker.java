@@ -20,7 +20,7 @@ public class FilletKnifeRecipeMaker {
         List<RecipeHolder<CraftingRecipe>> recipes = new ArrayList<>();
 
         for (Item fish : AquacultureAPI.FISH_DATA.getFish()) {
-            TagKey<Item> filletKnifeTag = AquacultureAPI.Tags.KNIVES;
+            TagKey<Item> filletKnifeTag = AquacultureAPI.Tags.KNIFE;
             NonNullList<Ingredient> input = NonNullList.of(Ingredient.EMPTY, Ingredient.of(filletKnifeTag), Ingredient.of(fish));
             if (AquacultureAPI.FISH_DATA.hasFilletAmount(fish)) {
                 ItemStack output = new ItemStack(AquaItems.FISH_FILLET.get(), AquacultureAPI.FISH_DATA.getFilletAmount(fish));

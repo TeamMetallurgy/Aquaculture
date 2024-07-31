@@ -16,7 +16,6 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForgeMod;
@@ -44,9 +43,7 @@ public class NeptuniumArmor extends ArmorItem {
                 } else if (this.getType() == Type.CHESTPLATE) {
                     player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 20, 0, false, false, false));
                 } else if (this.getType() == Type.LEGGINGS) {
-                    if (!player.isCrouching() && !player.jumping && !player.isSwimming()) {
-                        player.setDeltaMovement(Vec3.ZERO);
-                    }
+                    player.setNoGravity(!player.isCrouching() && !player.jumping && !player.isSwimming() && !player.isSpectator());
                 }
             }
         }

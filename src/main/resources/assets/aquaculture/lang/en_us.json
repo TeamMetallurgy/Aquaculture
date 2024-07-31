@@ -300,5 +300,17 @@
   "aquaculture.subtitles.fish_flop": "Fish flps",
   "aquaculture.subtitles.fish_hurt": "fish hurts",
   "aquaculture.subtitles.fish_collide": "Fish collides",
-  "aquaculture.subtitles.bottle_open": "Bottle breaks"
+  "aquaculture.subtitles.bottle_open": "Bottle breaks",
+
+  "_comment": "EMI Support",
+  "tag.item.aquaculture.bobber": "Bobber",
+  "tag.item.aquaculture.fishing_line": "Fishing Line",
+  "tag.item.aquaculture.tackle_box": "Tackle Box",
+  "tag.item.aquaculture.tackle_box_green": "Tackle Box Green Dye",
+  "tag.item.aquaculture.turtle": "Turtle",
+  "tag.item.aquaculture.turtle_edible": "Turtle Edible",
+  "tag.item.c.ingots.neptunium": "Neptunium Ingots",
+  "tag.item.c.nuggets.neptunium": "Neptunium Nuggets",
+  "tag.item.c.storage_blocks.neptunium": "Neptunium Storage Blocks",
+  "tag.item.c.tools.knife": "Knives"
 }
