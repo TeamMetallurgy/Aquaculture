@@ -41,8 +41,8 @@ public class AquaItems {
     public static final DeferredItem<Item> NEPTUNIUM_SWORD = registerWithTab(() -> new SwordItem(AquacultureAPI.MATS.NEPTUNIUM, new Item.Properties().attributes(SwordItem.createAttributes(AquacultureAPI.MATS.NEPTUNIUM, 3, -2.4F))), "neptunium_sword");
     public static final DeferredItem<Item> NEPTUNIUM_BOW = registerWithTab(NeptuniumBow::new, "neptunium_bow");
     public static final DeferredItem<Item> NEPTUNIUM_HELMET = registerWithTab(() -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorItem.Type.HELMET).setArmorTexture("neptunium_layer_1"), "neptunium_helmet");
-    public static final DeferredItem<Item> NEPTUNIUM_PLATE = registerWithTab(() -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorItem.Type.CHESTPLATE).setArmorTexture("neptunium_layer_1"), "neptunium_chestplate");
-    public static final DeferredItem<Item> NEPTUNIUM_LEGS = registerWithTab(() -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorItem.Type.LEGGINGS).setArmorTexture("neptunium_layer_2"), "neptunium_leggings");
+    public static final DeferredItem<Item> NEPTUNIUM_CHESTPLATE = registerWithTab(() -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorItem.Type.CHESTPLATE).setArmorTexture("neptunium_layer_1"), "neptunium_chestplate");
+    public static final DeferredItem<Item> NEPTUNIUM_LEGGINGS = registerWithTab(() -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorItem.Type.LEGGINGS).setArmorTexture("neptunium_layer_2"), "neptunium_leggings");
     public static final DeferredItem<Item> NEPTUNIUM_BOOTS = registerWithTab(() -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorItem.Type.BOOTS).setArmorTexture("neptunium_layer_1"), "neptunium_boots");
 
     // Fillet Knifes

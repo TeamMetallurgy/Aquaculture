@@ -38,13 +38,19 @@ public class NeptuniumArmor extends ArmorItem {
         super.inventoryTick(stack, level, entity, slot, b);
         if (entity instanceof Player player) {
             if (player.isEyeInFluidType(NeoForgeMod.WATER_TYPE.value())) {
-                if (this.getType() == Type.HELMET) {
+                if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() == AquaItems.NEPTUNIUM_HELMET.get()) {
                     player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 20, 0, false, false, false));
-                } else if (this.getType() == Type.CHESTPLATE) {
-                    player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 20, 0, false, false, false));
-                } else if (this.getType() == Type.LEGGINGS) {
-                    player.setNoGravity(!player.isCrouching() && !player.jumping && !player.isSwimming() && !player.isSpectator());
                 }
+                if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() == AquaItems.NEPTUNIUM_CHESTPLATE.get()) {
+                    player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 20, 0, false, false, false));
+                }
+                if (player.getItemBySlot(EquipmentSlot.LEGS).getItem() == AquaItems.NEPTUNIUM_LEGGINGS.get()) {
+                    player.setNoGravity(!player.isCrouching() && !player.jumping && !player.isSwimming() && !player.isSpectator());
+                } else {
+                    player.setNoGravity(false);
+                }
+            } else {
+                player.setNoGravity(false);
             }
         }
     }
