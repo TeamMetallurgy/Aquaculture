@@ -201,8 +201,8 @@ public class AquaFishingRodItem extends FishingRodItem {
             return switch (slot) {
                 case 0 -> stack.getItem() instanceof HookItem;
                 case 1 -> stack.getItem() instanceof BaitItem;
-                case 2 -> stack.is(AquacultureAPI.Tags.FISHING_LINE) && stack.is(ItemTags.DYEABLE);
-                case 3 -> stack.is(AquacultureAPI.Tags.BOBBER) && stack.is(ItemTags.DYEABLE);
+                case 2 -> stack.is(AquacultureAPI.Tags.FISHING_LINE);
+                case 3 -> stack.is(AquacultureAPI.Tags.BOBBER);
                 default -> false;
             };
         }

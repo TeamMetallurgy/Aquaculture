@@ -62,15 +62,13 @@ public class TackleBoxContainer extends AbstractContainerMenu {
                 this.slotLine = this.addSlot(new SlotHidable(fishingRodSlot, 2, 106, 67) {
                     @Override
                     public boolean mayPlace(@Nonnull ItemStack stack) {
-                        boolean isDyeable = stack.is(ItemTags.DYEABLE);
-                        return stack.is(AquacultureAPI.Tags.FISHING_LINE) && isDyeable && super.mayPlace(stack);
+                        return stack.is(AquacultureAPI.Tags.FISHING_LINE) && super.mayPlace(stack);
                     }
                 });
                 this.slotBobber = this.addSlot(new SlotHidable(fishingRodSlot, 3, 129, 67) {
                     @Override
                     public boolean mayPlace(@Nonnull ItemStack stack) {
-                        boolean isDyeable = stack.is(ItemTags.DYEABLE);
-                        return stack.is(AquacultureAPI.Tags.BOBBER) && isDyeable && super.mayPlace(stack);
+                        return stack.is(AquacultureAPI.Tags.BOBBER) && super.mayPlace(stack);
                     }
                 });
             }

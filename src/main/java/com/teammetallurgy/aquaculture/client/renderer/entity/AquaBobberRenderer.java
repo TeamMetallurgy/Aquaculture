@@ -108,12 +108,14 @@ public class AquaBobberRenderer extends EntityRenderer<AquaFishingBobberEntity> 
             float g = 0;
             float b = 0;
             if (!line.isEmpty()) {
-                DyedItemColor dyeditemcolor = line.get(DataComponents.DYED_COLOR);
-                if (dyeditemcolor != null) {
-                    int colorInt = dyeditemcolor.rgb();
-                    r = (float) (colorInt >> 16 & 255) / 255.0F;
-                    g = (float) (colorInt >> 8 & 255) / 255.0F;
-                    b = (float) (colorInt & 255) / 255.0F;
+                if (line.is(ItemTags.DYEABLE)) {
+                    DyedItemColor dyeditemcolor = line.get(DataComponents.DYED_COLOR);
+                    if (dyeditemcolor != null) {
+                        int colorInt = dyeditemcolor.rgb();
+                        r = (float) (colorInt >> 16 & 255) / 255.0F;
+                        g = (float) (colorInt >> 8 & 255) / 255.0F;
+                        b = (float) (colorInt & 255) / 255.0F;
+                    }
                 }
             }
             for (int size = 0; size < 16; ++size) {
