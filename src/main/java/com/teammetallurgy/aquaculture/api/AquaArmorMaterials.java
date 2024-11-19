@@ -25,7 +25,6 @@ public class AquaArmorMaterials {
         map.put(ArmorItem.Type.LEGGINGS, 6);
         map.put(ArmorItem.Type.CHESTPLATE, 8);
         map.put(ArmorItem.Type.HELMET, 3);
-        map.put(ArmorItem.Type.HELMET, 11);
     }), 14, SoundEvents.ARMOR_EQUIP_DIAMOND, 2.0F, 0.0F, () -> Ingredient.of(AquaItems.NEPTUNIUM_INGOT.get()));
 
     public static Holder<ArmorMaterial> register(String name,

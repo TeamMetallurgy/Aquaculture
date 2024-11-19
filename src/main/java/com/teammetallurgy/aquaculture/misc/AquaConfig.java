@@ -25,7 +25,7 @@ public class AquaConfig {
             messageInABottleAmount = builder.defineInRange("Amount of Message In A Bottle messages. Used to add additional custom messages", 29, 0, 255);
             debugMode = builder.define("Enable debug mode? (Enables additional logging)", false);
             showFilletRecipesInJEI = builder.define("Show Fillet recipes in JEI?", true);
-            fishSpawnLevelModifier = builder.defineInRange("How many blocks below sea level Aquaculture fish can spawn", 13, -63, 0);
+            fishSpawnLevelModifier = builder.defineInRange("How many blocks below sea level Aquaculture fish can spawn", 13, 0, 63);
             builder.pop();
         }
     }
