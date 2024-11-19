@@ -3,7 +3,11 @@ plugins {
 	id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version '7.0.145'
+    id 'net.neoforged.gradle.userdev' version '7.0.165'
+}
+
+tasks.named('wrapper', Wrapper).configure {
+    distributionType = Wrapper.DistributionType.BIN
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -64,8 +68,8 @@ dependencies {
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
     runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
     compileOnly "com.blamejared.crafttweaker:CraftTweaker-neoforge-${minecraft_version}:${ct_version}"
-	compileOnly "dev.emi:emi-neoforge:${emi_version}+1.21:api"
-	runtimeOnly "dev.emi:emi-neoforge:${emi_version}+1.21" 
+	compileOnly "dev.emi:emi-neoforge:${emi_version}+${minecraft_version}:api"
+	runtimeOnly "dev.emi:emi-neoforge:${emi_version}+${minecraft_version}" 
 }
 
 processResources {
@@ -123,4 +127,11 @@ String getBuildNumber() {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
 }

@@ -20,6 +20,11 @@ public class ItemFilletKnife extends SwordItem {
     }
 
     @Override
+    public boolean isDamageable(@Nonnull ItemStack stack) {
+        return this.getTier() != AquacultureAPI.MATS.NEPTUNIUM;
+    }
+
+    @Override
     public boolean canPerformAction(@Nonnull ItemStack stack, @Nonnull ItemAbility toolAction) {
         return toolAction == ItemAbilities.SWORD_DIG;
     }
