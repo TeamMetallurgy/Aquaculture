@@ -7,8 +7,10 @@ import com.teammetallurgy.aquaculture.api.fishing.Hooks;
 import com.teammetallurgy.aquaculture.entity.FishType;
 import com.teammetallurgy.aquaculture.item.*;
 import com.teammetallurgy.aquaculture.item.neptunium.*;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.Unbreakable;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -51,7 +53,7 @@ public class AquaItems {
     public static final DeferredItem<Item> IRON_FILLET_KNIFE = registerWithTab(() -> new ItemFilletKnife(Tiers.IRON), "iron_fillet_knife");
     public static final DeferredItem<Item> GOLD_FILLET_KNIFE = registerWithTab(() -> new ItemFilletKnife(Tiers.GOLD), "gold_fillet_knife");
     public static final DeferredItem<Item> DIAMOND_FILLET_KNIFE = registerWithTab(() -> new ItemFilletKnife(Tiers.DIAMOND), "diamond_fillet_knife");
-    public static final DeferredItem<Item> NEPTUNIUM_FILLET_KNIFE = registerWithTab(() -> new ItemFilletKnife(AquacultureAPI.MATS.NEPTUNIUM), "neptunium_fillet_knife");
+    public static final DeferredItem<Item> NEPTUNIUM_FILLET_KNIFE = registerWithTab(() -> new ItemFilletKnife(AquacultureAPI.MATS.NEPTUNIUM, new Item.Properties().component(DataComponents.UNBREAKABLE, new Unbreakable(true))), "neptunium_fillet_knife");
 
     // Misc
     public static final DeferredItem<Item> DRIFTWOOD = registerWithTab(SimpleItem::new, "driftwood");
