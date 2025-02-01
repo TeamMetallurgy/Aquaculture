@@ -9,7 +9,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -20,6 +20,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
@@ -30,10 +31,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class WormFarmBlock extends ComposterBlock {
-    public static final MapCodec<ComposterBlock> CODEC = simpleCodec(p -> new WormFarmBlock());
+    public static final MapCodec<ComposterBlock> CODEC = simpleCodec(WormFarmBlock::new);
 
-    public WormFarmBlock() {
-        super(Block.Properties.of().mapColor(MapColor.WOOD).ignitedByLava().instrument(NoteBlockInstrument.BASS).strength(0.6F).sound(SoundType.WOOD));
+    public WormFarmBlock(Block.Properties properties) {
+        super(properties.mapColor(MapColor.WOOD).ignitedByLava().instrument(NoteBlockInstrument.BASS).strength(0.6F).sound(SoundType.WOOD));
     }
 
     @Override
@@ -44,7 +45,7 @@ public class WormFarmBlock extends ComposterBlock {
 
     @Override
     @Nonnull
-    public ItemInteractionResult useItemOn(@Nonnull ItemStack stack, BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, Player player, @Nonnull InteractionHand hand, @Nonnull BlockHitResult blockHitResult) {
+    public InteractionResult useItemOn(@Nonnull ItemStack stack, BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, Player player, @Nonnull InteractionHand hand, @Nonnull BlockHitResult blockHitResult) {
         int stateLevel = state.getValue(LEVEL);
         ItemStack heldStack = player.getItemInHand(hand);
 
@@ -56,7 +57,7 @@ public class WormFarmBlock extends ComposterBlock {
                     heldStack.shrink(1);
                 }
             }
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult .SUCCESS;
         } else if (stateLevel > 0) {
             if (!level.isClientSide) {
                 double x = (double) (level.random.nextFloat() * 0.7F) + 0.15000000596046448D;
@@ -68,9 +69,9 @@ public class WormFarmBlock extends ComposterBlock {
             }
             level.setBlock(pos, state.setValue(LEVEL, state.getValue(LEVEL) - 1), 3);
             level.playSound(null, pos, AquaSounds.WORM_FARM_EMPTY.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult .SUCCESS;
         } else {
-            return ItemInteractionResult.FAIL;
+            return InteractionResult .FAIL;
         }
     }
 

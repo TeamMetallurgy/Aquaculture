@@ -8,14 +8,15 @@ import com.teammetallurgy.aquaculture.init.AquaRecipeSerializers;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TieredItem;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
-import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.CustomRecipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.ShapedCraftingRecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
@@ -28,6 +29,11 @@ public class FishFilletRecipe extends CustomRecipe {
     public FishFilletRecipe(CraftingBookCategory craftingBookCategory) {
         super(craftingBookCategory);
     }
+
+    /*@Override
+    public boolean canCraftInDimensions(int width, int height) {
+        return width * height >= 2;
+    }*/ //TODO
 
     @Override
     public boolean matches(@Nonnull CraftingInput craftingInventory, @Nonnull Level world) {
@@ -43,7 +49,7 @@ public class FishFilletRecipe extends CustomRecipe {
                     }
                     stack = slotStack;
                 } else {
-                    if (!(slotStack.is(AquacultureAPI.Tags.KNIFE) && (slotStack.isDamageableItem() || isKnifeNeptunium(slotStack.getItem())) && slotStack.getItem() instanceof TieredItem)) {
+                    if (!(slotStack.is(AquacultureAPI.Tags.KNIFE) && (slotStack.isDamageableItem() || isKnifeNeptunium(slotStack)) && slotStack.has(DataComponents.TOOL))) {
                         return false;
                     }
                     list.add(slotStack);
@@ -82,8 +88,8 @@ public class FishFilletRecipe extends CustomRecipe {
             if (AquaConfig.BASIC_OPTIONS.randomWeight.get() && fish.has(AquaDataComponents.FISH_WEIGHT) && fishWeight != null) {
                 filletAmount = FishData.getFilletAmountFromWeight(fishWeight);
             }
-            if (isKnifeNeptunium(knife)) {
-                filletAmount += filletAmount * (25.0F / 100.0F);
+            if (isKnifeNeptunium(new ItemStack(knife))) {
+                filletAmount += (int) (filletAmount * (25.0F / 100.0F));
             }
             return new ItemStack(AquaItems.FISH_FILLET.get(), filletAmount);
         } else {
@@ -99,7 +105,7 @@ public class FishFilletRecipe extends CustomRecipe {
             ItemStack stack = craftingInventory.getItem(i);
             if (stack.is(AquacultureAPI.Tags.KNIFE)) {
                 ItemStack knife = stack.copy();
-                if (!isKnifeNeptunium(knife.getItem())) {
+                if (!isKnifeNeptunium(knife)) {
                     MinecraftServer server = ServerLifecycleHooks.getCurrentServer(); //Workaround
                     if (server != null) {
                         knife.hurtAndBreak(1, server.overworld(), null, item -> {
@@ -113,18 +119,13 @@ public class FishFilletRecipe extends CustomRecipe {
         return list;
     }
 
-    public static boolean isKnifeNeptunium(@Nonnull Item knife) {
-        return knife instanceof TieredItem && ((TieredItem) knife).getTier() == AquacultureAPI.MATS.NEPTUNIUM;
+    public static boolean isKnifeNeptunium(@Nonnull ItemStack knifeStack) {
+        return knifeStack.has(DataComponents.TOOL) && knifeStack.isValidRepairItem(new ItemStack(AquaItems.NEPTUNIUM_INGOT.asItem()));
     }
 
     @Override
     @Nonnull
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends CustomRecipe> getSerializer() {
         return AquaRecipeSerializers.FISH_FILLET_SERIALIZER.get();
-    }
-
-    @Override
-    public boolean canCraftInDimensions(int width, int height) {
-        return width * height >= 2;
     }
 }

@@ -1,49 +1,28 @@
 package com.teammetallurgy.aquaculture.api;
 
 import com.teammetallurgy.aquaculture.Aquaculture;
-import com.teammetallurgy.aquaculture.init.AquaItems;
 import net.minecraft.Util;
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraft.world.item.equipment.ArmorMaterial;
+import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.item.equipment.EquipmentAsset;
+import net.minecraft.world.item.equipment.EquipmentAssets;
 
 import java.util.EnumMap;
-import java.util.List;
-import java.util.function.Supplier;
 
 public class AquaArmorMaterials {
-    public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIAL_DEFERRED = DeferredRegister.create(Registries.ARMOR_MATERIAL, Aquaculture.MOD_ID);
+    private static final ResourceKey<EquipmentAsset> NEPTUNIUM_ASSET = createId("neptunium");
 
-    public static Holder<ArmorMaterial> NEPTUNIUM = register("neptunium", Util.make(new EnumMap<>(ArmorItem.Type.class), (map) -> {
-        map.put(ArmorItem.Type.BOOTS, 3);
-        map.put(ArmorItem.Type.LEGGINGS, 6);
-        map.put(ArmorItem.Type.CHESTPLATE, 8);
-        map.put(ArmorItem.Type.HELMET, 3);
-    }), 14, SoundEvents.ARMOR_EQUIP_DIAMOND, 2.0F, 0.0F, () -> Ingredient.of(AquaItems.NEPTUNIUM_INGOT.get()));
+    public static final ArmorMaterial NEPTUNIUM = new ArmorMaterial(15, Util.make(new EnumMap<>(ArmorType.class), map -> {
+        map.put(ArmorType.BOOTS, 3);
+        map.put(ArmorType.LEGGINGS, 6);
+        map.put(ArmorType.CHESTPLATE, 8);
+        map.put(ArmorType.HELMET, 3);
+    }), 14, SoundEvents.ARMOR_EQUIP_DIAMOND, 2.0F, 0.0F, AquacultureAPI.Tags.REPAIRS_NEPTUNIUM, NEPTUNIUM_ASSET);
 
-    public static Holder<ArmorMaterial> register(String name,
-            EnumMap<ArmorItem.Type, Integer> defense,
-            int enchantmentValue,
-            Holder<SoundEvent> equipSound,
-            float toughness,
-            float knockbackResistance,
-            Supplier<Ingredient> repairIngredient
-    ) {
-        EnumMap<ArmorItem.Type, Integer> armorTypeMap = new EnumMap<>(ArmorItem.Type.class);
-        ResourceLocation location = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, name);
-
-        for (ArmorItem.Type armoritem$type : ArmorItem.Type.values()) {
-            armorTypeMap.put(armoritem$type, defense.get(armoritem$type));
-        }
-
-        List<ArmorMaterial.Layer> list = List.of(new ArmorMaterial.Layer(location));
-
-        return ARMOR_MATERIAL_DEFERRED.register(name, () -> new ArmorMaterial(armorTypeMap, enchantmentValue, equipSound, repairIngredient, list, toughness, knockbackResistance));
+    public static ResourceKey<EquipmentAsset> createId(String name) {
+        return ResourceKey.create(EquipmentAssets.ROOT_ID, ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, name));
     }
 }

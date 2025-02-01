@@ -7,7 +7,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -22,16 +21,16 @@ import java.util.List;
 public class LootBoxItem extends Item {
     private final ResourceKey<LootTable> lootTable;
 
-    public LootBoxItem(ResourceKey<LootTable> lootTable) {
-        super(new Item.Properties());
+    public LootBoxItem(ResourceKey<LootTable> lootTable, Properties properties) {
+        super(properties);
         this.lootTable = lootTable;
     }
 
     @Override
     @Nonnull
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, @Nonnull InteractionHand hand) {
+    public InteractionResult use(Level world, Player player, @Nonnull InteractionHand hand) {
         ItemStack heldStack = player.getItemInHand(hand);
-        if (world.isClientSide || this.lootTable == null) return new InteractionResultHolder<>(InteractionResult.FAIL, heldStack);
+        if (world.isClientSide || this.lootTable == null) return InteractionResult.FAIL;
 
         if (world instanceof ServerLevel serverLevel) {
             LootParams.Builder builder = new LootParams.Builder(serverLevel);
@@ -41,7 +40,7 @@ public class LootBoxItem extends Item {
                 player.displayClientMessage(Component.translatable("aquaculture.loot.open", lootStack.getHoverName()).withStyle(ChatFormatting.YELLOW), true);
                 this.giveItem(player, lootStack);
                 heldStack.shrink(1);
-                return new InteractionResultHolder<>(InteractionResult.SUCCESS, heldStack);
+                return InteractionResult.SUCCESS.heldItemTransformedTo(heldStack);
             }
         }
 

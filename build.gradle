@@ -1,9 +1,8 @@
 plugins {
     id 'java-library'
-	id 'eclipse'
-    id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version '7.0.165'
+    id 'net.neoforged.moddev' version '2.0.76'
+    id 'idea'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -35,61 +34,76 @@ base {
     archivesName = "Aquaculture"
 }
 
-minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
+neoForge {
+    version = project.neo_version
 
-runs {
-    configureEach {
-        systemProperty 'forge.logging.markers', 'REGISTRIES'
-        systemProperty 'forge.logging.console.level', 'debug'
-
-        modSource project.sourceSets.main
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
     }
 
-    client {
-        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+    accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
+
+    runs {
+        client {
+            client()
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        server {
+            server()
+            programArgument '--nogui'
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        gameTestServer {
+            type = "gameTestServer"
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        clientData {
+            clientData()
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        }
+
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
     }
 
-    server {
-        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-        programArgument '--nogui'
-    }
-
-    gameTestServer {
-        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-    }
-
-    data {
-        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+        }
     }
 }
 
 dependencies {
-    implementation "net.neoforged:neoforge:${neo_version}"
-    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
-    runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
-    compileOnly "com.blamejared.crafttweaker:CraftTweaker-neoforge-${minecraft_version}:${ct_version}"
-	compileOnly "dev.emi:emi-neoforge:${emi_version}+${minecraft_version}:api"
-	runtimeOnly "dev.emi:emi-neoforge:${emi_version}+${minecraft_version}" 
+    //compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+    //runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+    //compileOnly "com.blamejared.crafttweaker:CraftTweaker-neoforge-${minecraft_version}:${ct_version}"
+	//compileOnly "dev.emi:emi-neoforge:${emi_version}+${minecraft_version}:api"
+	//runtimeOnly "dev.emi:emi-neoforge:${emi_version}+${minecraft_version}" 
 }
 
-processResources {
-    def expandProps = [
-            "version": version,
-            "group": project.group, //Else we target the task's group.
-            "minecraft_version": minecraft_version,
-            "minecraft_version_range": minecraft_version_range,
-            "mod_id": mod_id,
-            "mod_version": mod_version,
-            "neo_version": neo_version,
-            "neo_version_range": neo_version_range,
-            "loader_version_range": loader_version_range,
-            "pack_format_number": pack_format_number
-	]
-
-    filesMatching(['pack.mcmeta', 'META-INF/neoforge.mods.toml']) {
-        expand expandProps
-    }
-    inputs.properties(expandProps)
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    var replaceProperties = [
+            "version"              : version,
+            "group"                : project.group,
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            "mod_id"               : mod_id,
+            "mod_version"          : mod_version,
+            neo_version            : neo_version,
+            neo_version_range      : neo_version_range,
+            loader_version_range   : loader_version_range,
+            "pack_format_number"   : pack_format_number
+    ]
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
 }
 
 task apiJar(type: Jar) {
@@ -98,6 +112,9 @@ task apiJar(type: Jar) {
     include 'com/teammetallurgy/aquaculture/api/**/*'
     archiveClassifier = 'api'
 }
+
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata
 
 publishing {
     tasks.publish.dependsOn 'build'

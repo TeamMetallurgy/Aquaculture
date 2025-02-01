@@ -27,6 +27,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -130,7 +131,7 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
                     } else {
                         if (!level.isEmptyBlock(this.blockPosition()) && (level.getFluidState(this.blockPosition()).isSource())) {
                             lootEntries.add(new ItemStack(Items.COD)); //Last resort fallback, for edge-cases
-                            ResourceLocation biomeFromRegistry = level.registryAccess().registryOrThrow(Registries.BIOME).getKey(level.getBiome(this.blockPosition()).value());
+                            ResourceLocation biomeFromRegistry = level.registryAccess().lookupOrThrow(Registries.BIOME).getKey(level.getBiome(this.blockPosition()).value());
                             if (biomeFromRegistry != null) {
                                 Aquaculture.LOG.error("Loot was empty in Biome: " + biomeFromRegistry + ". Please report on Github");
                             }
@@ -227,9 +228,9 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
                 }
 
                 @Override
-                public boolean isInvulnerableTo(@Nonnull DamageSource source) {
+                public boolean isInvulnerable() {
                     BlockPos spawnPos = new BlockPos((int) AquaFishingBobberEntity.this.getX(), (int) AquaFishingBobberEntity.this.getY(), (int) AquaFishingBobberEntity.this.getZ());
-                    return AquaFishingBobberEntity.this.isLavaHookInLava(AquaFishingBobberEntity.this, level, spawnPos) || super.isInvulnerableTo(source);
+                    return AquaFishingBobberEntity.this.isLavaHookInLava(AquaFishingBobberEntity.this, level, spawnPos);
                 }
             };
             double x = angler.getX() - this.getX();

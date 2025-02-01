@@ -8,6 +8,7 @@ import com.teammetallurgy.aquaculture.item.AquaFishBucket;
 import com.teammetallurgy.aquaculture.item.FishMountItem;
 import com.teammetallurgy.aquaculture.loot.BiomeTagCheck;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -21,6 +22,7 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 @EventBusSubscriber(modid = Aquaculture.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
@@ -32,35 +34,36 @@ public class FishRegistry {
         DeferredHolder<EntityType<?>, EntityType<FishMountEntity>> fishMount = AquaEntities.ENTITY_DEFERRED.register(name, () -> EntityType.Builder.<FishMountEntity>of(FishMountEntity::new, MobCategory.MISC)
                 .sized(0.5F, 0.5F)
                 .eyeHeight(0.0F)
-                .build(Aquaculture.MOD_ID + ":" + name));
-        DeferredItem<Item> fishMountItem = AquaItems.registerWithTab(() -> new FishMountItem(fishMount), name);
+                .build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, name))));
+        DeferredItem<Item> fishMountItem = AquaItems.registerWithTab(p -> new FishMountItem(fishMount, p), name);
         fishMounts.add(fishMount);
         return fishMountItem;
     }
 
     /**
-     * Same as {@link #register(Supplier, String, FishType)}, but with default size
+     * Same as {@link #register(Function, String, FishType)}, but with default size
      */
-    public static DeferredItem<Item> register(@Nonnull Supplier<Item> initializer, @Nonnull String name) {
-        return register(initializer, name, FishType.MEDIUM);
+    public static DeferredItem<Item> register(Function<Item.Properties, ? extends Item> function, @Nonnull String name) {
+        return register(function, name, FishType.MEDIUM);
     }
 
     /**
      * Registers the fish item, fish entity and fish bucket
      *
-     * @param initializer The fish initializer
+     * @param function The fish initializer
      * @param name        The fish name
      * @return The fish Item that was registered
      */
-    public static DeferredItem<Item> register(@Nonnull Supplier<Item> initializer, @Nonnull String name, FishType fishType) {
-        DeferredHolder<EntityType<?>, EntityType<AquaFishEntity>> fish = AquaEntities.ENTITY_DEFERRED.register(name, () -> EntityType.Builder.<AquaFishEntity>of((f, w) -> new AquaFishEntity(f, w, fishType), MobCategory.WATER_AMBIENT).sized(fishType.getWidth(), fishType.getHeight()).build(Aquaculture.MOD_ID + ":" + name));
+    public static DeferredItem<Item> register(Function<Item.Properties, ? extends Item> function, @Nonnull String name, FishType fishType) {
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, name);
+        DeferredHolder<EntityType<?>, EntityType<AquaFishEntity>> fish = AquaEntities.ENTITY_DEFERRED.register(name, () -> EntityType.Builder.<AquaFishEntity>of((f, w) -> new AquaFishEntity(f, w, fishType), MobCategory.WATER_AMBIENT).sized(fishType.getWidth(), fishType.getHeight()).build(ResourceKey.create(Registries.ENTITY_TYPE, id)));
         fishEntities.add(fish);
 
         //Registers fish buckets
-        DeferredItem<Item> bucket = AquaItems.ITEM_DEFERRED.register(name + "_bucket", () -> new AquaFishBucket(fish.value(), new Item.Properties().stacksTo(1)));
+        DeferredItem<Item> bucket = AquaItems.register(p -> new AquaFishBucket(fish.value(), p.stacksTo(1)), name + "_bucket");
         AquaItems.ITEMS_FOR_TAB_LIST.add(bucket);
 
-        return AquaItems.registerWithTab(initializer, name);
+        return AquaItems.registerWithTab(function, name);
     }
 
     @SubscribeEvent

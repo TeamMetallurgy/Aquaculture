@@ -16,11 +16,10 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.SpectralArrowRenderer;
 import net.minecraft.client.renderer.entity.TippableArrowRenderer;
-import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.FishingRodItem;
@@ -62,11 +61,11 @@ public class ClientHandler {
         event.register(AquaGuis.TACKLE_BOX.get(), TackleBoxScreen::new);
     }
 
-    @SubscribeEvent
-    public static void registerColors(RegisterColorHandlersEvent.Item event) {
-        event.register((stack, tintIndex) -> tintIndex > 0 ? -1 : DyedItemColor.getOrDefault(stack, FastColor.ARGB32.color(0, 0, 0)), AquaItems.FISHING_LINE.get());
-        event.register((stack, tintIndex) -> tintIndex > 0 ? -1 : DyedItemColor.getOrDefault(stack, FastColor.ARGB32.color(193, 38, 38)), AquaItems.BOBBER.get());
-    }
+    /*@SubscribeEvent
+    public static void registerColors(RegisterColorHandlersEvent.Item event) { //TODO Move to Json
+        event.register((stack, tintIndex) -> tintIndex > 0 ? -1 : DyedItemColor.getOrDefault(stack, ARGB.color(0, 0, 0)), AquaItems.FISHING_LINE.get());
+        event.register((stack, tintIndex) -> tintIndex > 0 ? -1 : DyedItemColor.getOrDefault(stack, ARGB.color(193, 38, 38)), AquaItems.BOBBER.get());
+    }*/
 
     @SubscribeEvent
     public static void registerEntityRenders(EntityRenderersEvent.RegisterRenderers event) {
@@ -97,17 +96,17 @@ public class ClientHandler {
     }
 
     @SubscribeEvent
-    public static void registerModels(ModelEvent.RegisterAdditional event) {
-        event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/oak_fish_mount")));
-        event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/spruce_fish_mount")));
-        event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/birch_fish_mount")));
-        event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/jungle_fish_mount")));
-        event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/acacia_fish_mount")));
-        event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/dark_oak_fish_mount")));
+    public static void registerModels(ModelEvent.RegisterAdditional event) { //TODO. Not sure, but probably should be done in new item jsons
+//        event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/oak_fish_mount")));
+//        event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/spruce_fish_mount")));
+//        event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/birch_fish_mount")));
+//        event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/jungle_fish_mount")));
+//        event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/acacia_fish_mount")));
+//        event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/dark_oak_fish_mount")));
     }
 
-    public static void registerFishingRodModelProperties(Item fishingRod) {
-        ItemProperties.register(fishingRod, ResourceLocation.withDefaultNamespace("cast"), (stack, level, entity, i) -> {
+    public static void registerFishingRodModelProperties(Item fishingRod) { //TODO. Not sure, but probably should be done in new item jsons
+        /*ItemProperties.register(fishingRod, ResourceLocation.withDefaultNamespace("cast"), (stack, level, entity, i) -> {
             if (entity == null) {
                 return 0.0F;
             } else {
@@ -118,11 +117,11 @@ public class ClientHandler {
                 }
                 return (isMainhand || isOffHand) && entity instanceof Player && ((Player) entity).fishing != null ? 1.0F : 0.0F;
             }
-        });
+        });*/
     }
 
-    public static void registerBowModelProperties(Item bow) {
-        ItemProperties.register(bow, ResourceLocation.withDefaultNamespace("pull"), (stack, level, entity, i) -> {
+    public static void registerBowModelProperties(Item bow) { //TODO. Not sure, but probably should be done in new item jsons
+        /*ItemProperties.register(bow, ResourceLocation.withDefaultNamespace("pull"), (stack, level, entity, i) -> {
             if (entity == null) {
                 return 0.0F;
             } else {
@@ -130,5 +129,6 @@ public class ClientHandler {
             }
         });
         ItemProperties.register(bow, ResourceLocation.withDefaultNamespace("pulling"), (stack, level, entity, i) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
+    */
     }
 }

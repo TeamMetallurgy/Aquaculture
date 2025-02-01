@@ -8,9 +8,9 @@ import com.teammetallurgy.aquaculture.block.blockentity.TackleBoxBlockEntity;
 import com.teammetallurgy.aquaculture.init.AquaBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.Block;
 
 import javax.annotation.Nonnull;
 
-public class AquaItemRenderer extends BlockEntityWithoutLevelRenderer {
+public class AquaItemRenderer implements NoDataSpecialModelRenderer { //TODO
 
     public AquaItemRenderer(BlockEntityRenderDispatcher renderDispatcher, EntityModelSet entityModelSet) {
         super(renderDispatcher, entityModelSet);

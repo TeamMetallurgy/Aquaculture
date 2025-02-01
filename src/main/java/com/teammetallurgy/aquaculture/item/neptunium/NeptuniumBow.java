@@ -14,8 +14,8 @@ import javax.annotation.Nonnull;
 
 public class NeptuniumBow extends BowItem {
 
-    public NeptuniumBow() {
-        super(new Item.Properties().stacksTo(1).durability(2500));
+    public NeptuniumBow(Properties properties) {
+        super(properties.stacksTo(1).durability(2500));
     }
 
     @Override

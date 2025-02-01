@@ -3,13 +3,14 @@ package com.teammetallurgy.aquaculture.init;
 import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.entity.*;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -44,16 +45,16 @@ public class AquaEntities {
                     .eyeHeight(0.1875F)
                     .sized(0.5F, 0.25F));
 
-    private static <T extends Mob> DeferredHolder<EntityType<?>, EntityType<T>> registerMob(String name, int eggPrimary, int eggSecondary, Supplier<EntityType.Builder<T>> builder) {
+    private static <T extends Mob> DeferredHolder<EntityType<?>, EntityType<T>> registerMob(String name, int eggPrimary, int eggSecondary, Supplier<EntityType.Builder<T>> builder) { //TODO Move egg color to item json
         DeferredHolder<EntityType<?>, EntityType<T>> entityType = register(name, builder);
-        DeferredItem<Item> spawnEggItem = AquaItems.register(() -> new DeferredSpawnEggItem(entityType, eggPrimary, eggSecondary, new Item.Properties()), name + "_spawn_egg");
+        DeferredItem<Item> spawnEggItem = AquaItems.register(p -> new SpawnEggItem(entityType.get(), p), name + "_spawn_egg");
         AquaItems.SPAWN_EGGS.add(spawnEggItem);
         return entityType;
     }
 
     public static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> register(String name, Supplier<EntityType.Builder<T>> builder) {
         ResourceLocation location = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, name);
-        return ENTITY_DEFERRED.register(name, () -> builder.get().build(location.toString()));
+        return ENTITY_DEFERRED.register(name, () -> builder.get().build(ResourceKey.create(Registries.ENTITY_TYPE, location)));
     }
 
     @SubscribeEvent

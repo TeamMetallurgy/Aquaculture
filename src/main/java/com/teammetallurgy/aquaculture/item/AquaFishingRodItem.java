@@ -14,12 +14,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -37,22 +36,15 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 public class AquaFishingRodItem extends FishingRodItem {
-    private final Tier tier;
-    private final int enchantability;
+    private final ToolMaterial toolMaterial;
 
-    public AquaFishingRodItem(Tier tier, Properties properties) {
-        super(properties);
-        this.enchantability = tier == Tiers.WOOD ? 10 : tier.getEnchantmentValue();
-        this.tier = tier;
+    public AquaFishingRodItem(ToolMaterial toolMaterial, Properties properties) {
+        super(properties.enchantable(toolMaterial == ToolMaterial.WOOD ? 10 : toolMaterial.enchantmentValue()).repairable(toolMaterial.repairItems()));
+        this.toolMaterial = toolMaterial;
     }
 
-    public Tier getTier() { //Added getter, so other mods can access it
-        return tier;
-    }
-
-    @Override
-    public int getEnchantmentValue() {
-        return enchantability;
+    public ToolMaterial getTier() { //Added getter, so other mods can access it
+        return toolMaterial;
     }
 
     @Override
@@ -62,15 +54,15 @@ public class AquaFishingRodItem extends FishingRodItem {
 
     @Override
     @Nonnull
-    public InteractionResultHolder<ItemStack> use(@Nonnull Level level, Player player, @Nonnull InteractionHand hand) {
+    public InteractionResult use(@Nonnull Level level, Player player, @Nonnull InteractionHand hand) {
         ItemStack heldStack = player.getItemInHand(hand);
 
-        if (player instanceof FakePlayer) return InteractionResultHolder.fail(heldStack);
+        if (player instanceof FakePlayer) return InteractionResult.FAIL;
 
-        boolean isAdminRod = AquaConfig.BASIC_OPTIONS.debugMode.get() && this.tier == AquacultureAPI.MATS.NEPTUNIUM;
+        boolean isAdminRod = AquaConfig.BASIC_OPTIONS.debugMode.get() && this.toolMaterial == AquacultureAPI.MATS.NEPTUNIUM;
         int damage = this.getDamage(heldStack);
         if (damage >= this.getMaxDamage(heldStack))
-            return new InteractionResultHolder<>(InteractionResult.FAIL, heldStack);
+            return InteractionResult.FAIL;
         Hook hook = getHookType(heldStack);
         if (player.fishing != null) {
             if (!level.isClientSide) {
@@ -97,7 +89,7 @@ public class AquaFishingRodItem extends FishingRodItem {
             if (level instanceof ServerLevel serverLevel) {
                 //Lure Speed
                 int lureSpeed = (int) (EnchantmentHelper.getFishingTimeReduction(serverLevel, heldStack, player) * 20.0F);
-                if (this.tier == AquacultureAPI.MATS.NEPTUNIUM) lureSpeed += 100;
+                if (this.toolMaterial == AquacultureAPI.MATS.NEPTUNIUM) lureSpeed += 100;
                 ItemStack bait = getBait(heldStack);
                 if (!isAdminRod && !bait.isEmpty()) {
                     lureSpeed += (((BaitItem) bait.getItem()).getLureSpeedModifier() * 100);
@@ -108,17 +100,12 @@ public class AquaFishingRodItem extends FishingRodItem {
                 int luck = EnchantmentHelper.getFishingLuckBonus(serverLevel, heldStack, player);
                 if (hook != Hooks.EMPTY && hook.getLuckModifier() > 0) luck += hook.getLuckModifier();
 
-                level.addFreshEntity(new AquaFishingBobberEntity(player, level, luck, lureSpeed, hook, getFishingLine(heldStack), getBobber(heldStack), heldStack));
+                Projectile.spawnProjectile(new AquaFishingBobberEntity(player, level, luck, lureSpeed, hook, getFishingLine(heldStack), getBobber(heldStack), heldStack), serverLevel, heldStack);
             }
             player.awardStat(Stats.ITEM_USED.get(this));
             player.gameEvent(GameEvent.ITEM_INTERACT_START);
         }
-        return InteractionResultHolder.sidedSuccess(heldStack, level.isClientSide());
-    }
-
-    @Override
-    public boolean isValidRepairItem(@Nonnull ItemStack toRepair, @Nonnull ItemStack repair) {
-        return this.tier.getRepairIngredient().test(repair) || super.isValidRepairItem(toRepair, repair);
+        return InteractionResult.SUCCESS.heldItemTransformedTo(heldStack);
     }
 
     @Override

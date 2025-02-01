@@ -15,11 +15,13 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerEntity;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -104,24 +106,27 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     }
 
     @Override
-    public void kill() {
+    public void kill(@Nonnull ServerLevel level) {
         this.setDisplayedItem(ItemStack.EMPTY);
-        super.kill();
+        super.kill(level);
     }
 
     @Override
-    public boolean hurt(@Nonnull DamageSource source, float amount) {
-        if (this.isInvulnerableTo(source)) {
+    public boolean hurtClient(DamageSource damageSource) {
+        return !this.isInvulnerableToBase(damageSource);
+    }
+
+    @Override
+    public boolean hurtServer(@Nonnull ServerLevel level, @Nonnull DamageSource source, float amount) {
+        if (this.isInvulnerableToBase(source)) {
             return false;
         } else if (!source.is(DamageTypeTags.IS_EXPLOSION) && !this.getDisplayedItem().isEmpty()) {
-            if (!this.level().isClientSide) {
-                this.dropItemOrSelf(source.getEntity(), false);
+                this.dropItemOrSelf(level, source.getEntity(), false);
                 this.gameEvent(GameEvent.BLOCK_CHANGE, source.getEntity());
                 this.playSound(AquaSounds.FISH_MOUNT_REMOVED.get(), 1.0F, 1.0F);
-            }
             return true;
         } else {
-            return super.hurt(source, amount);
+            return super.hurtServer(level, source, amount);
         }
     }
 
@@ -134,9 +139,9 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     }
 
     @Override
-    public void dropItem(@Nullable Entity brokenEntity) {
+    public void dropItem(@Nonnull ServerLevel level, @Nullable Entity brokenEntity) {
         this.playSound(AquaSounds.FISH_MOUNT_BROKEN.get(), 1.0F, 1.0F);
-        this.dropItemOrSelf(brokenEntity, true);
+        this.dropItemOrSelf(level, brokenEntity, true);
         this.gameEvent(GameEvent.BLOCK_CHANGE, entity);
     }
 
@@ -145,10 +150,10 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
         this.playSound(AquaSounds.FISH_MOUNT_PLACED.get(), 1.0F, 1.0F);
     }
 
-    private void dropItemOrSelf(@Nullable Entity entity, boolean shouldDropSelf) {
+    private void dropItemOrSelf(ServerLevel level, @Nullable Entity entity, boolean shouldDropSelf) {
         ItemStack displayedStack = this.getDisplayedItem();
         this.setDisplayedItem(ItemStack.EMPTY);
-        if (!this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+        if (!level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
             if (entity == null) {
                 this.setDisplayedItem(ItemStack.EMPTY);
             }
@@ -159,13 +164,13 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
             }
 
             if (shouldDropSelf) {
-                this.spawnAtLocation(this.getItem());
+                this.spawnAtLocation(level, this.getItem());
             }
 
             if (!displayedStack.isEmpty()) {
                 displayedStack = displayedStack.copy();
                 if (this.random.nextFloat() < this.itemDropChance) {
-                    this.spawnAtLocation(displayedStack);
+                    this.spawnAtLocation(level, displayedStack);
                 }
             }
         }
@@ -174,7 +179,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     private Item getItem() {
         ResourceLocation location = BuiltInRegistries.ENTITY_TYPE.getKey(this.getType());
         if (BuiltInRegistries.ITEM.containsKey(location) && location != null) {
-            return BuiltInRegistries.ITEM.get(location);
+            return BuiltInRegistries.ITEM.getValue(location);
         }
         return Items.AIR;
     }
@@ -208,9 +213,9 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
         if (key.equals(ITEM)) {
             ItemStack displayStack = this.getDisplayedItem();
             if (displayStack != null && !displayStack.isEmpty()) {
-                EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(BuiltInRegistries.ITEM.getKey(displayStack.getItem()));
+                EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.getValue(BuiltInRegistries.ITEM.getKey(displayStack.getItem()));
                 if (entityType != null && entityType != EntityType.PIG) {
-                    this.entity = entityType.create(this.level());
+                    this.entity = entityType.create(this.level(), EntitySpawnReason.TRIGGERED);
                 }
             } else {
                 this.entity = null;

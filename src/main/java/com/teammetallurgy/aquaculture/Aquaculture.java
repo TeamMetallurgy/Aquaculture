@@ -70,7 +70,6 @@ public class Aquaculture {
     }
 
     public void registerDeferredRegistries(IEventBus modBus) {
-        AquaArmorMaterials.ARMOR_MATERIAL_DEFERRED.register(modBus);
         AquaBlocks.BLOCK_DEFERRED.register(modBus);
         AquaItems.ITEM_DEFERRED.register(modBus);
         AquaDataComponents.DATA_COMPONENT_TYPE_DEFERRED.register(modBus);

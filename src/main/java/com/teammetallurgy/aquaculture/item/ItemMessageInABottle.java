@@ -6,7 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -16,13 +16,13 @@ import javax.annotation.Nonnull;
 
 public class ItemMessageInABottle extends Item {
 
-    public ItemMessageInABottle() {
-        super(new Item.Properties());
+    public ItemMessageInABottle(Properties properties) {
+        super(properties);
     }
 
     @Override
     @Nonnull
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, @Nonnull InteractionHand hand) {
+    public InteractionResult use(Level world, Player player, @Nonnull InteractionHand hand) {
         ItemStack heldStack = player.getItemInHand(hand);
         world.playSound(null, player.getX(), player.getY(), player.getZ(), AquaSounds.BOTTLE_OPEN.get(), SoundSource.PLAYERS, 0.5F, 0.4F / (world.random.nextFloat() * 0.4F + 0.8F));
 

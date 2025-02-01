@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 
 public class AquaFishRenderer extends MobRenderer<AquaFishEntity, EntityModel<AquaFishEntity>> {
     private static final ResourceLocation DEFAULT_LOCATION = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/fish/atlantic_cod.png");
-    private final TropicalFishModelB<AquaFishEntity> tropicalFishBModel;
+    private final TropicalFishModelB tropicalFishBModel;
     private final FishSmallModel<AquaFishEntity> smallModel;
     private final FishMediumModel<AquaFishEntity> mediumModel;
     private final FishLargeModel<AquaFishEntity> largeModel;

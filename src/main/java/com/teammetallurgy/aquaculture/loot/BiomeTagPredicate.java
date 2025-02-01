@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -13,6 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
+import net.neoforged.neoforge.common.TagConventionLogWarning;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,11 +39,11 @@ public record BiomeTagPredicate(Optional<PositionPredicate> position, Optional<L
             BlockPos pos = BlockPos.containing(x, y, z);
             if (serverLevel.isLoaded(pos)) {
                 Biome biome = serverLevel.getBiome(pos).value();
-                Registry<Biome> biomeRegistry = serverLevel.registryAccess().registryOrThrow(Registries.BIOME);
+                Registry<Biome> biomeRegistry = serverLevel.registryAccess().lookupOrThrow(Registries.BIOME);
                 Optional<ResourceKey<Biome>> resourceKey = biomeRegistry.getResourceKey(biome);
 
                 if (resourceKey.isPresent()) {
-                    Optional<Holder.Reference<Biome>> biomeHolder = biomeRegistry.getHolder(resourceKey.get());
+                    Optional<Holder.Reference<Biome>> biomeHolder = biomeRegistry.get(resourceKey.get());
                     if (biomeHolder.isPresent()) {
                         CheckType checkType = CheckType.getOrCreate(this.include.map(Lists::newArrayList).orElseGet(ArrayList::new), this.exclude.map(Lists::newArrayList).orElseGet(ArrayList::new), this.and.orElse(false));
 
@@ -64,12 +66,12 @@ public record BiomeTagPredicate(Optional<PositionPredicate> position, Optional<L
 
     public static Set<Holder<Biome>> getValidBiomes(ServerLevel serverLevel, List<TagKey<Biome>> includeList, List<TagKey<Biome>> excludeList, boolean and) {
         Set<Holder<Biome>> biomes = new HashSet<>();
-        Optional<? extends Registry<Biome>> optionalBiomeRegistry = serverLevel.registryAccess().registry(Registries.BIOME);
+        Optional<? extends Registry<Biome>> optionalBiomeRegistry = serverLevel.registryAccess().lookup(Registries.BIOME);
         if (optionalBiomeRegistry.isPresent()) {
             Registry<Biome> biomeRegistry = optionalBiomeRegistry.get();
 
             if (includeList.isEmpty() && !excludeList.isEmpty()) { //Add all tags, when only excluding biomes
-                includeList.addAll(biomeRegistry.getTagNames().collect(Collectors.toSet()));
+                includeList.addAll(biomeRegistry.getTags().map(HolderSet.Named::key).collect(Collectors.toSet())); //TODO TEST, MIGHT NOT WORK. PRINT OUT
                 excludeList.addAll(INVALID_TYPES);
             }
 

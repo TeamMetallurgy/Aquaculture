@@ -2,7 +2,6 @@ package com.teammetallurgy.aquaculture.item;
 
 import com.teammetallurgy.aquaculture.client.renderer.AquaItemRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;

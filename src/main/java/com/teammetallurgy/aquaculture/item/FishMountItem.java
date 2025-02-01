@@ -20,8 +20,8 @@ import java.util.function.Supplier;
 public class FishMountItem extends HangingEntityItem {
     private final Supplier<EntityType<FishMountEntity>> fishMount;
 
-    public FishMountItem(Supplier<EntityType<FishMountEntity>> entityType) {
-        super(null, new Item.Properties());
+    public FishMountItem(Supplier<EntityType<FishMountEntity>> entityType, Properties properties) {
+        super(null, properties);
         this.fishMount = entityType;
     }
 
