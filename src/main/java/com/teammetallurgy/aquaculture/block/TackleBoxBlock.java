@@ -36,7 +36,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -101,7 +100,7 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
                     BlockEntity tileEntity = level.getBlockEntity(pos);
                     if (tileEntity != null) {
                         ItemStack giveStack = new ItemStack(this);
-                        tileEntity.saveToItem(giveStack, player.level().registryAccess());
+                        StackHelper.saveToItem(giveStack, player.level().registryAccess(), tileEntity);
                         StackHelper.giveItem(serverPlayer, giveStack);
                         level.removeBlock(pos, false);
                         level.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.6F, 0.8F);
@@ -203,7 +202,7 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
 
         if (blockEntity instanceof TackleBoxBlockEntity) {
             ItemStack tackleBox = new ItemStack(this);
-            blockEntity.saveToItem(tackleBox, player.level().registryAccess());
+            StackHelper.saveToItem(tackleBox, player.level().registryAccess(), blockEntity);
             Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), tackleBox);
         }
         return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
@@ -214,7 +213,7 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
     public ItemStack getCloneItemStack(@Nonnull LevelReader level, @Nonnull BlockPos pos, @Nonnull BlockState state, boolean includeData, @Nonnull Player player) {
         ItemStack cloneItemStack = super.getCloneItemStack(level, pos, state, includeData, player);
         level.getBlockEntity(pos, AquaBlockEntities.TACKLE_BOX.get()).ifPresent((blockEntity) -> {
-            blockEntity.saveToItem(cloneItemStack, player.level().registryAccess());
+            StackHelper.saveToItem(cloneItemStack, player.level().registryAccess(), blockEntity);
         });
         return cloneItemStack;
     }

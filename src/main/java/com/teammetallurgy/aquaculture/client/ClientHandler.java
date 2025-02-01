@@ -13,24 +13,20 @@ import com.teammetallurgy.aquaculture.entity.AquaFishEntity;
 import com.teammetallurgy.aquaculture.entity.FishMountEntity;
 import com.teammetallurgy.aquaculture.init.*;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.SpectralArrowRenderer;
 import net.minecraft.client.renderer.entity.TippableArrowRenderer;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.component.DyedItemColor;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
@@ -38,11 +34,13 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 public class ClientHandler {
     public static final ModelLayerLocation TACKLE_BOX = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "tackle_box"), "tackle_box");
     public static final ModelLayerLocation TURTLE_LAND_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "turtle_land"), "turtle_land");
+    public static final ModelLayerLocation TURTLE_LAND_BABY_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "turtle_land"), "turtle_land_baby");
     public static final ModelLayerLocation SMALL_MODEL = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "small_model"), "small_model");
     public static final ModelLayerLocation MEDIUM_MODEL = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "medium_model"), "medium_model");
     public static final ModelLayerLocation LARGE_MODEL = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "large_model"), "large_model");
     public static final ModelLayerLocation LONGNOSE_MODEL = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "longnose_model"), "longnose_model");
     public static final ModelLayerLocation CATFISH_MODEL = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "catfish_model"), "catfish_model");
+    public static final ModelLayerLocation TROPICAL_FISH_B = new ModelLayerLocation(ModelLayers.TROPICAL_FISH_SMALL.model(), "tropical_fish_b");
     public static final ModelLayerLocation JELLYFISH_MODEL = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "jellyfish_model"), "jellyfish_model");
 
     public static void setupClient() {
@@ -87,11 +85,13 @@ public class ClientHandler {
     public static void registerLayerDefinition(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(TACKLE_BOX, TackleBoxRenderer::createLayer);
         event.registerLayerDefinition(TURTLE_LAND_LAYER, TurtleLandModel::createBodyLayer);
+        event.registerLayerDefinition(TURTLE_LAND_BABY_LAYER, () -> TurtleLandModel.createBodyLayer().apply(TurtleLandModel.BABY_TRANSFORMER));
         event.registerLayerDefinition(SMALL_MODEL, FishSmallModel::createBodyLayer);
         event.registerLayerDefinition(MEDIUM_MODEL, FishMediumModel::createBodyLayer);
         event.registerLayerDefinition(LARGE_MODEL, FishLargeModel::createBodyLayer);
         event.registerLayerDefinition(LONGNOSE_MODEL, FishLongnoseModel::createBodyLayer);
         event.registerLayerDefinition(CATFISH_MODEL, FishCathfishModel::createBodyLayer);
+        event.registerLayerDefinition(TROPICAL_FISH_B, () -> AquaTropicalFishBModel.createBodyLayer(CubeDeformation.NONE));
         event.registerLayerDefinition(JELLYFISH_MODEL, JellyfishModel::createBodyLayer);
     }
 

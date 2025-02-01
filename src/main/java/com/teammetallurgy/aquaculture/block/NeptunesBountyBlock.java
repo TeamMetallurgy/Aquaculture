@@ -13,7 +13,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
@@ -39,7 +38,7 @@ public class NeptunesBountyBlock extends ChestBlock {
     public static final MapCodec<NeptunesBountyBlock> CODEC = simpleCodec((p) -> new NeptunesBountyBlock(AquaBlockEntities.NEPTUNES_BOUNTY::get, p));
 
     public NeptunesBountyBlock(Supplier<BlockEntityType<? extends ChestBlockEntity>> block, BlockBehaviour.Properties properties) {
-        super(block, Block.Properties.of().mapColor(MapColor.METAL).strength(3.5F, 8.0F).sound(SoundType.METAL));
+        super(block, properties.mapColor(MapColor.METAL).strength(3.5F, 8.0F).sound(SoundType.METAL));
     }
 
     @Override

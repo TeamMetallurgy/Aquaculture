@@ -66,7 +66,7 @@ public class AquaItems {
     public static final DeferredItem<Item> BOX = registerWithTab(p -> new LootBoxItem(AquaLootTables.BOX, p), "box");
     public static final DeferredItem<Item> LOCKBOX = registerWithTab(p -> new LootBoxItem(AquaLootTables.LOCKBOX, p), "lockbox");
     public static final DeferredItem<Item> TREASURE_CHEST = registerWithTab(p -> new LootBoxItem(AquaLootTables.TREASURE_CHEST, p), "treasure_chest");
-    public static final DeferredItem<Item> ALGAE = registerWithTab(p -> new Item(new Item.Properties().food(AquaFoods.ALGAE)), "algae");
+    public static final DeferredItem<Item> ALGAE = registerWithTab(p -> new Item(p.food(AquaFoods.ALGAE)), "algae");
     public static final DeferredItem<Item> FISH_BONES = registerWithTab(SimpleItem::new, "fish_bones");
 
     // Food

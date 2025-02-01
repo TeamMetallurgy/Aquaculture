@@ -1,7 +1,6 @@
 package com.teammetallurgy.aquaculture.item;
 
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
 
 public class FishItem extends SimpleItem {
     public static final FoodProperties SMALL_FISH_RAW = (new FoodProperties.Builder()).nutrition(1).saturationModifier(0.1F).build();

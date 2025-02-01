@@ -19,7 +19,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.HitResult;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -34,6 +33,10 @@ public class AquaFishEntity extends AbstractSchoolingFish {
 
     public FishType getFishType() {
         return this.fishType;
+    }
+
+    public ResourceLocation byName() {
+        return BuiltInRegistries.ENTITY_TYPE.getKey(this.getType());
     }
 
     @Override

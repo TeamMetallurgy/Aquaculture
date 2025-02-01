@@ -80,8 +80,8 @@ public class NeptuniumArmor extends ArmorItem {
         return this;
     }
 
-    @Override
+    /*@Override //TODO. Probably moved to json??
     public ResourceLocation getArmorTexture(@Nonnull ItemStack stack, @Nonnull Entity entity, @Nonnull EquipmentSlot slot, @Nonnull ArmorMaterial.Layer layer, boolean isInnerModel) {
         return ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/armor/" + this.texture + ".png");
-    }
+    }*/
 }

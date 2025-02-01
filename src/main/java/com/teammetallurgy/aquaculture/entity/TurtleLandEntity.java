@@ -11,10 +11,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -28,7 +26,6 @@ import javax.annotation.Nullable;
 
 public class TurtleLandEntity extends Animal {
     private static final EntityDimensions BABY_DIMENSIONS = AquaEntities.BOX_TURTLE.get().getDimensions().scale(0.5F).withEyeHeight(0.175F);
-
 
     public TurtleLandEntity(EntityType<? extends Animal> entityType, Level world) {
         super(entityType, world);
@@ -50,7 +47,7 @@ public class TurtleLandEntity extends Animal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.MOVEMENT_SPEED, 0.1D).add(Attributes.ARMOR, 1.5D);
+        return Animal.createAnimalAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.MOVEMENT_SPEED, 0.1D).add(Attributes.ARMOR, 1.5D);
     }
 
     @Override

@@ -113,7 +113,7 @@ public class AquaBobberRenderer extends EntityRenderer<AquaFishingBobberEntity, 
 
     /*@Override
     @Nonnull
-    public ResourceLocation getTextureLocation(@Nonnull AquaFishingBobberEntity fishHook) { //TODO???
+    public ResourceLocation getTextureLocation(AquaBobberRenderState renderState) { //TODO???
         return BOBBER_VANILLA;
     }*/
 

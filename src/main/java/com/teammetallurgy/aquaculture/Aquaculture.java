@@ -1,6 +1,5 @@
 package com.teammetallurgy.aquaculture;
 
-import com.teammetallurgy.aquaculture.api.AquaArmorMaterials;
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
 import com.teammetallurgy.aquaculture.api.fishing.Hooks;
 import com.teammetallurgy.aquaculture.client.ClientHandler;

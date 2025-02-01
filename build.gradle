@@ -87,23 +87,24 @@ dependencies {
 	//runtimeOnly "dev.emi:emi-neoforge:${emi_version}+${minecraft_version}" 
 }
 
-var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
-    var replaceProperties = [
-            "version"              : version,
-            "group"                : project.group,
-            minecraft_version      : minecraft_version,
-            minecraft_version_range: minecraft_version_range,
-            "mod_id"               : mod_id,
-            "mod_version"          : mod_version,
-            neo_version            : neo_version,
-            neo_version_range      : neo_version_range,
-            loader_version_range   : loader_version_range,
-            "pack_format_number"   : pack_format_number
-    ]
-    inputs.properties replaceProperties
-    expand replaceProperties
-    from "src/main/templates"
-    into "build/generated/sources/modMetadata"
+processResources {
+    def expandProps = [
+            "version": version,
+            "group": project.group, //Else we target the task's group.
+            "minecraft_version": minecraft_version,
+            "minecraft_version_range": minecraft_version_range,
+            "mod_id": mod_id,
+            "mod_version": mod_version,
+            "neo_version": neo_version,
+            "neo_version_range": neo_version_range,
+            "loader_version_range": loader_version_range,
+            "pack_format_number": pack_format_number
+	]
+
+    filesMatching(['pack.mcmeta', 'META-INF/neoforge.mods.toml']) {
+        expand expandProps
+    }
+    inputs.properties(expandProps)
 }
 
 task apiJar(type: Jar) {
@@ -112,9 +113,6 @@ task apiJar(type: Jar) {
     include 'com/teammetallurgy/aquaculture/api/**/*'
     archiveClassifier = 'api'
 }
-
-sourceSets.main.resources.srcDir generateModMetadata
-neoForge.ideSyncTask generateModMetadata
 
 publishing {
     tasks.publish.dependsOn 'build'
