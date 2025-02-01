@@ -6,12 +6,8 @@
     "BBB"
   ],
   "key": {
-    "B": {
-      "item": "minecraft:spruce_button"
-    },
-    "H": {
-      "item": "aquaculture:iron_hook"
-    }
+    "B": "minecraft:spruce_button",
+    "H": "aquaculture:iron_hook"
   },
   "result": {
     "id": "aquaculture:spruce_fish_mount"

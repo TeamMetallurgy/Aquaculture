@@ -71,7 +71,7 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
     @Override
     @Nonnull
     public RenderShape getRenderShape(@Nonnull BlockState state) {
-        return RenderShape.MODEL; //TODO Test
+        return RenderShape.MODEL;
     }
 
     @Override
@@ -97,10 +97,10 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
             MenuProvider container = this.getMenuProvider(state, level, pos);
             if (container != null && player instanceof ServerPlayer serverPlayer) {
                 if (player.isShiftKeyDown()) {
-                    BlockEntity tileEntity = level.getBlockEntity(pos);
-                    if (tileEntity != null) {
+                    BlockEntity blockEntity = level.getBlockEntity(pos);
+                    if (blockEntity != null) {
                         ItemStack giveStack = new ItemStack(this);
-                        StackHelper.saveToItem(giveStack, player.level().registryAccess(), tileEntity);
+                        StackHelper.saveToItem(giveStack, player.level().registryAccess(), blockEntity);
                         StackHelper.giveItem(serverPlayer, giveStack);
                         level.removeBlock(pos, false);
                         level.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.6F, 0.8F);
@@ -124,9 +124,9 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
     @Override
     public void setPlacedBy(@Nonnull Level world, @Nonnull BlockPos pos, @Nonnull BlockState state, LivingEntity placer, @Nonnull ItemStack stack) {
         if (stack.has(DataComponents.CUSTOM_NAME)) {
-            BlockEntity tileentity = world.getBlockEntity(pos);
-            if (tileentity instanceof TackleBoxBlockEntity) {
-                ((TackleBoxBlockEntity) tileentity).setCustomName(stack.getHoverName());
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if (blockEntity instanceof TackleBoxBlockEntity) {
+                ((TackleBoxBlockEntity) blockEntity).setCustomName(stack.getHoverName());
             }
         }
     }
@@ -191,7 +191,7 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
     }
 
     @Override
-    public void playerDestroy(@Nonnull Level level, Player player, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nullable BlockEntity tileEntity, @Nonnull ItemStack stack) {
+    public void playerDestroy(@Nonnull Level level, Player player, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nullable BlockEntity blockEntity, @Nonnull ItemStack stack) {
         player.awardStat(Stats.BLOCK_MINED.get(this));
         player.causeFoodExhaustion(0.005F);
     }

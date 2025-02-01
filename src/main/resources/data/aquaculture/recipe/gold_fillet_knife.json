@@ -6,12 +6,8 @@
     "S  "
   ],
   "key": {
-    "S": {
-      "tag": "c:rods/wooden"
-    },
-    "I": {
-      "tag": "c:ingots/gold"
-    }	
+    "S": "#c:rods/wooden",
+    "I": "#c:ingots/gold"
   },
   "result": {
     "id": "aquaculture:gold_fillet_knife"

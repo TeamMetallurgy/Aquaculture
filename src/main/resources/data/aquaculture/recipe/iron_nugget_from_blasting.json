@@ -1,12 +1,8 @@
 {
   "type": "minecraft:blasting",
   "ingredient": [
-    {
-      "item": "aquaculture:iron_fishing_rod"
-    },
-    {
-      "item": "aquaculture:iron_fillet_knife"
-    }
+    "aquaculture:iron_fishing_rod",
+    "aquaculture:iron_fillet_knife"
   ],
   "result": {
     "id": "minecraft:iron_nugget"

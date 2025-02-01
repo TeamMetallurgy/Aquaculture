@@ -1,12 +1,8 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {
-      "item": "aquaculture:iron_hook"
-    },
-    {
-      "item": "aquaculture:iron_hook"
-    }
+    "aquaculture:iron_hook",
+    "aquaculture:iron_hook"
   ],
   "result": {
     "id": "aquaculture:double_hook"

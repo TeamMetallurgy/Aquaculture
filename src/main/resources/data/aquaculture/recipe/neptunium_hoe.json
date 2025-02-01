@@ -12,12 +12,8 @@
     " T"
   ],
   "key": {
-    "S": {
-      "tag": "c:ingots/neptunium"
-    },
-    "T": {
-      "tag": "c:rods/wooden"
-    }
+    "S": "#c:ingots/neptunium",
+    "T": "#c:rods/wooden"
   },
   "result": {
     "id": "aquaculture:neptunium_hoe"

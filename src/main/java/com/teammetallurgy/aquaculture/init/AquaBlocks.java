@@ -27,7 +27,7 @@ public class AquaBlocks {
     public static final DeferredBlock<Block> WORM_FARM = register(WormFarmBlock::new, "worm_farm");
 
     /**
-     * Same as {@link AquaBlocks#register(Function, String, Item.Properties)}, but have group set by default
+     * Same as {@link AquaBlocks#register(Function, String, boolean)}, but have group set by default
      */
     public static DeferredBlock<Block> register(Function<BlockBehaviour.Properties, ? extends Block> function, @Nonnull String name) {
         return register(function, name, true);
@@ -44,9 +44,9 @@ public class AquaBlocks {
         DeferredBlock<Block> block = BLOCK_DEFERRED.registerBlock(name, function);
 
         if (addToItemGroup) {
-            AquaItems.registerWithTab(p -> new BlockItem(block.get(), p), name);
+            AquaItems.registerWithTab(p -> new BlockItem(block.get(), p.useBlockDescriptionPrefix()), name);
         } else {
-            AquaItems.register(p -> new BlockItem(block.get(), p), name);
+            AquaItems.register(p -> new BlockItem(block.get(), p.useBlockDescriptionPrefix()), name);
         }
 
         return block;

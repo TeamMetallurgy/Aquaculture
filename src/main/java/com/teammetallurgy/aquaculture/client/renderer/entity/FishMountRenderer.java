@@ -10,12 +10,14 @@ import com.teammetallurgy.aquaculture.entity.FishType;
 import com.teammetallurgy.aquaculture.init.AquaDataComponents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
@@ -43,14 +45,14 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
     }
 
     @Override
-    public void render(@Nonnull FishMountRenderState renderState, @Nonnull PoseStack matrixStack, @Nonnull MultiBufferSource buffer, int i) {
-        super.render(renderState, matrixStack, buffer, i);
-        matrixStack.pushPose();
+    public void render(@Nonnull FishMountRenderState renderState, @Nonnull PoseStack poseStack, @Nonnull MultiBufferSource buffer, int i) {
+        super.render(renderState, poseStack, buffer, i);
+        poseStack.pushPose();
         Direction direction = renderState.direction;
         Vec3 pos = this.getRenderOffset(renderState);
-        matrixStack.translate(-pos.x(), -pos.y(), -pos.z());
+        poseStack.translate(-pos.x(), -pos.y(), -pos.z());
         double multiplier = 0.46875D;
-        matrixStack.translate((double) direction.getStepX() * multiplier, (double) direction.getStepY() * multiplier, (double) direction.getStepZ() * multiplier);
+        poseStack.translate((double) direction.getStepX() * multiplier, (double) direction.getStepY() * multiplier, (double) direction.getStepZ() * multiplier);
         float x;
         float y;
         if (direction.getAxis().isHorizontal()) {
@@ -60,24 +62,24 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
             x = (float)(-90 * direction.getAxisDirection().getStep());
             y = 180.0F;
         }
-        
-        matrixStack.mulPose(Axis.XP.rotationDegrees(x));
-        matrixStack.mulPose(Axis.YP.rotationDegrees(y));
+        poseStack.mulPose(Axis.XP.rotationDegrees(x));
+        poseStack.mulPose(Axis.YP.rotationDegrees(y));
         if (!renderState.isInvisible) {
             BlockRenderDispatcher rendererDispatcher = this.mc.getBlockRenderer();
             ModelManager manager = rendererDispatcher.getBlockModelShaper().getModelManager();
 
-            matrixStack.pushPose();
-            matrixStack.translate(-0.5D, -0.5D, -0.5D);
+            poseStack.pushPose();
+            poseStack.translate(-0.5D, -0.5D, -0.5D);
             ResourceLocation entityTypeID = renderState.byName;
             if (entityTypeID != null) {
                 ModelResourceLocation location = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/" + entityTypeID.getPath()), "standalone"); //Calling this instead of the fields for mod support'
-                rendererDispatcher.getModelRenderer().renderModel(matrixStack.last(), buffer.getBuffer(Sheets.solidBlockSheet()), null, manager.getModel(location), 1.0F, 1.0F, 1.0F, i, OverlayTexture.NO_OVERLAY);
+
+                rendererDispatcher.getModelRenderer().renderModel(poseStack.last(), buffer.getBuffer(RenderType.entitySolidZOffsetForward(TextureAtlas.LOCATION_BLOCKS)), null, manager.getModel(location), 1.0F, 1.0F, 1.0F, i, OverlayTexture.NO_OVERLAY);
             }
-            matrixStack.popPose();
+            poseStack.popPose();
         }
-        this.renderFish(renderState, matrixStack, buffer, i);
-        matrixStack.popPose();
+        this.renderFish(renderState, poseStack, buffer, i);
+        poseStack.popPose();
     }
 
     private void renderFish(FishMountRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int i) {

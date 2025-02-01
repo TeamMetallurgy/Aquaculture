@@ -4,17 +4,18 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.client.ClientHandler;
-import com.teammetallurgy.aquaculture.client.renderer.entity.layers.JellyfishLayer;
 import com.teammetallurgy.aquaculture.client.renderer.entity.model.*;
 import com.teammetallurgy.aquaculture.client.renderer.entity.state.AquaFishRenderState;
 import com.teammetallurgy.aquaculture.entity.AquaFishEntity;
 import com.teammetallurgy.aquaculture.entity.FishType;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 
@@ -29,7 +30,7 @@ public class AquaFishRenderer extends MobRenderer<AquaFishEntity, AquaFishRender
     private final FishCathfishModel catfishModel;
     private final JellyfishModel jellyfishModel;
 
-    public AquaFishRenderer(EntityRendererProvider.Context context, boolean isJellyfish) {
+    public AquaFishRenderer(EntityRendererProvider.Context context) {
         super(context, new FishMediumModel(context.bakeLayer(ClientHandler.MEDIUM_MODEL)), 0.35F);
         this.tropicalFishBModel = new AquaTropicalFishBModel(context.bakeLayer(ModelLayers.TROPICAL_FISH_LARGE));
         this.smallModel = new FishSmallModel(context.bakeLayer(ClientHandler.SMALL_MODEL));
@@ -38,9 +39,15 @@ public class AquaFishRenderer extends MobRenderer<AquaFishEntity, AquaFishRender
         this.longnoseModel = new FishLongnoseModel(context.bakeLayer(ClientHandler.LONGNOSE_MODEL));
         this.catfishModel = new FishCathfishModel(context.bakeLayer(ClientHandler.CATFISH_MODEL));
         this.jellyfishModel = new JellyfishModel(context.bakeLayer(ClientHandler.JELLYFISH_MODEL));
+    }
 
-        if (isJellyfish) {
-            this.addLayer(new JellyfishLayer(this, context.getModelSet()));
+    @Nullable
+    @Override
+    protected RenderType getRenderType(@Nonnull AquaFishRenderState renderState, boolean isVisible, boolean renderTranslucent, boolean appearsGlowing) {
+        if (renderState.fishType == FishType.JELLYFISH) {
+            return RenderType.entityTranslucent(AquaFishRenderer.JELLYFISH);
+        } else {
+            return super.getRenderType(renderState, isVisible, renderTranslucent, appearsGlowing);
         }
     }
 

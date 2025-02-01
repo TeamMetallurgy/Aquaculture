@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "group": "bonemeal",
   "ingredients": [
-    {
-      "item": "aquaculture:fish_bones"
-    }
+    "aquaculture:fish_bones"
   ],
   "result": {
     "id": "minecraft:bone_meal",

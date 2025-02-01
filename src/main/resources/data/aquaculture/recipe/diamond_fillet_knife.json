@@ -6,12 +6,8 @@
     "S  "
   ],
   "key": {
-    "S": {
-      "tag": "c:rods/wooden"
-    },
-    "I": {
-      "tag": "c:gems/diamond"
-    }	
+    "S": "#c:rods/wooden",
+    "I": "#c:gems/diamond"
   },
   "result": {
     "id": "aquaculture:diamond_fillet_knife"

@@ -12,9 +12,7 @@
     "NNN"
   ],
   "key": {
-    "N": {
-      "tag": "c:ingots/neptunium"
-    }
+    "N": "#c:ingots/neptunium"
   },
   "result": {
     "id": "aquaculture:neptunes_bounty"

@@ -11,7 +11,7 @@ import net.minecraft.util.Mth;
 
 import javax.annotation.Nonnull;
 
-public class JellyfishModel extends FishBaseModel { //TODO Test is transparency works
+public class JellyfishModel extends FishBaseModel {
     private final ModelPart head;
     private final ModelPart tentaclesMain;
     private final ModelPart tentaclesLeft;

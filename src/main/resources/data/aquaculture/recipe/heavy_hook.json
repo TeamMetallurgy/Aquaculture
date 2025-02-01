@@ -6,12 +6,8 @@
     " I "
   ],
   "key": {
-    "I": {
-      "tag": "c:nuggets/iron"
-    },
-    "H": {
-      "item": "aquaculture:iron_hook"
-    }
+    "I": "#c:nuggets/iron",
+    "H": "aquaculture:iron_hook"
   },
   "result": {
     "id": "aquaculture:heavy_hook"

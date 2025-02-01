@@ -1,8 +1,6 @@
 {
   "type": "minecraft:campfire_cooking",
-  "ingredient": {
-    "item": "aquaculture:fish_fillet_raw"
-  },
+  "ingredient": "aquaculture:fish_fillet_raw",
   "result": {
     "id": "aquaculture:fish_fillet_cooked"
   },

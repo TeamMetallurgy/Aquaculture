@@ -6,12 +6,8 @@
     "BBB"
   ],
   "key": {
-    "B": {
-      "item": "minecraft:jungle_button"
-    },
-    "H": {
-      "item": "aquaculture:iron_hook"
-    }
+    "B": "minecraft:jungle_button",
+    "H": "aquaculture:iron_hook"
   },
   "result": {
     "id": "aquaculture:jungle_fish_mount"

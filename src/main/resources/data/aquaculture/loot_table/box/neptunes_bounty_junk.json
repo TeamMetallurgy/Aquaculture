@@ -8,17 +8,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 15,
-          "name": "minecraft:air"
-        },
-        {
-          "type": "minecraft:item",
           "weight": 5,
           "name": "aquaculture:driftwood"
         },
         {
           "type": "minecraft:item",
-          "weight": 1,
+          "weight": 2,
           "name": "aquaculture:message_in_a_bottle"
         },
         {

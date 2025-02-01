@@ -6,18 +6,10 @@
     "IBI"
   ],
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "B": {
-      "tag": "c:storage_blocks/iron"
-    },
-    "C": {
-      "tag": "c:chests"
-    },
-    "G": {
-      "tag": "aquaculture:tackle_box_green"
-    }
+    "I": "#c:ingots/iron",
+    "B": "#c:storage_blocks/iron",
+    "C": "#c:chests",
+    "G": "#aquaculture:tackle_box_green"
   },
   "result": {
     "id": "aquaculture:tackle_box"

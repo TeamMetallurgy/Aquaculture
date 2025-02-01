@@ -6,12 +6,8 @@
     " G "
   ],
   "key": {
-    "G": {
-      "tag": "c:nuggets/gold"
-    },
-    "H": {
-      "item": "aquaculture:iron_hook"
-    }
+    "G": "#c:nuggets/gold",
+    "H": "aquaculture:iron_hook"
   },
   "result": {
     "id": "aquaculture:gold_hook"

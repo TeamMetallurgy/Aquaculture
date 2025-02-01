@@ -6,12 +6,8 @@
     "S  "
   ],
   "key": {
-    "S": {
-      "tag": "c:rods/wooden"
-    },
-    "C": {
-      "tag": "minecraft:planks"
-    }	
+    "S": "#c:rods/wooden",
+    "C": "#minecraft:planks"
   },
   "result": {
     "id": "aquaculture:wooden_fillet_knife"

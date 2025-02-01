@@ -6,15 +6,9 @@
     "T S"
   ],
   "key": {
-    "S": {
-      "tag": "c:strings"
-    },
-    "T": {
-      "tag": "c:rods/wooden"
-    },
-    "I": {
-      "tag": "c:ingots/gold"
-    }	
+    "S": "#c:strings",
+    "T": "#c:rods/wooden",
+    "I": "#c:ingots/gold"
   },
   "result": {
     "id": "aquaculture:gold_fishing_rod"

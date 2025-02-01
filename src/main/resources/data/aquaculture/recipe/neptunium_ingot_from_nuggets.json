@@ -7,9 +7,7 @@
     "###"
   ],
   "key": {
-    "#": {
-      "item": "aquaculture:neptunium_nugget"
-    }
+    "#": "aquaculture:neptunium_nugget"
   },
   "result": {
     "id": "aquaculture:neptunium_ingot"

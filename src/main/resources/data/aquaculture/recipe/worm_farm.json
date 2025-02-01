@@ -6,15 +6,9 @@
     "###"
   ],
   "key": {
-    "F": {
-      "tag": "minecraft:wooden_fences"
-    },
-    "D": {
-      "item": "minecraft:dirt"
-    },
-    "#": {
-      "tag": "minecraft:planks"
-    }
+    "F": "#minecraft:wooden_fences",
+    "D": "minecraft:dirt",
+    "#": "#minecraft:planks"
   },
   "result": {
     "id": "aquaculture:worm_farm"
