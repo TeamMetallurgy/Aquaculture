@@ -2,16 +2,19 @@ package com.teammetallurgy.aquaculture.client;
 
 import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.client.gui.screen.TackleBoxScreen;
+import com.teammetallurgy.aquaculture.client.renderer.blockentity.NeptunesBountyRenderer;
+import com.teammetallurgy.aquaculture.client.renderer.blockentity.TackleBoxRenderer;
 import com.teammetallurgy.aquaculture.client.renderer.entity.AquaBobberRenderer;
 import com.teammetallurgy.aquaculture.client.renderer.entity.AquaFishRenderer;
 import com.teammetallurgy.aquaculture.client.renderer.entity.FishMountRenderer;
 import com.teammetallurgy.aquaculture.client.renderer.entity.TurtleLandRenderer;
 import com.teammetallurgy.aquaculture.client.renderer.entity.model.*;
-import com.teammetallurgy.aquaculture.client.renderer.blockentity.NeptunesBountyRenderer;
-import com.teammetallurgy.aquaculture.client.renderer.blockentity.TackleBoxRenderer;
 import com.teammetallurgy.aquaculture.entity.AquaFishEntity;
 import com.teammetallurgy.aquaculture.entity.FishMountEntity;
-import com.teammetallurgy.aquaculture.init.*;
+import com.teammetallurgy.aquaculture.init.AquaBlockEntities;
+import com.teammetallurgy.aquaculture.init.AquaEntities;
+import com.teammetallurgy.aquaculture.init.AquaGuis;
+import com.teammetallurgy.aquaculture.init.FishRegistry;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -20,7 +23,6 @@ import net.minecraft.client.renderer.entity.SpectralArrowRenderer;
 import net.minecraft.client.renderer.entity.TippableArrowRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -83,30 +85,12 @@ public class ClientHandler {
     }
 
     @SubscribeEvent
-    public static void registerModels(ModelEvent.RegisterAdditional event) { //TODO Might be broken? Fish mounts not rendering at last
+    public static void registerModels(ModelEvent.RegisterAdditional event) { //TODO Might be broken? Fish mounts not rendering at least
         event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/oak_fish_mount"));
         event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/spruce_fish_mount"));
         event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/birch_fish_mount"));
         event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/jungle_fish_mount"));
         event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/acacia_fish_mount"));
         event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/dark_oak_fish_mount"));
-    }
-
-            /*@SubscribeEvent
-    public static void registerColors(RegisterColorHandlersEvent.Item event) { //TODO Move to Json
-        event.register((stack, tintIndex) -> tintIndex > 0 ? -1 : DyedItemColor.getOrDefault(stack, ARGB.color(0, 0, 0)), AquaItems.FISHING_LINE.get());
-        event.register((stack, tintIndex) -> tintIndex > 0 ? -1 : DyedItemColor.getOrDefault(stack, ARGB.color(193, 38, 38)), AquaItems.BOBBER.get());
-    }*/
-
-    public static void registerBowModelProperties(Item bow) { //TODO. Not sure, but probably should be done in new item jsons
-        /*ItemProperties.register(bow, ResourceLocation.withDefaultNamespace("pull"), (stack, level, entity, i) -> {
-            if (entity == null) {
-                return 0.0F;
-            } else {
-                return entity.getUseItem() != stack ? 0.0F : (float) (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
-            }
-        });
-        ItemProperties.register(bow, ResourceLocation.withDefaultNamespace("pulling"), (stack, level, entity, i) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
-    */
     }
 }
