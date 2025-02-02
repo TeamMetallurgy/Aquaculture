@@ -71,9 +71,9 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
             poseStack.translate(-0.5D, -0.5D, -0.5D);
             ResourceLocation entityTypeID = renderState.byName;
             if (entityTypeID != null) {
-                ModelResourceLocation location = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/" + entityTypeID.getPath()), "standalone"); //Calling this instead of the fields for mod support
+                ResourceLocation location = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/" + entityTypeID.getPath()); //Calling this instead of the fields for mod support
 
-                rendererDispatcher.getModelRenderer().renderModel(poseStack.last(), buffer.getBuffer(RenderType.entitySolidZOffsetForward(TextureAtlas.LOCATION_BLOCKS)), null, manager.getModel(location), 1.0F, 1.0F, 1.0F, i, OverlayTexture.NO_OVERLAY);
+                rendererDispatcher.getModelRenderer().renderModel(poseStack.last(), buffer.getBuffer(RenderType.entitySolidZOffsetForward(TextureAtlas.LOCATION_BLOCKS)), null, manager.getStandaloneModel(location), 1.0F, 1.0F, 1.0F, i, OverlayTexture.NO_OVERLAY);
             }
             poseStack.popPose();
         }

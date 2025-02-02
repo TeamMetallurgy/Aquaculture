@@ -98,7 +98,7 @@ public class ClientHandler {
     }
 
     @SubscribeEvent
-    public static void registerModels(ModelEvent.RegisterAdditional event) { //TODO Might be broken? Fish mounts not rendering at least
+    public static void registerModels(ModelEvent.RegisterAdditional event) {
         event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/oak_fish_mount"));
         event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/spruce_fish_mount"));
         event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/birch_fish_mount"));
