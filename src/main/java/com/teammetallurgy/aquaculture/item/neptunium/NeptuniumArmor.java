@@ -27,7 +27,6 @@ import javax.annotation.Nonnull;
 public class NeptuniumArmor extends ArmorItem {
     protected static final ResourceLocation NEPTUNIUM_BOOTS_SWIM_SPEED = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "neptunium_boots_swim_speed");
     private static final AttributeModifier INCREASED_SWIM_SPEED = new AttributeModifier(NEPTUNIUM_BOOTS_SWIM_SPEED, 0.5D, AttributeModifier.Operation.ADD_VALUE);
-    private String texture;
 
     public NeptuniumArmor(ArmorMaterial armorMaterial, ArmorType type, Properties properties) {
         super(armorMaterial, type, properties.durability(type.getDurability(35)));
@@ -74,14 +73,4 @@ public class NeptuniumArmor extends ArmorItem {
             }
         }
     }
-
-    public Item setArmorTexture(String string) {
-        this.texture = string;
-        return this;
-    }
-
-    /*@Override //TODO. Probably moved to json??
-    public ResourceLocation getArmorTexture(@Nonnull ItemStack stack, @Nonnull Entity entity, @Nonnull EquipmentSlot slot, @Nonnull ArmorMaterial.Layer layer, boolean isInnerModel) {
-        return ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/armor/" + this.texture + ".png");
-    }*/
 }

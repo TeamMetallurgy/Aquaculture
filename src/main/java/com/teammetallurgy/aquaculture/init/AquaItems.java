@@ -46,10 +46,10 @@ public class AquaItems {
     public static final DeferredItem<Item> NEPTUNIUM_HOE = registerWithTab(p -> new NeptuniumHoe(AquacultureAPI.MATS.NEPTUNIUM, -3, 0.2F, p), "neptunium_hoe");
     public static final DeferredItem<Item> NEPTUNIUM_SWORD = registerWithTab(p -> new SwordItem(AquacultureAPI.MATS.NEPTUNIUM, 3, -2.4F, p), "neptunium_sword");
     public static final DeferredItem<Item> NEPTUNIUM_BOW = registerWithTab(NeptuniumBow::new, "neptunium_bow");
-    public static final DeferredItem<Item> NEPTUNIUM_HELMET = registerWithTab(p -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorType.HELMET, p).setArmorTexture("neptunium_layer_1"), "neptunium_helmet");
-    public static final DeferredItem<Item> NEPTUNIUM_CHESTPLATE = registerWithTab(p -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorType.CHESTPLATE, p).setArmorTexture("neptunium_layer_1"), "neptunium_chestplate");
-    public static final DeferredItem<Item> NEPTUNIUM_LEGGINGS = registerWithTab(p -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorType.LEGGINGS, p).setArmorTexture("neptunium_layer_2"), "neptunium_leggings");
-    public static final DeferredItem<Item> NEPTUNIUM_BOOTS = registerWithTab(p -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorType.BOOTS, p).setArmorTexture("neptunium_layer_1"), "neptunium_boots");
+    public static final DeferredItem<Item> NEPTUNIUM_HELMET = registerWithTab(p -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorType.HELMET, p), "neptunium_helmet");
+    public static final DeferredItem<Item> NEPTUNIUM_CHESTPLATE = registerWithTab(p -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorType.CHESTPLATE, p), "neptunium_chestplate");
+    public static final DeferredItem<Item> NEPTUNIUM_LEGGINGS = registerWithTab(p -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorType.LEGGINGS, p), "neptunium_leggings");
+    public static final DeferredItem<Item> NEPTUNIUM_BOOTS = registerWithTab(p -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorType.BOOTS, p), "neptunium_boots");
 
     // Fillet Knifes
     public static final DeferredItem<Item> WOODEN_FILLET_KNIFE = registerWithTab(p -> new ItemFilletKnife(ToolMaterial.WOOD, p), "wooden_fillet_knife");
