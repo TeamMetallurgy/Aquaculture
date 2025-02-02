@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "aquaculture:item/bobber",
+    "tints": [
+      {
+        "type": "minecraft:dye",
+        "default": -4119002
+      }
+    ]
+  }
+}

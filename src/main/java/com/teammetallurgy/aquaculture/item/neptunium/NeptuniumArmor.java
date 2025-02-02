@@ -2,7 +2,6 @@ package com.teammetallurgy.aquaculture.item.neptunium;
 
 import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.init.AquaItems;
-import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -12,9 +11,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.equipment.ArmorMaterial;
+import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -27,10 +26,9 @@ import javax.annotation.Nonnull;
 public class NeptuniumArmor extends ArmorItem {
     protected static final ResourceLocation NEPTUNIUM_BOOTS_SWIM_SPEED = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "neptunium_boots_swim_speed");
     private static final AttributeModifier INCREASED_SWIM_SPEED = new AttributeModifier(NEPTUNIUM_BOOTS_SWIM_SPEED, 0.5D, AttributeModifier.Operation.ADD_VALUE);
-    private String texture;
 
-    public NeptuniumArmor(Holder<ArmorMaterial> armorMaterial, ArmorItem.Type type) {
-        super(armorMaterial, type, new Item.Properties().durability(type.getDurability(35)));
+    public NeptuniumArmor(ArmorMaterial armorMaterial, ArmorType type, Properties properties) {
+        super(armorMaterial, type, properties.durability(type.getDurability(35)));
     }
 
     @Override
@@ -73,15 +71,5 @@ public class NeptuniumArmor extends ArmorItem {
                 }
             }
         }
-    }
-
-    public Item setArmorTexture(String string) {
-        this.texture = string;
-        return this;
-    }
-
-    @Override
-    public ResourceLocation getArmorTexture(@Nonnull ItemStack stack, @Nonnull Entity entity, @Nonnull EquipmentSlot slot, @Nonnull ArmorMaterial.Layer layer, boolean isInnerModel) {
-        return ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/armor/" + this.texture + ".png");
     }
 }

@@ -1,25 +1,24 @@
 package com.teammetallurgy.aquaculture.client.renderer.entity.model;
 
-import com.google.common.collect.ImmutableList;
-import com.teammetallurgy.aquaculture.entity.TurtleLandEntity;
+import net.minecraft.client.model.BabyModelTransform;
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 
 import javax.annotation.Nonnull;
+import java.util.Set;
 
-public class TurtleLandModel<T extends TurtleLandEntity> extends QuadrupedModel<T> {
+public class TurtleLandModel extends QuadrupedModel<LivingEntityRenderState> {
+    public static final MeshTransformer BABY_TRANSFORMER = new BabyModelTransform(false, 1.1F, 1.5F, 2.0F, 2.0F, 24, Set.of("head"));
     private final ModelPart tail;
     private final ModelPart shellTop;
     private final ModelPart belly;
 
     public TurtleLandModel(ModelPart part) {
-        super(part, false, 1.1F, 1.5F, 2.0F, 2.0F, 24);
+        super(part);
         this.tail = part.getChild("tail");
         this.shellTop = part.getChild("shell_top");
         this.belly = part.getChild("belly");
@@ -41,19 +40,15 @@ public class TurtleLandModel<T extends TurtleLandEntity> extends QuadrupedModel<
     }
 
     @Override
-    @Nonnull
-    protected Iterable<ModelPart> bodyParts() {
-        return ImmutableList.of(this.body, this.rightHindLeg, this.leftHindLeg, this.rightFrontLeg, this.leftFrontLeg, this.tail, this.shellTop, this.belly);
-    }
-
-    @Override
-    public void setupAnim(@Nonnull T turtle, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.head.xRot = headPitch * 0.017453292F;
-        this.head.yRot = netHeadYaw * 0.017453292F;
-        this.rightHindLeg.xRot = 0.5235987755982988F + (Mth.cos(limbSwing * 5.0F) * 1.4F * limbSwingAmount);
-        this.leftHindLeg.xRot = -0.5235987755982988F + -(Mth.cos(limbSwing * 5.0F) * 1.4F * limbSwingAmount);
-        this.rightFrontLeg.xRot = -0.5235987755982988F + -(Mth.cos(limbSwing * 5.0F) * 1.4F * limbSwingAmount);
-        this.leftFrontLeg.xRot = 0.5235987755982988F + (Mth.cos(limbSwing * 5.0F) * 1.4F * limbSwingAmount);
-        this.tail.yRot = Mth.cos(limbSwing * 0.4662F) * 0.6F * limbSwingAmount;
+    public void setupAnim(@Nonnull LivingEntityRenderState renderState) {
+        float walkAnimationPos = renderState.walkAnimationPos;
+        float walkAnimationSpeed = renderState.walkAnimationSpeed;
+        this.head.xRot = renderState.xRot * 0.017453292F;
+        this.head.yRot = renderState.yRot * 0.017453292F;
+        this.rightHindLeg.xRot = 0.5235987755982988F + (Mth.cos(walkAnimationPos * 5.0F) * 1.4F * walkAnimationSpeed);
+        this.leftHindLeg.xRot = -0.5235987755982988F + -(Mth.cos(walkAnimationPos * 5.0F) * 1.4F * walkAnimationSpeed);
+        this.rightFrontLeg.xRot = -0.5235987755982988F + -(Mth.cos(walkAnimationPos * 5.0F) * 1.4F * walkAnimationSpeed);
+        this.leftFrontLeg.xRot = 0.5235987755982988F + (Mth.cos(walkAnimationPos * 5.0F) * 1.4F * walkAnimationSpeed);
+        this.tail.yRot = Mth.cos(walkAnimationPos * 0.4662F) * 0.6F * walkAnimationSpeed;
     }
 }

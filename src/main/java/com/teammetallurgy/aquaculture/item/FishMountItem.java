@@ -8,7 +8,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.HangingEntityItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.UseOnContext;
@@ -20,8 +19,8 @@ import java.util.function.Supplier;
 public class FishMountItem extends HangingEntityItem {
     private final Supplier<EntityType<FishMountEntity>> fishMount;
 
-    public FishMountItem(Supplier<EntityType<FishMountEntity>> entityType) {
-        super(null, new Item.Properties());
+    public FishMountItem(Supplier<EntityType<FishMountEntity>> entityType, Properties properties) {
+        super(null, properties);
         this.fishMount = entityType;
     }
 

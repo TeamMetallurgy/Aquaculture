@@ -12,15 +12,9 @@
     "T S"
   ],
   "key": {
-    "S": {
-      "tag": "c:strings"
-    },
-    "T": {
-      "tag": "c:rods/wooden"
-    },
-    "N": {
-      "tag": "c:ingots/neptunium"
-    }	
+    "S": "#c:strings",
+    "T": "#c:rods/wooden",
+    "N": "#c:ingots/neptunium"
   },
   "result": {
     "id": "aquaculture:neptunium_fishing_rod"

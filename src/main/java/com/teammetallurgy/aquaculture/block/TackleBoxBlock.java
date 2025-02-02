@@ -25,17 +25,17 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -46,14 +46,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
-    public static final MapCodec<TackleBoxBlock> CODEC = simpleCodec(p -> new TackleBoxBlock());
-    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+    public static final MapCodec<TackleBoxBlock> CODEC = simpleCodec(TackleBoxBlock::new);
+    public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private static final VoxelShape NORTH_SOUTH = Block.box(0.8D, 0.0D, 3.9D, 15.2D, 9.0D, 12.2D);
     private static final VoxelShape EAST_WEST = Block.box(3.9D, 0.0D, 0.8D, 12.2D, 9.0D, 15.2D);
 
-    public TackleBoxBlock() {
-        super(Block.Properties.of().mapColor(MapColor.METAL).strength(4.0F, 5.0F).sound(SoundType.METAL));
+    public TackleBoxBlock(BlockBehaviour.Properties properties) {
+        super(properties.mapColor(MapColor.METAL).strength(4.0F, 5.0F).sound(SoundType.METAL));
         this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
     }
 
@@ -71,7 +71,7 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
     @Override
     @Nonnull
     public RenderShape getRenderShape(@Nonnull BlockState state) {
-        return RenderShape.ENTITYBLOCK_ANIMATED;
+        return RenderShape.MODEL;
     }
 
     @Override
@@ -97,10 +97,10 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
             MenuProvider container = this.getMenuProvider(state, level, pos);
             if (container != null && player instanceof ServerPlayer serverPlayer) {
                 if (player.isShiftKeyDown()) {
-                    BlockEntity tileEntity = level.getBlockEntity(pos);
-                    if (tileEntity != null) {
+                    BlockEntity blockEntity = level.getBlockEntity(pos);
+                    if (blockEntity != null) {
                         ItemStack giveStack = new ItemStack(this);
-                        tileEntity.saveToItem(giveStack, player.level().registryAccess());
+                        StackHelper.saveToItem(giveStack, player.level().registryAccess(), blockEntity);
                         StackHelper.giveItem(serverPlayer, giveStack);
                         level.removeBlock(pos, false);
                         level.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.6F, 0.8F);
@@ -124,20 +124,20 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
     @Override
     public void setPlacedBy(@Nonnull Level world, @Nonnull BlockPos pos, @Nonnull BlockState state, LivingEntity placer, @Nonnull ItemStack stack) {
         if (stack.has(DataComponents.CUSTOM_NAME)) {
-            BlockEntity tileentity = world.getBlockEntity(pos);
-            if (tileentity instanceof TackleBoxBlockEntity) {
-                ((TackleBoxBlockEntity) tileentity).setCustomName(stack.getHoverName());
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if (blockEntity instanceof TackleBoxBlockEntity) {
+                ((TackleBoxBlockEntity) blockEntity).setCustomName(stack.getHoverName());
             }
         }
     }
 
     @Override
     @Nonnull
-    public BlockState updateShape(BlockState state, @Nonnull Direction facing, @Nonnull BlockState facingState, @Nonnull LevelAccessor world, @Nonnull BlockPos currentPos, @Nonnull BlockPos facingPos) {
+    public BlockState updateShape(BlockState state, @Nonnull LevelReader level, @Nonnull ScheduledTickAccess scheduledTickAccess, @Nonnull BlockPos pos, @Nonnull Direction direction, @Nonnull BlockPos neighborPos, @Nonnull BlockState neighborState, @Nonnull RandomSource random) {
         if (state.getValue(WATERLOGGED)) {
-            world.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+            scheduledTickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
-        return super.updateShape(state, facing, facingState, world, currentPos, facingPos);
+        return super.updateShape(state, level, scheduledTickAccess, pos, direction, neighborPos, neighborState, random);
     }
 
     @Override
@@ -191,34 +191,35 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
     }
 
     @Override
-    public void playerDestroy(@Nonnull Level level, Player player, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nullable BlockEntity tileEntity, @Nonnull ItemStack stack) {
+    public void playerDestroy(@Nonnull Level level, Player player, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nullable BlockEntity blockEntity, @Nonnull ItemStack stack) {
         player.awardStat(Stats.BLOCK_MINED.get(this));
         player.causeFoodExhaustion(0.005F);
     }
 
     @Override
-    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+    public boolean onDestroyedByPlayer(@Nonnull BlockState state, Level level, @Nonnull BlockPos pos, @Nonnull Player player, boolean willHarvest, @Nonnull FluidState fluid) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
 
         if (blockEntity instanceof TackleBoxBlockEntity) {
             ItemStack tackleBox = new ItemStack(this);
-            blockEntity.saveToItem(tackleBox, player.level().registryAccess());
+            StackHelper.saveToItem(tackleBox, player.level().registryAccess(), blockEntity);
             Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), tackleBox);
         }
         return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-        ItemStack cloneItemStack = super.getCloneItemStack(state, target, level, pos, player);
+    @Nonnull
+    public ItemStack getCloneItemStack(@Nonnull LevelReader level, @Nonnull BlockPos pos, @Nonnull BlockState state, boolean includeData, @Nonnull Player player) {
+        ItemStack cloneItemStack = super.getCloneItemStack(level, pos, state, includeData, player);
         level.getBlockEntity(pos, AquaBlockEntities.TACKLE_BOX.get()).ifPresent((blockEntity) -> {
-            blockEntity.saveToItem(cloneItemStack, player.level().registryAccess());
+            StackHelper.saveToItem(cloneItemStack, player.level().registryAccess(), blockEntity);
         });
         return cloneItemStack;
     }
 
     @Override
-    public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
+    public void onBlockExploded(@Nonnull BlockState state, ServerLevel level, @Nonnull BlockPos pos, @Nonnull Explosion explosion) {
         if (!level.isClientSide) {
             IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, pos, null);
             if (handler != null) {

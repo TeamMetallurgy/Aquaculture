@@ -1,20 +1,20 @@
 package com.teammetallurgy.aquaculture.misc;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class StackHelper {
 
@@ -39,14 +39,10 @@ public class StackHelper {
         return clazz.isAssignableFrom(stackMainHand.getItem().getClass()) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
     }
 
-    public static Ingredient mergeIngredient(Ingredient i1, Ingredient i2) {
-        List<ItemStack> stackList = new ArrayList<>();
-        stackList.addAll(Arrays.asList(i1.getItems()));
-        stackList.addAll(Arrays.asList(i2.getItems()));
-        return ingredientFromStackList(stackList);
-    }
-
-    public static Ingredient ingredientFromStackList(List<ItemStack> stackList) {
-        return Ingredient.fromValues(stackList.stream().map(Ingredient.ItemValue::new));
+    public static void saveToItem(ItemStack stack, HolderLookup.Provider p_323484_, BlockEntity blockEntity) {
+        CompoundTag compoundtag = blockEntity.saveCustomOnly(p_323484_);
+        blockEntity.removeComponentsFromTag(compoundtag);
+        BlockItem.setBlockEntityData(stack, blockEntity.getType(), compoundtag);
+        stack.applyComponents(blockEntity.collectComponents());
     }
 }

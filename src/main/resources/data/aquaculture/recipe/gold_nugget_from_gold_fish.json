@@ -1,9 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {
-      "item": "aquaculture:goldfish"
-    }
+    "aquaculture:goldfish"
   ],
   "result": {
     "id": "minecraft:gold_nugget"

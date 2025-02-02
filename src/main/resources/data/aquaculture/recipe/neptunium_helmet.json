@@ -11,9 +11,7 @@
     "S S"
   ],
   "key": {
-    "S": {
-      "tag": "c:ingots/neptunium"
-    }
+    "S": "#c:ingots/neptunium"
   },
   "result": {
     "id": "aquaculture:neptunium_helmet"

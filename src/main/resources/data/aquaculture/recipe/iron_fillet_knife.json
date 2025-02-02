@@ -6,12 +6,8 @@
     "S  "
   ],
   "key": {
-    "S": {
-      "tag": "c:rods/wooden"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    }	
+    "S": "#c:rods/wooden",
+    "I": "#c:ingots/iron"
   },
   "result": {
     "id": "aquaculture:iron_fillet_knife"

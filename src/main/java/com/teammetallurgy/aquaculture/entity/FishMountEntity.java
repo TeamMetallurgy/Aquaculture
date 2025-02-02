@@ -15,11 +15,13 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerEntity;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -33,7 +35,6 @@ import net.minecraft.world.level.block.DiodeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -59,6 +60,10 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     public FishMountEntity(EntityType<? extends FishMountEntity> type, Level world, BlockPos blockPos, Direction direction) {
         super(type, world, blockPos);
         this.setDirection(direction);
+    }
+
+    public ResourceLocation byName() {
+        return BuiltInRegistries.ENTITY_TYPE.getKey(this.getType());
     }
 
     @Override
@@ -104,24 +109,27 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     }
 
     @Override
-    public void kill() {
+    public void kill(@Nonnull ServerLevel level) {
         this.setDisplayedItem(ItemStack.EMPTY);
-        super.kill();
+        super.kill(level);
     }
 
     @Override
-    public boolean hurt(@Nonnull DamageSource source, float amount) {
-        if (this.isInvulnerableTo(source)) {
+    public boolean hurtClient(DamageSource damageSource) {
+        return !this.isInvulnerableToBase(damageSource);
+    }
+
+    @Override
+    public boolean hurtServer(@Nonnull ServerLevel level, @Nonnull DamageSource source, float amount) {
+        if (this.isInvulnerableToBase(source)) {
             return false;
-        } else if (!source.is(DamageTypeTags.IS_EXPLOSION) && !this.getDisplayedItem().isEmpty()) {
-            if (!this.level().isClientSide) {
-                this.dropItemOrSelf(source.getEntity(), false);
+        } else if (!source.is(DamageTypeTags.IS_EXPLOSION) && !this.getItem().isEmpty()) {
+                this.dropItemOrSelf(level, source.getEntity(), false);
                 this.gameEvent(GameEvent.BLOCK_CHANGE, source.getEntity());
                 this.playSound(AquaSounds.FISH_MOUNT_REMOVED.get(), 1.0F, 1.0F);
-            }
             return true;
         } else {
-            return super.hurt(source, amount);
+            return super.hurtServer(level, source, amount);
         }
     }
 
@@ -134,9 +142,9 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     }
 
     @Override
-    public void dropItem(@Nullable Entity brokenEntity) {
+    public void dropItem(@Nonnull ServerLevel level, @Nullable Entity brokenEntity) {
         this.playSound(AquaSounds.FISH_MOUNT_BROKEN.get(), 1.0F, 1.0F);
-        this.dropItemOrSelf(brokenEntity, true);
+        this.dropItemOrSelf(level, brokenEntity, true);
         this.gameEvent(GameEvent.BLOCK_CHANGE, entity);
     }
 
@@ -145,10 +153,10 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
         this.playSound(AquaSounds.FISH_MOUNT_PLACED.get(), 1.0F, 1.0F);
     }
 
-    private void dropItemOrSelf(@Nullable Entity entity, boolean shouldDropSelf) {
-        ItemStack displayedStack = this.getDisplayedItem();
+    private void dropItemOrSelf(ServerLevel level, @Nullable Entity entity, boolean shouldDropSelf) {
+        ItemStack displayedStack = this.getItem();
         this.setDisplayedItem(ItemStack.EMPTY);
-        if (!this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+        if (!level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
             if (entity == null) {
                 this.setDisplayedItem(ItemStack.EMPTY);
             }
@@ -159,28 +167,28 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
             }
 
             if (shouldDropSelf) {
-                this.spawnAtLocation(this.getItem());
+                this.spawnAtLocation(level, this.getItemVariant());
             }
 
             if (!displayedStack.isEmpty()) {
                 displayedStack = displayedStack.copy();
                 if (this.random.nextFloat() < this.itemDropChance) {
-                    this.spawnAtLocation(displayedStack);
+                    this.spawnAtLocation(level, displayedStack);
                 }
             }
         }
     }
 
-    private Item getItem() {
+    private Item getItemVariant() {
         ResourceLocation location = BuiltInRegistries.ENTITY_TYPE.getKey(this.getType());
         if (BuiltInRegistries.ITEM.containsKey(location) && location != null) {
-            return BuiltInRegistries.ITEM.get(location);
+            return BuiltInRegistries.ITEM.getValue(location);
         }
         return Items.AIR;
     }
 
     @Nonnull
-    public ItemStack getDisplayedItem() {
+    public ItemStack getItem() {
         return this.getEntityData().get(ITEM);
     }
 
@@ -206,11 +214,11 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         if (key.equals(ITEM)) {
-            ItemStack displayStack = this.getDisplayedItem();
+            ItemStack displayStack = this.getItem();
             if (displayStack != null && !displayStack.isEmpty()) {
-                EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(BuiltInRegistries.ITEM.getKey(displayStack.getItem()));
+                EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.getValue(BuiltInRegistries.ITEM.getKey(displayStack.getItem()));
                 if (entityType != null && entityType != EntityType.PIG) {
-                    this.entity = entityType.create(this.level());
+                    this.entity = entityType.create(this.level(), EntitySpawnReason.TRIGGERED);
                 }
             } else {
                 this.entity = null;
@@ -221,8 +229,8 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     @Override
     public void addAdditionalSaveData(@Nonnull CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        if (!this.getDisplayedItem().isEmpty()) {
-            compound.put("Item", this.getDisplayedItem().save(this.registryAccess()));
+        if (!this.getItem().isEmpty()) {
+            compound.put("Item", this.getItem().save(this.registryAccess()));
             compound.putFloat("ItemDropChance", this.itemDropChance);
         }
         compound.putByte("Facing", (byte) this.direction.get3DDataValue());
@@ -240,7 +248,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
             stack = ItemStack.EMPTY;
         }
 
-        ItemStack displayStack = this.getDisplayedItem();
+        ItemStack displayStack = this.getItem();
         if (!displayStack.isEmpty() && !ItemStack.matches(stack, displayStack)) {
             this.setDisplayedItem(displayStack);
         }
@@ -259,9 +267,9 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     public InteractionResult interact(Player player, @Nonnull InteractionHand hand) {
         ItemStack heldStack = player.getItemInHand(hand);
         if (!this.level().isClientSide) {
-            if (this.getDisplayedItem().isEmpty()) {
+            if (this.getItem().isEmpty()) {
                 Item heldItem = heldStack.getItem();
-                EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(BuiltInRegistries.ITEM.getKey(heldItem));
+                EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.getValue(BuiltInRegistries.ITEM.getKey(heldItem));
                 if (entityType != EntityType.PIG && AquacultureAPI.FISH_DATA.getFish().contains(heldItem)) {
                     this.setDisplayedItem(heldStack);
                     if (!player.getAbilities().instabuild) {
@@ -276,7 +284,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
 
     @Override
     @Nonnull
-    public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity serverEntity) {
+    public Packet<ClientGamePacketListener> getAddEntityPacket(@Nonnull ServerEntity serverEntity) {
         return new ClientboundAddEntityPacket(this, this.direction.get3DDataValue(), this.getPos());
     }
 
@@ -287,8 +295,8 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     }
 
     @Override
-    public ItemStack getPickedResult(@Nonnull HitResult target) {
-        return !this.getDisplayedItem().isEmpty() ? this.getDisplayedItem() : new ItemStack(this.getItem());
+    public ItemStack getPickResult() {
+        return !this.getItem().isEmpty() ? this.getItem() : new ItemStack(this.getItemVariant());
     }
 
     @Override

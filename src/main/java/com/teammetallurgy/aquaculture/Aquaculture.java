@@ -1,6 +1,5 @@
 package com.teammetallurgy.aquaculture;
 
-import com.teammetallurgy.aquaculture.api.AquaArmorMaterials;
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
 import com.teammetallurgy.aquaculture.api.fishing.Hooks;
 import com.teammetallurgy.aquaculture.client.ClientHandler;
@@ -70,7 +69,6 @@ public class Aquaculture {
     }
 
     public void registerDeferredRegistries(IEventBus modBus) {
-        AquaArmorMaterials.ARMOR_MATERIAL_DEFERRED.register(modBus);
         AquaBlocks.BLOCK_DEFERRED.register(modBus);
         AquaItems.ITEM_DEFERRED.register(modBus);
         AquaDataComponents.DATA_COMPONENT_TYPE_DEFERRED.register(modBus);

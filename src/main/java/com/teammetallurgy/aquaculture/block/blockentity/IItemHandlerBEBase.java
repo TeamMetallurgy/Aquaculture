@@ -17,8 +17,8 @@ public abstract class IItemHandlerBEBase extends BlockEntity implements Nameable
     private Component customName;
     public final IItemHandler handler = createItemHandler();
 
-    public IItemHandlerBEBase(BlockEntityType<?> tileEntityType, BlockPos pos, BlockState state) {
-        super(tileEntityType, pos, state);
+    public IItemHandlerBEBase(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
+        super(blockEntityType, pos, state);
     }
 
     @Nonnull

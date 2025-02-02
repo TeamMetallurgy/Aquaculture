@@ -1,9 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {
-      "item": "aquaculture:red_shrooma"
-    }
+    "aquaculture:red_shrooma"
   ],
   "result": {
     "id": "minecraft:red_mushroom",

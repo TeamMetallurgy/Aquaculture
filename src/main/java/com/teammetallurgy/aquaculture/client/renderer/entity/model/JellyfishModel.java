@@ -1,9 +1,6 @@
 package com.teammetallurgy.aquaculture.client.renderer.entity.model;
 
-import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.ListModel;
+import com.teammetallurgy.aquaculture.client.renderer.entity.state.AquaFishRenderState;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -11,11 +8,10 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 
 import javax.annotation.Nonnull;
 
-public class JellyfishModel<T extends Entity> extends ListModel<T> {
+public class JellyfishModel extends FishBaseModel {
     private final ModelPart head;
     private final ModelPart tentaclesMain;
     private final ModelPart tentaclesLeft;
@@ -24,6 +20,7 @@ public class JellyfishModel<T extends Entity> extends ListModel<T> {
     private final ModelPart heart;
 
     public JellyfishModel(ModelPart part) {
+        super(part);
         this.head = part.getChild("head");
         this.tentaclesMain = part.getChild("tentacles_main");
         this.tentaclesLeft = part.getChild("tentacles_left");
@@ -45,24 +42,16 @@ public class JellyfishModel<T extends Entity> extends ListModel<T> {
     }
 
     @Override
-    @Nonnull
-    public Iterable<ModelPart> parts() {
-        return ImmutableList.of(this.head, this.tentaclesMain, this.tentaclesLeft, this.tentaclesRight, this.heart, this.frill);
-    }
-
-    @Override
-    public void renderToBuffer(PoseStack p_103013_, VertexConsumer p_103014_, int p_103015_, int p_103016_, int p_350701_) {
-        //Actual rendering done in the layer. Only way I could figure out to keep the transparency
-    }
-
-    @Override
-    public void setupAnim(@Nonnull T jellyfish, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(@Nonnull AquaFishRenderState renderState) {
         float stillMovement = 0.1F;
-        if (!jellyfish.isInWater()) {
+        if (!renderState.isInWater) {
             stillMovement = 0.05F;
         }
-        this.tentaclesLeft.yRot = -stillMovement * 0.25F * Mth.sin(0.3F * ageInTicks) + Mth.cos(limbSwing * 0.4662F) * 0.5F * limbSwingAmount;
-        this.tentaclesMain.yRot = -stillMovement * 0.25F * Mth.sin(0.3F * ageInTicks) + Mth.cos(limbSwing * 0.4662F) * 0.5F * limbSwingAmount;
-        this.tentaclesRight.yRot = -stillMovement * 0.25F * Mth.sin(0.3F * ageInTicks) + Mth.cos(limbSwing * 0.4662F) * 0.5F * limbSwingAmount;
+
+        float walkAnimationPos = renderState.walkAnimationPos;
+        float walkAnimationSpeed = renderState.walkAnimationSpeed;
+        this.tentaclesLeft.yRot = -stillMovement * 0.25F * Mth.sin(0.3F * renderState.ageInTicks) + Mth.cos(walkAnimationPos * 0.4662F) * 0.5F * walkAnimationSpeed;
+        this.tentaclesMain.yRot = -stillMovement * 0.25F * Mth.sin(0.3F * renderState.ageInTicks) + Mth.cos(walkAnimationPos * 0.4662F) * 0.5F * walkAnimationSpeed;
+        this.tentaclesRight.yRot = -stillMovement * 0.25F * Mth.sin(0.3F * renderState.ageInTicks) + Mth.cos(walkAnimationPos * 0.4662F) * 0.5F * walkAnimationSpeed;
     }
 }

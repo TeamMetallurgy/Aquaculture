@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "aquaculture:neptunium"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "aquaculture:neptunium"
+      }
+    ]
+  }
+}

@@ -1,17 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
-  "group": "fish_mount",
+  "category": "misc",
   "pattern": [
     "BHB",
     "BBB"
   ],
   "key": {
-    "B": {
-      "item": "minecraft:oak_button"
-    },
-    "H": {
-      "item": "aquaculture:iron_hook"
-    }
+    "B": "minecraft:oak_button",
+    "H": "aquaculture:iron_hook"
   },
   "result": {
     "id": "aquaculture:oak_fish_mount"

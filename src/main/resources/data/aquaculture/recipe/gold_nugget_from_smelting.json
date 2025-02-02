@@ -1,12 +1,8 @@
 {
   "type": "minecraft:smelting",
   "ingredient": [
-    {
-      "item": "aquaculture:gold_fishing_rod"
-    },
-    {
-      "item": "aquaculture:gold_fillet_knife"
-    }
+    "aquaculture:gold_fishing_rod",
+    "aquaculture:gold_fillet_knife"
   ],
   "result": {
     "id": "minecraft:gold_nugget"

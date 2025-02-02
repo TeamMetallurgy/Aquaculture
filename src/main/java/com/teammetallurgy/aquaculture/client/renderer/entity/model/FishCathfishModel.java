@@ -1,7 +1,6 @@
 package com.teammetallurgy.aquaculture.client.renderer.entity.model;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.ListModel;
+import com.teammetallurgy.aquaculture.client.renderer.entity.state.AquaFishRenderState;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -9,11 +8,10 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 
 import javax.annotation.Nonnull;
 
-public class FishCathfishModel<T extends Entity> extends ListModel<T> { //Based on Cod
+public class FishCathfishModel extends FishBaseModel { //Based on Cod
     private final ModelPart head;
     private final ModelPart headFront;
     private final ModelPart body;
@@ -26,6 +24,7 @@ public class FishCathfishModel<T extends Entity> extends ListModel<T> { //Based 
     private final ModelPart rightWhisker;
 
     public FishCathfishModel(ModelPart part) {
+        super(part);
         this.head = part.getChild("head");
         this.headFront = part.getChild("head_front");
         this.body = part.getChild("body");
@@ -55,17 +54,9 @@ public class FishCathfishModel<T extends Entity> extends ListModel<T> { //Based 
     }
 
     @Override
-    @Nonnull
-    public Iterable<ModelPart> parts() {
-        return ImmutableList.of(this.head, this.headFront, this.body, this.topFin, this.leftFin, this.rightFin, this.bottomFin, this.tail, this.leftWhisker, this.rightWhisker);
-    }
-
-    @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        float movement = 1.0F;
-        if (!entity.isInWater()) {
-            movement = 1.5F;
-        }
-        this.tail.yRot = -movement * 0.45F * Mth.sin(0.6F * ageInTicks);
+    public void setupAnim(@Nonnull AquaFishRenderState renderState) {
+        super.setupAnim(renderState);
+        float f = renderState.isInWater ? 1.0F : 1.5F;
+        this.tail.yRot = -f * 0.45F * Mth.sin(0.6F * renderState.ageInTicks);
     }
 }

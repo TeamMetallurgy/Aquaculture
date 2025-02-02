@@ -6,12 +6,8 @@
     " R "
   ],
   "key": {
-    "R": {
-      "tag": "c:dusts/redstone"
-    },
-    "H": {
-      "item": "aquaculture:iron_hook"
-    }
+    "R": "#c:dusts/redstone",
+    "H": "aquaculture:iron_hook"
   },
   "result": {
     "id": "aquaculture:redstone_hook"

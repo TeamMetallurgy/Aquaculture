@@ -4,10 +4,9 @@ import com.teammetallurgy.aquaculture.init.AquaDataComponents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
-import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -15,8 +14,8 @@ import javax.annotation.Nonnull;
 
 public class NeptuniumPickaxe extends PickaxeItem {
 
-    public NeptuniumPickaxe(Tier tier, int attackDamage, float attackSpeed) {
-        super(tier, new Item.Properties().attributes(PickaxeItem.createAttributes(tier, attackDamage, attackSpeed)));
+    public NeptuniumPickaxe(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Properties properties) {
+        super(toolMaterial, attackDamage, attackSpeed, properties);
     }
 
     @Override

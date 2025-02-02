@@ -7,8 +7,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -16,7 +16,6 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -31,7 +30,6 @@ import javax.annotation.Nullable;
 public class TurtleLandEntity extends Animal {
     private static final EntityDimensions BABY_DIMENSIONS = AquaEntities.BOX_TURTLE.get().getDimensions().scale(0.5F).withEyeHeight(0.175F);
 
-
     public TurtleLandEntity(EntityType<? extends Animal> entityType, Level world) {
         super(entityType, world);
         this.moveControl = new TurtleLandMovementController(this);
@@ -43,7 +41,7 @@ public class TurtleLandEntity extends Animal {
         this.goalSelector.addGoal(0, new TurtleLandSwimGoal());
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.2D));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.05D));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.15D, this.getTurtleEdible(), false));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.15D, this::isFood, false));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1D));
         this.goalSelector.addGoal(5, new GetOutOfWaterGoal(this));
         this.goalSelector.addGoal(6, new RandomStrollGoal(this, 1.0D));
@@ -52,26 +50,22 @@ public class TurtleLandEntity extends Animal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.MOVEMENT_SPEED, 0.1D).add(Attributes.ARMOR, 1.5D);
+        return Animal.createAnimalAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.MOVEMENT_SPEED, 0.1D).add(Attributes.ARMOR, 1.5D);
     }
 
     @Override
     public boolean isFood(@Nonnull ItemStack stack) {
-        return this.getTurtleEdible().test(stack);
-    }
-
-    public Ingredient getTurtleEdible() {
-        return Ingredient.of(AquacultureAPI.Tags.TURTLE_EDIBLE);
+        return stack.is(AquacultureAPI.Tags.TURTLE_EDIBLE);
     }
 
     @Override
     @Nullable
     public AgeableMob getBreedOffspring(@Nonnull ServerLevel world, @Nonnull AgeableMob ageableMob) {
-        return (AgeableMob) this.getType().create(this.level());
+        return (AgeableMob) this.getType().create(this.level(), EntitySpawnReason.BREEDING);
     }
 
     @Override
-    public boolean canDrownInFluidType(FluidType type) {
+    public boolean canDrownInFluidType(@Nonnull FluidType type) {
         return type == NeoForgeMod.WATER_TYPE.value() ? false : super.canDrownInFluidType(type);
     }
 

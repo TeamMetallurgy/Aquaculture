@@ -27,8 +27,8 @@ public class AquacultureAPI {
      **/
     public static FishData FISH_DATA = new FishData();
 
-    public static BaitItem createBait(int durability, int lureSpeedModifier) {
-        return new BaitItem(durability, lureSpeedModifier);
+    public static BaitItem createBait(int durability, int lureSpeedModifier, Item.Properties properties) {
+        return new BaitItem(durability, lureSpeedModifier, properties);
     }
 
     public static DeferredItem<Item> registerFishMount(@Nonnull String name) {
@@ -36,7 +36,7 @@ public class AquacultureAPI {
     }
 
     public static DeferredItem<Item> registerHook(Hook hook) {
-        DeferredItem<Item> hookItem = AquaItems.registerWithTab(() -> new HookItem(hook), hook.getName() + "_hook");
+        DeferredItem<Item> hookItem = AquaItems.registerWithTab(p -> new HookItem(hook, p), hook.getName() + "_hook");
         Hook.HOOKS.put(hook.getName(), hookItem);
         return hookItem;
     }
@@ -48,6 +48,7 @@ public class AquacultureAPI {
         public static final TagKey<Item> TACKLE_BOX = tag(Aquaculture.MOD_ID, "tackle_box");
         public static final TagKey<Item> TURTLE_EDIBLE = tag(Aquaculture.MOD_ID, "turtle_edible");
         public static final TagKey<Item> TOOLTIP = tag(Aquaculture.MOD_ID, "tooltip");
+        public static final TagKey<Item> REPAIRS_NEPTUNIUM = tag(Aquaculture.MOD_ID, "repairs_neptunium");
 
         public static final TagKey<Biome> IS_TWILIGHT = biomeTag("c","is_twilight");
         public static final TagKey<Biome> EMPTY = biomeTag("aquaculture","empty");

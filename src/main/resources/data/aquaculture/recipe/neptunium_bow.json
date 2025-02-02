@@ -12,12 +12,8 @@
     " NS"
   ],
   "key": {
-    "N": {
-      "tag": "c:ingots/neptunium"
-    },
-    "S": {
-      "tag": "c:strings"
-    }
+    "N": "#c:ingots/neptunium",
+    "S": "#c:strings"
   },
   "result": {
     "id": "aquaculture:neptunium_bow"

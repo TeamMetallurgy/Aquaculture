@@ -9,8 +9,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.HoeItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -22,8 +21,8 @@ import java.util.function.Predicate;
 
 public class NeptuniumHoe extends HoeItem {
 
-    public NeptuniumHoe(Tier tier, int damage, float speed) {
-        super(tier, new Item.Properties().attributes(HoeItem.createAttributes(tier, damage, speed)));
+    public NeptuniumHoe(ToolMaterial toolMaterial, int damage, float speed, Properties properties) {
+        super(toolMaterial, damage, speed, properties);
     }
 
     @Override
@@ -47,7 +46,7 @@ public class NeptuniumHoe extends HoeItem {
                     }
                 }
 
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return InteractionResult.SUCCESS;
             } else {
                 return InteractionResult.PASS;
             }

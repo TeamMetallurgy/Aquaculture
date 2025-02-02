@@ -1,12 +1,8 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {
-      "item": "aquaculture:diamond_hook"
-    },
-    {
-      "tag": "c:nether_stars"
-    }
+    "aquaculture:diamond_hook",
+    "#c:nether_stars"
   ],
   "result": {
     "id": "aquaculture:nether_star_hook"

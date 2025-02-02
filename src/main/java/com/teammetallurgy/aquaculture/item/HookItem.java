@@ -20,8 +20,8 @@ import java.util.List;
 public class HookItem extends Item {
     private final Hook hook;
 
-    public HookItem(Hook hook) {
-        super(new Item.Properties().stacksTo(16));
+    public HookItem(Hook hook, Item.Properties properties) {
+        super(properties.stacksTo(16));
         this.hook = hook;
     }
 

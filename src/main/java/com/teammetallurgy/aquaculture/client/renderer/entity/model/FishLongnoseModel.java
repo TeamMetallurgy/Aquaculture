@@ -1,7 +1,6 @@
 package com.teammetallurgy.aquaculture.client.renderer.entity.model;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.ListModel;
+import com.teammetallurgy.aquaculture.client.renderer.entity.state.AquaFishRenderState;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -9,11 +8,10 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 
 import javax.annotation.Nonnull;
 
-public class FishLongnoseModel <T extends Entity> extends ListModel<T> { //Based on Salmon
+public class FishLongnoseModel extends FishBaseModel { //Based on Salmon
     private final ModelPart nose;
     private final ModelPart finRight;
     private final ModelPart finLeft;
@@ -21,6 +19,7 @@ public class FishLongnoseModel <T extends Entity> extends ListModel<T> { //Based
     private final ModelPart bodyRear;
 
     public FishLongnoseModel(ModelPart part) {
+        super(part);
         this.nose = part.getChild("nose");
         this.finRight = part.getChild("fin_right");
         this.finLeft = part.getChild("fin_left");
@@ -46,20 +45,16 @@ public class FishLongnoseModel <T extends Entity> extends ListModel<T> { //Based
     }
 
     @Override
-    @Nonnull
-    public Iterable<ModelPart> parts() {
-        return ImmutableList.of(this.bodyFront, this.bodyRear, this.nose, this.finRight, this.finLeft);
-    }
-
-    @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(@Nonnull AquaFishRenderState renderState) {
+        super.setupAnim(renderState);
         float f = 1.0F;
         float f1 = 1.0F;
-        if (!entity.isInWater()) {
+        if (!renderState.isInWater) {
             f = 1.3F;
             f1 = 1.7F;
         }
+
         float moveAmount = 0.15F; //Default for Salmon is 0.25F
-        this.bodyRear.yRot = -f * moveAmount * Mth.sin(f1 * 0.6F * ageInTicks);
+        this.bodyRear.yRot = -f * moveAmount * Mth.sin(f1 * 0.6F * renderState.ageInTicks);
     }
 }

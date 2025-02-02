@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "group": "planks",
   "ingredients": [
-    {
-      "item": "aquaculture:driftwood"
-    }
+    "aquaculture:driftwood"
   ],
   "result": {
     "id": "minecraft:oak_planks",

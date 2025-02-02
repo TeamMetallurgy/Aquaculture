@@ -12,12 +12,8 @@
     "S  "
   ],
   "key": {
-    "S": {
-      "tag": "c:rods/wooden"
-    },
-    "I": {
-      "tag": "c:ingots/neptunium"
-    }	
+    "S": "#c:rods/wooden",
+    "I": "#c:ingots/neptunium"
   },
   "result": {
     "id": "aquaculture:neptunium_fillet_knife"

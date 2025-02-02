@@ -6,12 +6,8 @@
     "C"
   ],
   "key": {
-    "C": {
-      "item": "minecraft:clay_ball"
-    },
-    "S": {
-      "item": "minecraft:nautilus_shell"
-    }
+    "C": "minecraft:clay_ball",
+    "S": "minecraft:nautilus_shell"
   },
   "result": {
     "id": "aquaculture:bobber"

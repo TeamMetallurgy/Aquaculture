@@ -6,12 +6,8 @@
     " S "
   ],
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "S": {
-      "tag": "c:strings"
-    }
+    "I": "#c:ingots/iron",
+    "S": "#c:strings"
   },
   "result": {
     "id": "aquaculture:fishing_line"

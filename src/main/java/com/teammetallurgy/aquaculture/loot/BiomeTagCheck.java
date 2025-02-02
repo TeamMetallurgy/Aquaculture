@@ -19,7 +19,7 @@ public record BiomeTagCheck(Optional<BiomeTagPredicate> predicate) implements Lo
 
     @Override
     public boolean test(LootContext context) {
-        Vec3 pos = context.getParamOrNull(LootContextParams.ORIGIN);
+        Vec3 pos = context.getOptionalParameter(LootContextParams.ORIGIN);
         return pos != null && this.predicate.isPresent() && this.predicate.get().matches(context.getLevel(), pos.x(), pos.y(), pos.z());
     }
 
