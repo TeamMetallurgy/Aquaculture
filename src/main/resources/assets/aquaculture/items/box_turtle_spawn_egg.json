@@ -1,7 +1,16 @@
 {
-
   "model": {
     "type": "minecraft:model",
-    "model": "aquaculture:item/box_turtle_spawn_egg"
+    "model": "minecraft:item/template_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -8420295
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -10657494
+      }
+    ]
   }
 }

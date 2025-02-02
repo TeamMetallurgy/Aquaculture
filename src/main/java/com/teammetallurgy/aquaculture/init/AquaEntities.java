@@ -32,22 +32,19 @@ public class AquaEntities {
             .sized(0.5F, 0.5F));
     public static final DeferredHolder<EntityType<?>, EntityType<SpectralWaterArrowEntity>> SPECTRAL_WATER_ARROW = register("spectral_water_arrow", () -> EntityType.Builder.<SpectralWaterArrowEntity>of(SpectralWaterArrowEntity::new, MobCategory.MISC)
             .sized(0.5F, 0.5F));
-    public static final DeferredHolder<EntityType<?>, EntityType<TurtleLandEntity>> BOX_TURTLE = registerMob("box_turtle", 0x7F8439, 0x5D612A,
-            () -> EntityType.Builder.of(TurtleLandEntity::new, MobCategory.CREATURE)
-                    .eyeHeight(0.1875F)
-                    .sized(0.5F, 0.25F));
-    public static final DeferredHolder<EntityType<?>, EntityType<TurtleLandEntity>> ARRAU_TURTLE = registerMob("arrau_turtle", 0x71857A, 0x4F6258,
-            () -> EntityType.Builder.of(TurtleLandEntity::new, MobCategory.CREATURE)
-                    .eyeHeight(0.1875F)
-                    .sized(0.5F, 0.25F));
-    public static final DeferredHolder<EntityType<?>, EntityType<TurtleLandEntity>> STARSHELL_TURTLE = registerMob("starshell_turtle", 0xDCE2E5, 0x464645,
-            () -> EntityType.Builder.of(TurtleLandEntity::new, MobCategory.CREATURE)
-                    .eyeHeight(0.1875F)
-                    .sized(0.5F, 0.25F));
+    public static final DeferredHolder<EntityType<?>, EntityType<TurtleLandEntity>> BOX_TURTLE = registerMob("box_turtle", () -> EntityType.Builder.of(TurtleLandEntity::new, MobCategory.CREATURE)
+            .eyeHeight(0.1875F)
+            .sized(0.5F, 0.25F));
+    public static final DeferredHolder<EntityType<?>, EntityType<TurtleLandEntity>> ARRAU_TURTLE = registerMob("arrau_turtle", () -> EntityType.Builder.of(TurtleLandEntity::new, MobCategory.CREATURE)
+            .eyeHeight(0.1875F)
+            .sized(0.5F, 0.25F));
+    public static final DeferredHolder<EntityType<?>, EntityType<TurtleLandEntity>> STARSHELL_TURTLE = registerMob("starshell_turtle", () -> EntityType.Builder.of(TurtleLandEntity::new, MobCategory.CREATURE)
+            .eyeHeight(0.1875F)
+            .sized(0.5F, 0.25F));
 
-    private static <T extends Mob> DeferredHolder<EntityType<?>, EntityType<T>> registerMob(String name, int eggPrimary, int eggSecondary, Supplier<EntityType.Builder<T>> builder) { //TODO Move egg color to item json
+    private static <T extends Mob> DeferredHolder<EntityType<?>, EntityType<T>> registerMob(String name, Supplier<EntityType.Builder<T>> builder) {
         DeferredHolder<EntityType<?>, EntityType<T>> entityType = register(name, builder);
-        DeferredItem<Item> spawnEggItem = AquaItems.register(p -> new SpawnEggItem(entityType.get(), p), name + "_spawn_egg");
+        DeferredItem<Item> spawnEggItem = AquaItems.registerWithTab(p -> new SpawnEggItem(entityType.get(), p), name + "_spawn_egg");
         AquaItems.SPAWN_EGGS.add(spawnEggItem);
         return entityType;
     }
