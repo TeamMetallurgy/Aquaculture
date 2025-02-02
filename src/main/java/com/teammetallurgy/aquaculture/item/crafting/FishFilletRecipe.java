@@ -29,11 +29,6 @@ public class FishFilletRecipe extends CustomRecipe {
         super(craftingBookCategory);
     }
 
-    /*@Override
-    public boolean canCraftInDimensions(int width, int height) {
-        return width * height >= 2;
-    }*/ //TODO
-
     @Override
     public boolean matches(@Nonnull CraftingInput craftingInventory, @Nonnull Level world) {
         ItemStack stack = ItemStack.EMPTY;

@@ -71,7 +71,7 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
             poseStack.translate(-0.5D, -0.5D, -0.5D);
             ResourceLocation entityTypeID = renderState.byName;
             if (entityTypeID != null) {
-                ModelResourceLocation location = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/" + entityTypeID.getPath()), "standalone"); //Calling this instead of the fields for mod support'
+                ModelResourceLocation location = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/" + entityTypeID.getPath()), "standalone"); //Calling this instead of the fields for mod support
 
                 rendererDispatcher.getModelRenderer().renderModel(poseStack.last(), buffer.getBuffer(RenderType.entitySolidZOffsetForward(TextureAtlas.LOCATION_BLOCKS)), null, manager.getModel(location), 1.0F, 1.0F, 1.0F, i, OverlayTexture.NO_OVERLAY);
             }
@@ -97,7 +97,7 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
             poseStack.translate(x, y, depth);
             poseStack.mulPose(Axis.XP.rotationDegrees(-90.0F));
             poseStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
-            this.mc.getEntityRenderDispatcher().render(fish, 0.0D, 0.0D, 0.0D, renderState.partialTick, poseStack, buffer, i);
+            this.mc.getEntityRenderDispatcher().render(fish, 0.0D, 0.0D, 0.0D, 0.0F, poseStack, buffer, i);
         }
     }
 
@@ -117,7 +117,6 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
             return false;
         }
     }
-
 
     @Override
     protected void renderNameTag(@Nonnull FishMountRenderState renderState, @Nonnull Component name, @Nonnull PoseStack matrixStack, @Nonnull MultiBufferSource buffer, int i) {

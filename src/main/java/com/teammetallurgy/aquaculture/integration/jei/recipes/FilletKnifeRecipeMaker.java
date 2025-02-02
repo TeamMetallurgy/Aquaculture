@@ -24,7 +24,7 @@ public class FilletKnifeRecipeMaker {
 
         for (Item fish : AquacultureAPI.FISH_DATA.getFish()) {
             TagKey<Item> filletKnifeTag = AquacultureAPI.Tags.KNIFE;
-            HolderGetter<Item> itemHolderGetter = BuiltInRegistries.acquireBootstrapRegistrationLookup(BuiltInRegistries.ITEM); //TODO Test??
+            HolderGetter<Item> itemHolderGetter = BuiltInRegistries.acquireBootstrapRegistrationLookup(BuiltInRegistries.ITEM); //TODO Test?? Requires JEI update to test
             NonNullList<Ingredient> input = NonNullList.of(Ingredient.of(), Ingredient.of(itemHolderGetter.getOrThrow(filletKnifeTag)), Ingredient.of(fish));
             if (AquacultureAPI.FISH_DATA.hasFilletAmount(fish)) {
                 ItemStack output = new ItemStack(AquaItems.FISH_FILLET.get(), AquacultureAPI.FISH_DATA.getFilletAmount(fish));

@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
 import java.util.Set;
 
 public class TurtleLandModel extends QuadrupedModel<LivingEntityRenderState> {
-    public static final MeshTransformer BABY_TRANSFORMER = new BabyModelTransform(false, 1.1F, 1.5F, Set.of("head")); ////false, 1.1F, 1.5F, 2.0F, 2.0F, 24 //TODO Test
+    public static final MeshTransformer BABY_TRANSFORMER = new BabyModelTransform(false, 1.1F, 1.5F, 2.0F, 2.0F, 24, Set.of("head"));
     private final ModelPart tail;
     private final ModelPart shellTop;
     private final ModelPart belly;

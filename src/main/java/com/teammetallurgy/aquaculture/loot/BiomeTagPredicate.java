@@ -70,7 +70,7 @@ public record BiomeTagPredicate(Optional<PositionPredicate> position, Optional<L
             Registry<Biome> biomeRegistry = optionalBiomeRegistry.get();
 
             if (includeList.isEmpty() && !excludeList.isEmpty()) { //Add all tags, when only excluding biomes
-                includeList.addAll(biomeRegistry.getTags().map(HolderSet.Named::key).collect(Collectors.toSet())); //TODO TEST, MIGHT NOT WORK. PRINT OUT
+                includeList.addAll(biomeRegistry.getTags().map(HolderSet.Named::key).collect(Collectors.toSet()));
                 excludeList.addAll(INVALID_TYPES);
             }
 
