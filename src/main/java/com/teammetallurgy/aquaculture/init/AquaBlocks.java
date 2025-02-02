@@ -6,7 +6,6 @@ import com.teammetallurgy.aquaculture.block.NeptunesBountyBlock;
 import com.teammetallurgy.aquaculture.block.TackleBoxBlock;
 import com.teammetallurgy.aquaculture.block.WormFarmBlock;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -15,7 +14,6 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.function.Function;
 
 public class AquaBlocks {

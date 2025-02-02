@@ -1,7 +1,9 @@
 {
-
   "model": {
-    "type": "minecraft:model",
-    "model": "aquaculture:item/tackle_box"
+    "type": "minecraft:special",
+    "base": "aquaculture:item/tackle_box",
+    "model": {
+      "type": "aquaculture:tackle_box"
+    }
   }
 }

@@ -11,7 +11,6 @@ import com.teammetallurgy.aquaculture.init.AquaDataComponents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -122,7 +121,7 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
 
     @Override
     protected void renderNameTag(@Nonnull FishMountRenderState renderState, @Nonnull Component name, @Nonnull PoseStack matrixStack, @Nonnull MultiBufferSource buffer, int i) {
-        super.renderNameTag(renderState, renderState.nameTag, matrixStack, buffer, i);
+        super.renderNameTag(renderState, renderState.mountedFish.getName(), matrixStack, buffer, i);
 
         ItemStack stack = renderState.stack;
         Float fishWeight = stack.get(AquaDataComponents.FISH_WEIGHT.get());

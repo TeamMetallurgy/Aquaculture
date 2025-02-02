@@ -12,11 +12,9 @@ import net.minecraft.world.level.block.state.properties.ChestType;
 import javax.annotation.Nonnull;
 
 public class NeptunesBountyRenderer extends ChestRenderer<NeptunesBountyBlockEntity> {
-    public static NeptunesBountyRenderer instance;
 
     public NeptunesBountyRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
-        instance = this;
     }
 
     @Override

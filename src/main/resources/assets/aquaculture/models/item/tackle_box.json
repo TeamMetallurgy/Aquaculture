@@ -1,5 +1,4 @@
 {
-  "parent": "builtin/entity",
   "textures": {
     "particle": "block/iron_block"
   },
@@ -31,7 +30,7 @@
     },
     "firstperson_righthand": {
       "rotation": [ 0, 315, 0 ],
-      "translation": [ 0, 0, 0],
+      "translation": [ 0, 1, 0],
       "scale": [ 0.4, 0.4, 0.4 ]
     }
   }
