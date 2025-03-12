@@ -2,8 +2,11 @@ package com.teammetallurgy.aquaculture.item;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
+import java.util.Map;
 
 public class BaitItem extends Item {
     private final int lureSpeedModifier;
@@ -37,5 +40,15 @@ public class BaitItem extends Item {
     @Override
     public int getBarColor(@Nonnull ItemStack stack) {
         return 16761035;
+    }
+
+    @Override
+    public boolean isEnchantable(@Nonnull ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return false;
     }
 }
