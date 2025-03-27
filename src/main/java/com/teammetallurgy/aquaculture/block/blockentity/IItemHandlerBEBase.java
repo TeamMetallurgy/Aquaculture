@@ -3,7 +3,9 @@ package com.teammetallurgy.aquaculture.block.blockentity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -12,6 +14,7 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 public abstract class IItemHandlerBEBase extends BlockEntity implements Nameable {
     private Component customName;
@@ -26,11 +29,11 @@ public abstract class IItemHandlerBEBase extends BlockEntity implements Nameable
 
     @Override
     protected void loadAdditional(@Nonnull CompoundTag tag, @Nonnull HolderLookup.Provider provider) {
-        CompoundTag invTag = tag.getCompound("inv");
-        ((INBTSerializable<CompoundTag>) handler).deserializeNBT(provider, invTag);
-        if (tag.contains("CustomName", 8)) {
-            this.customName = parseCustomNameSafe(tag.getString("CustomName"), provider);
-        }
+        Optional<CompoundTag> invTag = tag.getCompound("inv");
+        invTag.ifPresent(compoundTag -> ((INBTSerializable<CompoundTag>) handler).deserializeNBT(provider, compoundTag));
+
+        this.customName = parseCustomNameSafe(tag.get("CustomName"), provider);
+
         super.loadAdditional(tag, provider);
     }
 
@@ -40,9 +43,11 @@ public abstract class IItemHandlerBEBase extends BlockEntity implements Nameable
         if (compound != null) {
             tag.put("inv", compound);
         }
+
         if (this.hasCustomName()) {
-            tag.putString("CustomName", Component.Serializer.toJson(this.customName, provider));
+            tag.store("CustomName", ComponentSerialization.CODEC, provider.createSerializationContext(NbtOps.INSTANCE), this.customName);
         }
+
         super.saveAdditional(tag, provider);
     }
 

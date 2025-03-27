@@ -12,6 +12,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
@@ -31,6 +32,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class NeptunesBountyBlock extends ChestBlock {
@@ -66,12 +68,11 @@ public class NeptunesBountyBlock extends ChestBlock {
         return state;
     }
 
-    @Override
+    /*@Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(@Nonnull ItemStack stack, @Nonnull Item.TooltipContext context, @Nonnull List<Component> tooltip, @Nonnull TooltipFlag flag) {
-        super.appendHoverText(stack, context, tooltip, flag);
+    public void appendHoverText(@Nonnull ItemStack stack, @Nonnull Item.TooltipContext context, TooltipDisplay display, @Nonnull Consumer<Component> tooltip, @Nonnull TooltipFlag flag) {
         if (stack.has(DataComponents.CONTAINER_LOOT)) {
-            tooltip.add(Component.literal("???????").withStyle(ChatFormatting.ITALIC));
+            tooltip.accept(Component.literal("???????").withStyle(ChatFormatting.ITALIC)); //TODO
         }
-    }
+    }*/
 }
