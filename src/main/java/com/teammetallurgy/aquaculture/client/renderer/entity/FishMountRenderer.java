@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -27,13 +28,8 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.Pufferfish;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 
 import javax.annotation.Nonnull;
 import java.math.BigDecimal;
@@ -71,6 +67,7 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
         poseStack.mulPose(Axis.YP.rotationDegrees(y));
         if (!renderState.isInvisible) {
             BlockRenderDispatcher rendererDispatcher = this.mc.getBlockRenderer();
+            ModelManager manager = rendererDispatcher.getBlockModelShaper().getModelManager();
 
             poseStack.pushPose();
             poseStack.translate(-0.5D, -0.5D, -0.5D);
@@ -78,18 +75,15 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
             if (entityTypeID != null) {
                 ResourceLocation location = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/" + entityTypeID.getPath()); //Calling this instead of the fields for mod support
 
-                BlockStateModel model = rendererDispatcher.getBlockModel();
-
-                ModelBlockRenderer.renderModel(poseStack.last(), buffer.getBuffer(RenderType.entitySolidZOffsetForward(TextureAtlas.LOCATION_BLOCKS)), model, 1.0F, 1.0F, 1.0F, i, OverlayTexture.NO_OVERLAY);
+                BlockStateModel model = manager.getStandaloneModel(new StandaloneModelKey<>(location));
+                if (model != null) { //TODO test
+                    ModelBlockRenderer.renderModel(poseStack.last(), buffer.getBuffer(RenderType.entitySolidZOffsetForward(TextureAtlas.LOCATION_BLOCKS)), model, 1.0F, 1.0F, 1.0F, i, OverlayTexture.NO_OVERLAY);
+                }
             }
             poseStack.popPose();
         }
         this.renderFish(renderState, poseStack, buffer, i);
         poseStack.popPose();
-    }
-
-    private static StateDefinition<Block, BlockState> createItemFrameFakeState() {
-        return (new StateDefinition.Builder(Blocks.AIR)).add(new Property[]{}).create(Block::defaultBlockState, BlockState::new);
     }
 
     private void renderFish(FishMountRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int i) {

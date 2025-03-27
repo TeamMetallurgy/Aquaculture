@@ -6,6 +6,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -13,6 +15,7 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
@@ -229,37 +232,30 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     @Override
     public void addAdditionalSaveData(@Nonnull CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        if (!this.getItem().isEmpty()) {
-            compound.put("Item", this.getItem().save(this.registryAccess()));
-            compound.putFloat("ItemDropChance", this.itemDropChance);
+        ItemStack stack = this.getItem();
+        if (!stack.isEmpty()) {
+            RegistryOps<Tag> registryops = this.registryAccess().createSerializationContext(NbtOps.INSTANCE);
+            compound.store("Item", ItemStack.CODEC, registryops, stack);
         }
-        compound.putByte("Facing", (byte) this.direction.get3DDataValue());
+
+        compound.putFloat("ItemDropChance", this.itemDropChance);
+        compound.store("Facing", Direction.LEGACY_ID_CODEC, this.direction);
     }
 
     @Override
-    public void readAdditionalSaveData(@Nonnull CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        ItemStack stack;
+    public void readAdditionalSaveData(@Nonnull CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
 
-        if (compound.contains("Item", 10)) {
-            CompoundTag nbt = compound.getCompound("Item");
-            stack = ItemStack.parse(this.registryAccess(), nbt).orElse(ItemStack.EMPTY);
-        } else {
-            stack = ItemStack.EMPTY;
-        }
-
+        RegistryOps<Tag> registryops = this.registryAccess().createSerializationContext(NbtOps.INSTANCE);
+        ItemStack stack = tag.read("item", ItemStack.CODEC, registryops).orElse(ItemStack.EMPTY);
         ItemStack displayStack = this.getItem();
         if (!displayStack.isEmpty() && !ItemStack.matches(stack, displayStack)) {
             this.setDisplayedItem(displayStack);
         }
 
         this.setDisplayedItemWithUpdate(stack, false);
-        if (!stack.isEmpty()) {
-            if (compound.contains("ItemDropChance", 99)) {
-                this.itemDropChance = compound.getFloat("ItemDropChance");
-            }
-        }
-        this.setDirection(Direction.from3DDataValue(compound.getByte("Facing")));
+        this.itemDropChance = tag.getFloatOr("ItemDropChance", 1.0F);
+        this.setDirection(tag.read("Facing", Direction.LEGACY_ID_CODEC).orElse(Direction.DOWN));
     }
 
     @Override
