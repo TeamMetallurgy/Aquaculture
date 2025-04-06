@@ -1,16 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "minecraft:item/template_spawn_egg",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": -9337478
-      },
-      {
-        "type": "minecraft:constant",
-        "value": -11574696
-      }
-    ]
+    "model": "aquaculture:item/arrau_turtle_spawn_egg"
   }
 }

@@ -3,8 +3,10 @@ package com.teammetallurgy.aquaculture.misc;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
+import com.teammetallurgy.aquaculture.init.AquaBlocks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -36,7 +38,14 @@ public class AquaTooltip {
                     }
                 }
             }
-           //stack.getTags().forEach((tag) -> event.getToolTip().add(Component.literal(tag.location().toString()))); //Debug code for tooltips. Comment out when not used
+            if (stack.is(AquaBlocks.NEPTUNES_BOUNTY.asItem())) {
+                if (stack.has(DataComponents.CONTAINER)) {
+                    event.getToolTip().clear();
+                    event.getToolTip().add(stack.getStyledHoverName());
+                    event.getToolTip().add(Component.literal("???????").withStyle(ChatFormatting.ITALIC));
+                }
+            }
+            //stack.getTags().forEach((tag) -> tooltip.add(Component.literal(tag.location().toString()))); //Debug code for tooltips. Comment out when not used
         }
     }
 }

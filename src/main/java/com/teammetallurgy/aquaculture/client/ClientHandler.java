@@ -19,6 +19,7 @@ import com.teammetallurgy.aquaculture.init.*;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.SpectralArrowRenderer;
 import net.minecraft.client.renderer.entity.TippableArrowRenderer;
@@ -28,6 +29,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.model.standalone.StandaloneModelBaker;
+import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 @EventBusSubscriber(modid = Aquaculture.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
@@ -43,6 +46,12 @@ public class ClientHandler {
     public static final ModelLayerLocation CATFISH_MODEL = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "catfish_model"), "catfish_model");
     public static final ModelLayerLocation TROPICAL_FISH_B = new ModelLayerLocation(ModelLayers.TROPICAL_FISH_SMALL.model(), "tropical_fish_b");
     public static final ModelLayerLocation JELLYFISH_MODEL = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "jellyfish_model"), "jellyfish_model");
+    public static final StandaloneModelKey<BlockStateModel> OAK_FISH_MOUNT = new StandaloneModelKey<>(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/oak_fish_mount"));
+    public static final StandaloneModelKey<BlockStateModel> SPRUCE_FISH_MOUNT = new StandaloneModelKey<>(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/spruce_fish_mount"));
+    public static final StandaloneModelKey<BlockStateModel> BIRCH_FISH_MOUNT = new StandaloneModelKey<>(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/birch_fish_mount"));
+    public static final StandaloneModelKey<BlockStateModel> JUNGLE_FISH_MOUNT = new StandaloneModelKey<>(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/jungle_fish_mount"));
+    public static final StandaloneModelKey<BlockStateModel> ACACIA_FISH_MOUNT = new StandaloneModelKey<>(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/acacia_fish_mount"));
+    public static final StandaloneModelKey<BlockStateModel> DARK_OAK_FISH_MOUNT = new StandaloneModelKey<>(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/dark_oak_fish_mount"));
 
     public static void setupClient() {
         BlockEntityRenderers.register(AquaBlockEntities.NEPTUNES_BOUNTY.get(), NeptunesBountyRenderer::new);
@@ -99,11 +108,11 @@ public class ClientHandler {
 
     @SubscribeEvent
     public static void registerModels(ModelEvent.RegisterStandalone event) {
-        //event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/oak_fish_mount")); //TODO
-        //event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/spruce_fish_mount"));
-        //event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/birch_fish_mount"));
-        //event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/jungle_fish_mount"));
-        //event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/acacia_fish_mount"));
-        //event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/dark_oak_fish_mount"));
+        event.register(OAK_FISH_MOUNT, StandaloneModelBaker.blockStateModel());
+        event.register(SPRUCE_FISH_MOUNT, StandaloneModelBaker.blockStateModel());
+        event.register(BIRCH_FISH_MOUNT, StandaloneModelBaker.blockStateModel());
+        event.register(JUNGLE_FISH_MOUNT, StandaloneModelBaker.blockStateModel());
+        event.register(ACACIA_FISH_MOUNT, StandaloneModelBaker.blockStateModel());
+        event.register(DARK_OAK_FISH_MOUNT, StandaloneModelBaker.blockStateModel());
     }
 }
