@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nonnull;
 
@@ -34,7 +35,7 @@ public class TackleBoxRenderer <T extends TackleBoxBlockEntity> implements Block
     }
 
     @Override
-    public void render(@Nonnull T tackleBox, float partialTicks, @Nonnull PoseStack matrixStack, @Nonnull MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+    public void render(@Nonnull T tackleBox, float partialTicks, @Nonnull PoseStack matrixStack, @Nonnull MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPosition) {
         Level world = tackleBox.getLevel();
         boolean hasWorld = world != null;
         BlockState state = hasWorld ? tackleBox.getBlockState() : AquaBlocks.TACKLE_BOX.get().defaultBlockState().setValue(ChestBlock.FACING, Direction.SOUTH);

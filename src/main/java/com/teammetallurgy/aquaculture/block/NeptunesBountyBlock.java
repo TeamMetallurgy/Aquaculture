@@ -3,15 +3,9 @@ package com.teammetallurgy.aquaculture.block;
 import com.mojang.serialization.MapCodec;
 import com.teammetallurgy.aquaculture.block.blockentity.NeptunesBountyBlockEntity;
 import com.teammetallurgy.aquaculture.init.AquaBlockEntities;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
@@ -26,11 +20,8 @@ import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 import java.util.function.Supplier;
 
 public class NeptunesBountyBlock extends ChestBlock {
@@ -64,14 +55,5 @@ public class NeptunesBountyBlock extends ChestBlock {
             scheduledTickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
         return state;
-    }
-
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(@Nonnull ItemStack stack, @Nonnull Item.TooltipContext context, @Nonnull List<Component> tooltip, @Nonnull TooltipFlag flag) {
-        super.appendHoverText(stack, context, tooltip, flag);
-        if (stack.has(DataComponents.CONTAINER_LOOT)) {
-            tooltip.add(Component.literal("???????").withStyle(ChatFormatting.ITALIC));
-        }
     }
 }

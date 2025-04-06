@@ -64,7 +64,7 @@ public class NeptunesBountySpecialRenderer implements NoDataSpecialModelRenderer
         @Override
         public SpecialModelRenderer<?> bake(EntityModelSet modelSet) {
             NeptunesBountyModel neptunesBountyModel = new NeptunesBountyModel(modelSet.bakeLayer(ClientHandler.NEPTUNES_BOUNTY));
-            Material material = Sheets.chestMaterial(this.texture);
+            Material material = Sheets.CHEST_MAPPER.apply(this.texture);
             return new NeptunesBountySpecialRenderer(neptunesBountyModel, material, this.openness);
         }
     }

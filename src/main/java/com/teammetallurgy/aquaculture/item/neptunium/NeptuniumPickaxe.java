@@ -1,25 +1,26 @@
 package com.teammetallurgy.aquaculture.item.neptunium;
 
 import com.teammetallurgy.aquaculture.init.AquaDataComponents;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.ToolMaterial;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nonnull;
 
-public class NeptuniumPickaxe extends PickaxeItem {
+public class NeptuniumPickaxe extends Item {
 
-    public NeptuniumPickaxe(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Properties properties) {
-        super(toolMaterial, attackDamage, attackSpeed, properties);
+    public NeptuniumPickaxe(ToolMaterial toolMaterial, float attackDamage, float attackSpeed, Item.Properties properties) {
+        super(properties.pickaxe(toolMaterial, attackDamage, attackSpeed));
     }
 
     @Override
-    public void inventoryTick(@Nonnull ItemStack stack, @Nonnull Level level, @Nonnull Entity entity, int itemSlot, boolean isSelected) {
+    public void inventoryTick(@Nonnull ItemStack stack, @Nonnull ServerLevel level, @Nonnull Entity entity, @Nonnull EquipmentSlot slot) {
         if (entity instanceof Player player && stack.getItem() == this) {
             stack.set(AquaDataComponents.IN_WATER, player.isEyeInFluid(FluidTags.WATER));
         }

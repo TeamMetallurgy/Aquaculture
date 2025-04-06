@@ -2,7 +2,7 @@ package com.teammetallurgy.aquaculture.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.teammetallurgy.aquaculture.Aquaculture;
+import com.teammetallurgy.aquaculture.client.ClientHandler;
 import com.teammetallurgy.aquaculture.client.renderer.entity.state.FishMountRenderState;
 import com.teammetallurgy.aquaculture.entity.AquaFishEntity;
 import com.teammetallurgy.aquaculture.entity.FishMountEntity;
@@ -12,13 +12,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.block.ModelBlockRenderer;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.ModelManager;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -28,6 +29,7 @@ import net.minecraft.world.entity.animal.Pufferfish;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 
 import javax.annotation.Nonnull;
 import java.math.BigDecimal;
@@ -71,9 +73,10 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
             poseStack.translate(-0.5D, -0.5D, -0.5D);
             ResourceLocation entityTypeID = renderState.byName;
             if (entityTypeID != null) {
-                ResourceLocation location = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/" + entityTypeID.getPath()); //Calling this instead of the fields for mod support
-
-                rendererDispatcher.getModelRenderer().renderModel(poseStack.last(), buffer.getBuffer(RenderType.entitySolidZOffsetForward(TextureAtlas.LOCATION_BLOCKS)), null, manager.getStandaloneModel(location), 1.0F, 1.0F, 1.0F, i, OverlayTexture.NO_OVERLAY);
+                BlockStateModel model = manager.getStandaloneModel(getStandaloneKeyFromType(entityTypeID.getPath()));
+                if (model != null) {
+                    ModelBlockRenderer.renderModel(poseStack.last(), buffer.getBuffer(RenderType.entitySolidZOffsetForward(TextureAtlas.LOCATION_BLOCKS)), model, 1.0F, 1.0F, 1.0F, i, OverlayTexture.NO_OVERLAY);
+                }
             }
             poseStack.popPose();
         }
@@ -158,5 +161,16 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
         this.itemModelResolver.updateForNonLiving(renderState.item, itemstack, ItemDisplayContext.FIXED, entity);
         renderState.byName = entity.byName();
         renderState.mountedFish = entity.entity;
+    }
+
+    public StandaloneModelKey<BlockStateModel> getStandaloneKeyFromType(String mountType) {
+        return switch (mountType) {
+            case "spruce_fish_mount" -> ClientHandler.SPRUCE_FISH_MOUNT;
+            case "birch_fish_mount" -> ClientHandler.BIRCH_FISH_MOUNT;
+            case "jungle_fish_mount" -> ClientHandler.JUNGLE_FISH_MOUNT;
+            case "acacia_fish_mount" -> ClientHandler.ACACIA_FISH_MOUNT;
+            case "dark_oak_fish_mount" -> ClientHandler.DARK_OAK_FISH_MOUNT;
+            default -> ClientHandler.OAK_FISH_MOUNT;
+        };
     }
 }

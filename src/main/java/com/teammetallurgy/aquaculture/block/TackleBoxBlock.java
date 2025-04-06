@@ -183,11 +183,8 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
     }
 
     @Override
-    public void onRemove(BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, @Nonnull BlockState newState, boolean isMoving) {
-        if (state.getBlock() != newState.getBlock()) {
-            level.updateNeighbourForOutputSignal(pos, this);
-            super.onRemove(state, level, pos, newState, isMoving);
-        }
+    protected void affectNeighborsAfterRemoval(@Nonnull BlockState state, @Nonnull ServerLevel serverLevel, @Nonnull BlockPos pos, boolean isMoving) {
+        serverLevel.updateNeighbourForOutputSignal(pos, this);
     }
 
     @Override

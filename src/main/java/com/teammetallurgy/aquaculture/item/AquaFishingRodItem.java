@@ -21,11 +21,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemContainerContents;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
@@ -33,7 +32,7 @@ import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
-import java.util.List;
+import java.util.function.Consumer;
 
 public class AquaFishingRodItem extends FishingRodItem {
     private final ToolMaterial toolMaterial;
@@ -154,19 +153,17 @@ public class AquaFishingRodItem extends FishingRodItem {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(@Nonnull ItemStack stack, @Nonnull Item.TooltipContext tooltipContext, @Nonnull List<Component> tooltips, @Nonnull TooltipFlag tooltipFlag) {
+    public void appendHoverText(@Nonnull ItemStack stack, @Nonnull Item.TooltipContext context, TooltipDisplay display, @Nonnull Consumer<Component> tooltips, @Nonnull TooltipFlag tooltipFlag) {
         if (this.getDamage(stack) >= this.getMaxDamage(stack)) {
             MutableComponent broken = Component.translatable("aquaculture.fishing_rod.broken");
-            tooltips.add(broken.withStyle(broken.getStyle().withItalic(true).withColor(ChatFormatting.GRAY)));
+            tooltips.accept(broken.withStyle(broken.getStyle().withItalic(true).withColor(ChatFormatting.GRAY)));
         }
 
         Hook hook = getHookType(stack);
         if (hook != Hooks.EMPTY) {
             MutableComponent hookColor = Component.translatable(hook.getItem().getDescriptionId());
-            tooltips.add(hookColor.withStyle(hookColor.getStyle().withColor(hook.getColor())));
+            tooltips.accept(hookColor.withStyle(hookColor.getStyle().withColor(hook.getColor())));
         }
-        super.appendHoverText(stack, tooltipContext, tooltips, tooltipFlag);
     }
 
     public static class FishingRodEquipmentHandler extends ItemStackHandler {
