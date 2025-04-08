@@ -519,7 +519,7 @@
             {
               "condition": "aquaculture:biome_tag_check",
               "predicate": {
-                "include": ["c:is_twilight"]
+                "include": ["twilightforest:in_twilight_forest"]
               }
             }
           ],
