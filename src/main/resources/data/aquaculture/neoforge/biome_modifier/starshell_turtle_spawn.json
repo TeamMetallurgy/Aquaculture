@@ -6,6 +6,6 @@
     "minCount": 1,
     "maxCount": 2
   },
-  "includeBiomes": "#c:is_twilight",
+  "includeBiomes": "#twilightforest:in_twilight_forest",
   "excludeBiomes": "#aquaculture:empty"
 }
