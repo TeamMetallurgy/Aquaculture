@@ -139,7 +139,7 @@
   "item.aquaculture.red_shrooma_bucket": "Kbelík s houbovkou červenou",
   "item.aquaculture.jellyfish_bucket": "Kbelík s medůzou",
   "item.aquaculture.red_grouper_bucket": "Kbelík s kanicem červeným",
-  "item.aquaculture.tuna_bucket": "Kbelík s tuňákeem",
+  "item.aquaculture.tuna_bucket": "Kbelík s tuňákem",
 
   "_comment": "Spawn Egg",
   "item.aquaculture.box_turtle_spawn_egg": "Vajíčko s terrapenou",
@@ -217,7 +217,7 @@
   "aquaculture.message26": "Každé ráno rozdrtím diamantovou zbroj a sním ji. - mDiyo",
   "aquaculture.message27": "-Zpráva se ti rozpadla v ruce.-",
   "aquaculture.message28": "Koukni se na mě, na svůj inventář, a zase na mě, ať jsou z této zprávy DIAMANTY! Kecám, je to jen papír.",
-  "aquaculture.message29": "Recycle for 5 Brass.",
+  "aquaculture.message29": "Recykluj, aby jsi získal 5 kusů Mosazi.",
 
   "_comment": "Tooltip",
   "aquaculture.fishWeight.weight": "Váha: %s",
