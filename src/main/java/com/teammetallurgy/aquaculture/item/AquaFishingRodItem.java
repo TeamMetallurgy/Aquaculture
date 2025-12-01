@@ -1,6 +1,7 @@
 package com.teammetallurgy.aquaculture.item;
 
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
+import com.teammetallurgy.aquaculture.api.bait.IBaitItem;
 import com.teammetallurgy.aquaculture.api.fishing.Hook;
 import com.teammetallurgy.aquaculture.api.fishing.Hooks;
 import com.teammetallurgy.aquaculture.entity.AquaFishingBobberEntity;
@@ -34,6 +35,8 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
 
 public class AquaFishingRodItem extends FishingRodItem {
     private final Tier tier;
@@ -99,7 +102,9 @@ public class AquaFishingRodItem extends FishingRodItem {
                 if (this.tier == AquacultureAPI.MATS.NEPTUNIUM) lureSpeed += 1;
                 ItemStack bait = getBait(heldStack);
                 if (!isAdminRod && !bait.isEmpty()) {
-                    lureSpeed += ((BaitItem) bait.getItem()).getLureSpeedModifier();
+                    if (bait.getItem() instanceof IBaitItem baitItem) {
+                        lureSpeed += baitItem.getLureSpeedModifier();
+                    }
                 }
                 lureSpeed = Math.min(5, lureSpeed);
                 //Luck
@@ -185,15 +190,15 @@ public class AquaFishingRodItem extends FishingRodItem {
         private final ItemStack stack;
         private final ItemStackHandler items = new ItemStackHandler(4) {
             @Override
-            public int getSlotLimit(int slot) {
-                return 1;
+            protected int getStackLimit(int slot, @NotNull ItemStack stack) {
+                return stack.getItem().canBeDepleted() ? 1 : super.getStackLimit(slot, stack);
             }
 
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
                 return switch (slot) {
                     case 0 -> stack.getItem() instanceof HookItem;
-                    case 1 -> stack.getItem() instanceof BaitItem;
+                    case 1 -> stack.getItem() instanceof IBaitItem;
                     case 2 ->
                             stack.is(AquacultureAPI.Tags.FISHING_LINE) && stack.getItem() instanceof DyeableLeatherItem;
                     case 3 -> stack.is(AquacultureAPI.Tags.BOBBER) && stack.getItem() instanceof DyeableLeatherItem;
