@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "aquaculture:neptunium_axe"
+            "items": [
+              "aquaculture:neptunium_axe"
+            ]
           }
         ]
       }
@@ -21,7 +23,9 @@
       "conditions": {
         "items": [
           {
-            "item": "aquaculture:neptunium_boots"
+            "items": [
+              "aquaculture:neptunium_boots"
+            ]
           }
         ]
       }
@@ -31,7 +35,9 @@
       "conditions": {
         "items": [
           {
-            "item": "aquaculture:neptunium_chestplate"
+            "items": [
+              "aquaculture:neptunium_chestplate"
+            ]
           }
         ]
       }
@@ -41,7 +47,9 @@
       "conditions": {
         "items": [
           {
-            "item": "aquaculture:neptunium_fillet_knife"
+            "items": [
+              "aquaculture:neptunium_fillet_knife"
+            ]
           }
         ]
       }
@@ -51,7 +59,9 @@
       "conditions": {
         "items": [
           {
-            "item": "aquaculture:neptunium_fishing_rod"
+            "items": [
+              "aquaculture:neptunium_fishing_rod"
+            ]
           }
         ]
       }
@@ -61,7 +71,9 @@
       "conditions": {
         "items": [
           {
-            "item": "aquaculture:neptunium_helmet"
+            "items": [
+              "aquaculture:neptunium_helmet"
+            ]
           }
         ]
       }
@@ -71,7 +83,9 @@
       "conditions": {
         "items": [
           {
-            "item": "aquaculture:neptunium_hoe"
+            "items": [
+              "aquaculture:neptunium_hoe"
+            ]
           }
         ]
       }
@@ -81,7 +95,9 @@
       "conditions": {
         "items": [
           {
-            "item": "aquaculture:neptunium_leggings"
+            "items": [
+              "aquaculture:neptunium_leggings"
+            ]
           }
         ]
       }
@@ -91,7 +107,9 @@
       "conditions": {
         "items": [
           {
-            "item": "aquaculture:neptunium_pickaxe"
+            "items": [
+              "aquaculture:neptunium_pickaxe"
+            ]
           }
         ]
       }
@@ -101,7 +119,9 @@
       "conditions": {
         "items": [
           {
-            "item": "aquaculture:neptunium_shovel"
+            "items": [
+              "aquaculture:neptunium_shovel"
+            ]
           }
         ]
       }
@@ -111,7 +131,9 @@
       "conditions": {
         "items": [
           {
-            "item": "aquaculture:neptunium_sword"
+            "items": [
+              "aquaculture:neptunium_sword"
+            ]
           }
         ]
       }
@@ -121,7 +143,9 @@
       "conditions": {
         "items": [
           {
-            "item": "aquaculture:neptunium_bow"
+            "items": [
+              "aquaculture:neptunium_bow"
+            ]
           }
         ]
       }
