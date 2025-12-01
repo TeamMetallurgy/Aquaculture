@@ -2,13 +2,12 @@ package com.teammetallurgy.aquaculture.item;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
 
 import javax.annotation.Nonnull;
-import java.util.Collections;
-import java.util.Map;
 
-public class BaitItem extends Item {
+import com.teammetallurgy.aquaculture.api.bait.IBaitItem;
+
+public class BaitItem extends Item implements IBaitItem {
     private final int lureSpeedModifier;
     private final int durability;
 
@@ -18,6 +17,7 @@ public class BaitItem extends Item {
         this.durability = durability;
     }
 
+    @Override
     public int getLureSpeedModifier() {
         return this.lureSpeedModifier;
     }

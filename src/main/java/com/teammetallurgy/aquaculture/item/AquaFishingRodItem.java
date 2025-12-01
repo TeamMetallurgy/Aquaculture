@@ -102,8 +102,6 @@ public class AquaFishingRodItem extends FishingRodItem {
                 if (!isAdminRod && !bait.isEmpty()) {
                     if (bait.getItem() instanceof IBaitItem baitItem) {
                         lureSpeed += baitItem.getLureSpeedModifier();
-                    } else if (bait.getItem() instanceof BaitItem baitItem) {
-                        lureSpeed += baitItem.getLureSpeedModifier();
                     }
                 }
                 lureSpeed = Math.min(5, lureSpeed);
@@ -198,7 +196,7 @@ public class AquaFishingRodItem extends FishingRodItem {
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
                 return switch (slot) {
                     case 0 -> stack.getItem() instanceof HookItem;
-                    case 1 -> stack.getItem() instanceof BaitItem || stack.getItem() instanceof IBaitItem;
+                    case 1 -> stack.getItem() instanceof IBaitItem;
                     case 2 ->
                             stack.is(AquacultureAPI.Tags.FISHING_LINE) && stack.getItem() instanceof DyeableLeatherItem;
                     case 3 -> stack.is(AquacultureAPI.Tags.BOBBER) && stack.getItem() instanceof DyeableLeatherItem;

@@ -7,7 +7,6 @@ import com.teammetallurgy.aquaculture.init.AquaBlocks;
 import com.teammetallurgy.aquaculture.init.AquaGuis;
 import com.teammetallurgy.aquaculture.inventory.container.slot.SlotFishingRod;
 import com.teammetallurgy.aquaculture.inventory.container.slot.SlotHidable;
-import com.teammetallurgy.aquaculture.item.BaitItem;
 import com.teammetallurgy.aquaculture.item.HookItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
@@ -49,7 +48,7 @@ public class TackleBoxContainer extends AbstractContainerMenu {
                 this.slotBait = this.addSlot(new SlotHidable(fishingRod, 1, 129, 44) {
                     @Override
                     public boolean mayPlace(@Nonnull ItemStack stack) {
-                        return (stack.getItem() instanceof BaitItem || stack.getItem() instanceof IBaitItem) && super.mayPlace(stack);
+                        return stack.getItem() instanceof IBaitItem && super.mayPlace(stack);
                     }
 
                     @Override
