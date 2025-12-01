@@ -36,6 +36,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+
 public class AquaFishingRodItem extends FishingRodItem {
     private final Tier tier;
     private final int enchantability;
@@ -188,8 +190,8 @@ public class AquaFishingRodItem extends FishingRodItem {
         private final ItemStack stack;
         private final ItemStackHandler items = new ItemStackHandler(4) {
             @Override
-            public int getSlotLimit(int slot) {
-                return 1;
+            protected int getStackLimit(int slot, @NotNull ItemStack stack) {
+                return stack.getItem().canBeDepleted() ? 1 : super.getStackLimit(slot, stack);
             }
 
             @Override
