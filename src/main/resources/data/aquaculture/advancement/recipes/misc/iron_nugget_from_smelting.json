@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "aquaculture:iron_fishing_rod"
+            "items": [
+              "aquaculture:iron_fishing_rod"
+            ]
           }
         ]
       }
@@ -21,7 +23,9 @@
       "conditions": {
         "items": [
           {
-            "item": "aquaculture:iron_fillet_knife"
+            "items": [
+              "aquaculture:iron_fillet_knife"
+            ]
           }
         ]
       }
