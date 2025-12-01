@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "aquaculture:gold_fishing_rod"
+            "items": [
+              "aquaculture:gold_fishing_rod"
+            ]
           }
         ]
       }
@@ -21,7 +23,9 @@
       "conditions": {
         "items": [
           {
-            "item": "aquaculture:gold_fillet_knife"
+            "items": [
+              "aquaculture:gold_fillet_knife"
+            ]
           }
         ]
       }

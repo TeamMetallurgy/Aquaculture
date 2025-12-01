@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "aquaculture:fish_bones"
+            "items": [
+              "aquaculture:fish_bones"
+            ]
           }
         ]
       }

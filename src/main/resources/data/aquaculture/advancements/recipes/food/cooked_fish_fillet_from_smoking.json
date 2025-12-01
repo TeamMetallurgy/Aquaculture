@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "aquaculture:fish_fillet_raw"
+            "items": [
+              "aquaculture:fish_fillet_raw"
+            ]
           }
         ]
       }
