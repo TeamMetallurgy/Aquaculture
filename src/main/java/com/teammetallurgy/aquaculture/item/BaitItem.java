@@ -5,7 +5,9 @@ import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
-public class BaitItem extends Item {
+import com.teammetallurgy.aquaculture.api.bait.IBaitItem;
+
+public class BaitItem extends Item implements IBaitItem {
     private final int lureSpeedModifier;
 
     public BaitItem(int durability, int lureSpeedModifier) {
@@ -13,6 +15,7 @@ public class BaitItem extends Item {
         this.lureSpeedModifier = lureSpeedModifier;
     }
 
+    @Override
     public int getLureSpeedModifier() {
         return this.lureSpeedModifier;
     }

@@ -1,6 +1,7 @@
 package com.teammetallurgy.aquaculture.item;
 
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
+import com.teammetallurgy.aquaculture.api.bait.IBaitItem;
 import com.teammetallurgy.aquaculture.api.fishing.Hook;
 import com.teammetallurgy.aquaculture.api.fishing.Hooks;
 import com.teammetallurgy.aquaculture.entity.AquaFishingBobberEntity;
@@ -35,6 +36,8 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
 
 public class AquaFishingRodItem extends FishingRodItem {
     private final Tier tier;
@@ -100,7 +103,10 @@ public class AquaFishingRodItem extends FishingRodItem {
                 if (this.tier == AquacultureAPI.MATS.NEPTUNIUM) lureSpeed += 100;
                 ItemStack bait = getBait(heldStack);
                 if (!isAdminRod && !bait.isEmpty()) {
-                    lureSpeed += (((BaitItem) bait.getItem()).getLureSpeedModifier() * 100);
+                   if (bait.getItem() instanceof IBaitItem baitItem) {
+                        lureSpeed += baitItem.getLureSpeedModifier();
+                    }
+                }
                 }
                 lureSpeed = Math.min(500, lureSpeed);
 
@@ -200,7 +206,7 @@ public class AquaFishingRodItem extends FishingRodItem {
         public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
             return switch (slot) {
                 case 0 -> stack.getItem() instanceof HookItem;
-                case 1 -> stack.getItem() instanceof BaitItem;
+                case 1 -> stack.getItem() instanceof IBaitItem;
                 case 2 -> stack.is(AquacultureAPI.Tags.FISHING_LINE);
                 case 3 -> stack.is(AquacultureAPI.Tags.BOBBER);
                 default -> false;
