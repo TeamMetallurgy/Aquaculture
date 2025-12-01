@@ -1,6 +1,7 @@
 package com.teammetallurgy.aquaculture.inventory.container;
 
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
+import com.teammetallurgy.aquaculture.api.bait.IBaitItem;
 import com.teammetallurgy.aquaculture.block.blockentity.TackleBoxBlockEntity;
 import com.teammetallurgy.aquaculture.init.AquaBlocks;
 import com.teammetallurgy.aquaculture.init.AquaGuis;
