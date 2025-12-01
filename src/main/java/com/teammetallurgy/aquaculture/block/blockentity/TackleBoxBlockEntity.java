@@ -1,6 +1,7 @@
 package com.teammetallurgy.aquaculture.block.blockentity;
 
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
+import com.teammetallurgy.aquaculture.api.bait.IBaitItem;
 import com.teammetallurgy.aquaculture.init.AquaBlockEntities;
 import com.teammetallurgy.aquaculture.init.AquaSounds;
 import com.teammetallurgy.aquaculture.inventory.container.TackleBoxContainer;
@@ -83,6 +84,7 @@ public class TackleBoxBlockEntity extends IItemHandlerBEBase implements MenuProv
         Item item = stack.getItem();
         boolean isDyeable = item instanceof DyeableLeatherItem;
         return stack.is(AquacultureAPI.Tags.TACKLE_BOX) || item instanceof HookItem || item instanceof BaitItem ||
+                item instanceof IBaitItem ||
                 stack.is(AquacultureAPI.Tags.FISHING_LINE) && isDyeable || stack.is(AquacultureAPI.Tags.BOBBER) && isDyeable;
     }
 
