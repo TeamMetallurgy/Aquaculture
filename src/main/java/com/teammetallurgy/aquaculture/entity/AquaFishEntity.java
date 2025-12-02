@@ -121,7 +121,6 @@ public class AquaFishEntity extends AbstractSchoolingFish {
 
         if (!(handStack.getItem() instanceof BucketItem bucketItem)) return;
 
-
         if (bucketItem.content.isSame(Fluids.WATER) && target instanceof AquaFishEntity) {
             CriteriaTriggers.FILLED_BUCKET.trigger(serverPlayer, new ItemStack(Items.COD_BUCKET)); //Triggers Tactical Fishing advancement for AQ fish. Needs to be triggered for a vanilla fish bucket to work.
         }

@@ -8,6 +8,7 @@ import com.teammetallurgy.aquaculture.init.AquaItems;
 import com.teammetallurgy.aquaculture.init.AquaLootTables;
 import com.teammetallurgy.aquaculture.init.AquaSounds;
 import com.teammetallurgy.aquaculture.item.AquaFishingRodItem;
+import com.teammetallurgy.aquaculture.item.FishItem;
 import com.teammetallurgy.aquaculture.item.HookItem;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -117,7 +118,7 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
             ItemFishedEvent event = null;
             if (this.getHookedIn() != null && !isAdminRod) {
                 this.pullEntity(this.getHookedIn());
-                CriteriaTriggers.FISHING_ROD_HOOKED.trigger((ServerPlayer) angler, stack, this, Collections.emptyList());
+                this.triggerFishingRodHooked((ServerPlayer) angler, stack, Collections.emptyList());
                 level.broadcastEntityEvent(this, (byte) 31);
                 rodDamage = this.getHookedIn() instanceof ItemEntity ? 3 : 5;
             } else if ((this.nibble > 0 || isAdminRod) && level instanceof ServerLevel serverLevel) {
@@ -144,7 +145,7 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
                         this.discard();
                         return event.getRodDamage();
                     }
-                    CriteriaTriggers.FISHING_ROD_HOOKED.trigger((ServerPlayer) angler, stack, this, lootEntries);
+                    this.triggerFishingRodHooked((ServerPlayer) angler, stack, lootEntries);
 
                     this.spawnLoot(angler, lootEntries);
                     if (this.hasHook() && this.hook.getDoubleCatchChance() > 0) {
@@ -180,6 +181,14 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
             return event == null ? rodDamage : event.getRodDamage();
         } else {
             return 0;
+        }
+    }
+
+    public void triggerFishingRodHooked(ServerPlayer angler, @Nonnull ItemStack stack, List<ItemStack> lootEntries) {
+        if (lootEntries.getFirst().getItem() instanceof FishItem) {
+            CriteriaTriggers.FISHING_ROD_HOOKED.trigger(angler, stack, this, List.of(new ItemStack(Items.COD))); //Used to trigger Fishy Business advancement for AQ fish
+        } else {
+            CriteriaTriggers.FISHING_ROD_HOOKED.trigger(angler, stack, this, lootEntries);
         }
     }
 
