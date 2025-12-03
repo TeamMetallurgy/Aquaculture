@@ -126,8 +126,6 @@ public class AquaItems {
     public static final DeferredItem<Item> NOTE_HOOK = AquacultureAPI.registerHook(Hooks.NOTE);
     public static final DeferredItem<Item> NETHER_STAR_HOOK = AquacultureAPI.registerHook(Hooks.NETHER_STAR);
 
-
-
     /**
      * Registers an item
      *

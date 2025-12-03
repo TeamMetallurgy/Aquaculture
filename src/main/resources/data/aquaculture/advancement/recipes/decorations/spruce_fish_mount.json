@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "aquaculture:iron_hook"
+            "items": [
+              "aquaculture:iron_hook"
+            ]
           }
         ]
       }
