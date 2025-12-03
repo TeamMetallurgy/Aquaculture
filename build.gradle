@@ -138,7 +138,8 @@ modrinth {
     token = System.getenv("modrinth_auth")
     projectId = "Vl1uNAuy"
     changelog = changelogText
-    versionName = "Aquaculture 2-${minecraft_version}-${version}"
+    versionNumber = "${mod_version}"
+    versionName = "Aquaculture 2-${minecraft_version}-${mod_version}"
     versionType = "release"
     loaders = ["neoforge"]
     gameVersions = ["${minecraft_version}"]
