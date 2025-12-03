@@ -140,7 +140,7 @@ modrinth {
     versionName = "${mod_id}-${minecraft_version}-${version}"
     versionType = "release"
     loaders = ["neoforge"]
-    gameVersions = ["${minecraft_version"]
+    gameVersions = ["${minecraft_version}"]
     uploadFile = jar
 }
 
