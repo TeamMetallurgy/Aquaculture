@@ -29,9 +29,11 @@ public class AquaEntities {
             .setTrackingRange(4)
             .setUpdateInterval(5));
     public static final DeferredHolder<EntityType<?>, EntityType<WaterArrowEntity>> WATER_ARROW = register("water_arrow", () -> EntityType.Builder.<WaterArrowEntity>of(WaterArrowEntity::new, MobCategory.MISC)
-            .sized(0.5F, 0.5F));
+            .sized(0.5F, 0.5F)
+            .eyeHeight(0.13F).clientTrackingRange(4).updateInterval(20));
     public static final DeferredHolder<EntityType<?>, EntityType<SpectralWaterArrowEntity>> SPECTRAL_WATER_ARROW = register("spectral_water_arrow", () -> EntityType.Builder.<SpectralWaterArrowEntity>of(SpectralWaterArrowEntity::new, MobCategory.MISC)
-            .sized(0.5F, 0.5F));
+            .sized(0.5F, 0.5F)
+            .eyeHeight(0.13F).clientTrackingRange(4).updateInterval(20));
     public static final DeferredHolder<EntityType<?>, EntityType<TurtleLandEntity>> BOX_TURTLE = registerMob("box_turtle", () -> EntityType.Builder.of(TurtleLandEntity::new, MobCategory.CREATURE)
             .eyeHeight(0.1875F)
             .sized(0.5F, 0.25F));

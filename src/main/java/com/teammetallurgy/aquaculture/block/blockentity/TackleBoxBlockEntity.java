@@ -1,11 +1,11 @@
 package com.teammetallurgy.aquaculture.block.blockentity;
 
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
+import com.teammetallurgy.aquaculture.api.bait.IBaitItem;
 import com.teammetallurgy.aquaculture.init.AquaBlockEntities;
 import com.teammetallurgy.aquaculture.init.AquaSounds;
 import com.teammetallurgy.aquaculture.inventory.container.TackleBoxContainer;
 import com.teammetallurgy.aquaculture.item.AquaFishingRodItem;
-import com.teammetallurgy.aquaculture.item.BaitItem;
 import com.teammetallurgy.aquaculture.item.HookItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -80,7 +80,8 @@ public class TackleBoxBlockEntity extends IItemHandlerBEBase implements MenuProv
 
     public static boolean canBePutInTackleBox(@Nonnull ItemStack stack) {
         Item item = stack.getItem();
-        return stack.is(AquacultureAPI.Tags.TACKLE_BOX) || item instanceof HookItem || item instanceof BaitItem ||
+
+        return stack.is(AquacultureAPI.Tags.TACKLE_BOX) || item instanceof HookItem || item instanceof IBaitItem ||
                 stack.is(AquacultureAPI.Tags.FISHING_LINE) || stack.is(AquacultureAPI.Tags.BOBBER);
     }
 

@@ -43,16 +43,13 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import org.apache.commons.lang3.Validate;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
 public class FishMountEntity extends HangingEntity implements IEntityWithComplexSpawn {
-    private static final Logger PRIVATE_LOGGER = LogManager.getLogger();
-    private static final EntityDataAccessor<ItemStack> ITEM = SynchedEntityData.defineId(FishMountEntity.class, EntityDataSerializers.ITEM_STACK);
+    private static final EntityDataAccessor<ItemStack> DATA_ITEM = SynchedEntityData.defineId(FishMountEntity.class, EntityDataSerializers.ITEM_STACK);
     private float itemDropChance = 1.0F;
     public Entity entity;
 
@@ -71,7 +68,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(ITEM, ItemStack.EMPTY);
+        builder.define(DATA_ITEM, ItemStack.EMPTY);
     }
 
     @Override
@@ -192,7 +189,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
 
     @Nonnull
     public ItemStack getItem() {
-        return this.getEntityData().get(ITEM);
+        return this.getEntityData().get(DATA_ITEM);
     }
 
     public void setDisplayedItem(@Nonnull ItemStack stack) {
@@ -204,7 +201,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
             stack = stack.copyWithCount(1);
         }
 
-        this.getEntityData().set(ITEM, stack);
+        this.getEntityData().set(DATA_ITEM, stack);
         if (!stack.isEmpty()) {
             this.playSound(AquaSounds.FISH_MOUNT_ADD_ITEM.get(), 1.0F, 1.0F);
         }
@@ -216,7 +213,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
 
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
-        if (key.equals(ITEM)) {
+        if (key.equals(DATA_ITEM)) {
             ItemStack displayStack = this.getItem();
             if (displayStack != null && !displayStack.isEmpty()) {
                 EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.getValue(BuiltInRegistries.ITEM.getKey(displayStack.getItem()));
@@ -247,7 +244,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
         super.readAdditionalSaveData(tag);
 
         RegistryOps<Tag> registryops = this.registryAccess().createSerializationContext(NbtOps.INSTANCE);
-        ItemStack stack = tag.read("item", ItemStack.CODEC, registryops).orElse(ItemStack.EMPTY);
+        ItemStack stack = tag.read("Item", ItemStack.CODEC, registryops).orElse(ItemStack.EMPTY);
         ItemStack displayStack = this.getItem();
         if (!displayStack.isEmpty() && !ItemStack.matches(stack, displayStack)) {
             this.setDisplayedItem(displayStack);

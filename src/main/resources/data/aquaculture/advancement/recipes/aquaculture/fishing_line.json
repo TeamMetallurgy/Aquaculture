@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "aquaculture:tackle_box"
+            "items": [
+              "aquaculture:tackle_box"
+            ]
           }
         ]
       }
