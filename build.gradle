@@ -4,6 +4,9 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.neoforged.gradle.userdev' version '7.0.165'
+    id 'net.darkhax.curseforgegradle' version '1.1.24' apply(false)
+    id 'com.modrinth.minotaur' version '2.8.7' apply(false)
+    id 'git-changelog'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -116,6 +119,32 @@ publishing {
         }
     }
 }
+
+task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+    apiToken = System.getenv("curse_auth")
+
+    var mainFile = upload(60028, jar)
+    mainFile.changelogType = 'markdown'
+    mainFile.changelog = rootProject.findProperty('mod_changelog')
+    mainFile.addJavaVersion('Java 21')
+    mainFile.releaseType = 'release'
+    mainFile.addModLoader('NeoForge')
+    mainFile.addGameVersion('Server', 'Client')
+}
+
+modrinth {
+    var changelogText = rootProject.findProperty('mod_changelog')
+
+    token = System.getenv("modrinth_auth")
+    projectId = "Vl1uNAuy"
+    changelog = changelogText
+    versionName = "${mod_name}-${minecraft_version}-${version}"
+    versionType = "release"
+    loaders = ["neoforge"]
+    gameVersions = ["${minecraft_version_range}"]
+    uploadFile = jar
+}
+
 
 artifacts {
     archives apiJar
