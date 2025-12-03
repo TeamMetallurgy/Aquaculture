@@ -124,7 +124,7 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
 
     var mainFile = upload(60028, jar)
     mainFile.changelogType = 'markdown'
-    mainFile.changelog = ''
+    mainFile.changelog = rootProject.findProperty('mod_changelog')
     mainFile.addJavaVersion('Java 21')
     mainFile.releaseType = 'release'
     mainFile.addModLoader('NeoForge')
@@ -132,18 +132,17 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
 }
 
 modrinth {
-    //var changelogText = rootProject.findProperty('mod_changelog')
+    var changelogText = rootProject.findProperty('mod_changelog')
 
     token = System.getenv("modrinth_auth")
     projectId = "Vl1uNAuy"
-    changelog = ""
-    versionName = "${mod_id}-${minecraft_version}-${version}"
+    changelog = changelogText
+    versionName = "Aquaculture 2-${minecraft_version}-${version}"
     versionType = "release"
     loaders = ["neoforge"]
     gameVersions = ["${minecraft_version}"]
     uploadFile = jar
 }
-
 
 artifacts {
     archives apiJar
