@@ -140,10 +140,18 @@ modrinth {
     versionName = "${mod_id}-${minecraft_version}-${version}"
     versionType = "release"
     loaders = ["neoforge"]
-    gameVersions = ["${minecraft_version_range}"]
+    gameVersions = [convertVersionRange(minecraft_version_range)]
     uploadFile = jar
 }
 
+def convertVersionRange(String range) {
+    def cleaned = range.trim()
+    cleaned = cleaned.substring(1, cleaned.length() - 1)
+
+    def (minVer, maxVer) = cleaned.split(',')
+
+    return [minVer, maxVer]
+}
 
 artifacts {
     archives apiJar
