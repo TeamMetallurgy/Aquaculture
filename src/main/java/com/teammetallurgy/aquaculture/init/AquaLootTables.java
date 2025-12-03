@@ -54,7 +54,7 @@ public class AquaLootTables {
                 addEntry(pool, getInjectEntry(FISH, 85, -1));
                 addEntry(pool, getInjectEntry(JUNK, 10, -2));
                 if (AquaConfig.NEPTUNIUM_OPTIONS.addNeptunesBountyToLoot.get()) {
-                    LootPoolEntryContainer neptuniumEntry = NestedLootTable.lootTableReference(NEPTUNIUM).setWeight(1).setQuality(2).when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().subPredicate(FishingHookPredicate.inOpenWater(true)))).build();
+                    LootPoolEntryContainer neptuniumEntry = NestedLootTable.lootTableReference(NEPTUNIUM).setWeight(AquaConfig.NEPTUNIUM_OPTIONS.neptuniumLootRarity.get()).setQuality(2).when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().subPredicate(FishingHookPredicate.inOpenWater(true)))).build();
                     addEntry(pool, neptuniumEntry);
                 }
             }
