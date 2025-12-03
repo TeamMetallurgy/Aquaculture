@@ -124,7 +124,7 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
 
     var mainFile = upload(60028, jar)
     mainFile.changelogType = 'markdown'
-    //mainFile.changelog = rootProject.findProperty('mod_changelog')
+    mainFile.changelog = ''
     mainFile.addJavaVersion('Java 21')
     mainFile.releaseType = 'release'
     mainFile.addModLoader('NeoForge')
@@ -136,7 +136,7 @@ modrinth {
 
     token = System.getenv("modrinth_auth")
     projectId = "Vl1uNAuy"
-    //changelog = changelogText
+    changelog = ""
     versionName = "${mod_id}-${minecraft_version}-${version}"
     versionType = "release"
     loaders = ["neoforge"]
