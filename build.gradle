@@ -4,8 +4,8 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.neoforged.gradle.userdev' version '7.0.165'
-    id 'net.darkhax.curseforgegradle' version '1.1.24' apply(false)
-    id 'com.modrinth.minotaur' version "2.+" apply(false)
+    id 'net.darkhax.curseforgegradle' version '1.1.24'
+    id "com.modrinth.minotaur" version "2.+"
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -27,8 +27,6 @@ repositories {
     name = "TerraformersMC"
 	url = "https://maven.terraformersmc.com/"
   }
-  gradlePluginPortal()
-  mavenCentral()
   flatDir { dirs 'deps' }
 }
 
