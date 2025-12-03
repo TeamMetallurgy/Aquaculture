@@ -3,6 +3,9 @@ plugins {
     id 'maven-publish'
     id 'net.neoforged.moddev' version '2.0.78'
     id 'idea'
+    id 'net.darkhax.curseforgegradle' version '1.1.24'
+    id "com.modrinth.minotaur" version "2.+"
+    id 'git-changelog'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -130,6 +133,32 @@ publishing {
             mavenLocal()
         }
     }
+}
+
+task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+    apiToken = System.getenv("curse_auth")
+
+    var mainFile = upload(60028, jar)
+    mainFile.changelogType = 'markdown'
+    mainFile.changelog = rootProject.findProperty('mod_changelog')
+    mainFile.addJavaVersion('Java 21')
+    mainFile.releaseType = 'release'
+    mainFile.addModLoader('NeoForge')
+    mainFile.addGameVersion('Server', 'Client')
+}
+
+modrinth {
+    var changelogText = rootProject.findProperty('mod_changelog')
+
+    token = System.getenv("modrinth_auth")
+    projectId = "Vl1uNAuy"
+    changelog = changelogText
+    versionNumber = "${mod_version}"
+    versionName = "Aquaculture 2-${minecraft_version}-${mod_version}"
+    versionType = "release"
+    loaders = ["neoforge"]
+    gameVersions = ["${minecraft_version}"]
+    uploadFile = jar
 }
 
 artifacts {
