@@ -233,7 +233,6 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
         if (!stack.isEmpty()) {
             RegistryOps<Tag> registryops = this.registryAccess().createSerializationContext(NbtOps.INSTANCE);
             compound.store("Item", ItemStack.CODEC, registryops, stack);
-            System.out.println("WRITE STACK: " + stack.getItem().getDescriptionId());
         }
 
         compound.putFloat("ItemDropChance", this.itemDropChance);
@@ -246,7 +245,6 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
 
         RegistryOps<Tag> registryops = this.registryAccess().createSerializationContext(NbtOps.INSTANCE);
         ItemStack stack = tag.read("Item", ItemStack.CODEC, registryops).orElse(ItemStack.EMPTY);
-        System.out.println("READ STACK: " + stack.getItem().getDescriptionId());
         ItemStack displayStack = this.getItem();
         if (!displayStack.isEmpty() && !ItemStack.matches(stack, displayStack)) {
             this.setDisplayedItem(displayStack);
