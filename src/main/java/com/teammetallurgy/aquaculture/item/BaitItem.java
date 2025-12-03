@@ -1,11 +1,10 @@
 package com.teammetallurgy.aquaculture.item;
 
+import com.teammetallurgy.aquaculture.api.bait.IBaitItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
-
-import com.teammetallurgy.aquaculture.api.bait.IBaitItem;
 
 public class BaitItem extends Item implements IBaitItem {
     private final int lureSpeedModifier;

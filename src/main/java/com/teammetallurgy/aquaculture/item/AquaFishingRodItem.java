@@ -15,7 +15,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -36,8 +35,6 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
 
 public class AquaFishingRodItem extends FishingRodItem {
     private final Tier tier;
@@ -103,10 +100,9 @@ public class AquaFishingRodItem extends FishingRodItem {
                 if (this.tier == AquacultureAPI.MATS.NEPTUNIUM) lureSpeed += 100;
                 ItemStack bait = getBait(heldStack);
                 if (!isAdminRod && !bait.isEmpty()) {
-                   if (bait.getItem() instanceof IBaitItem baitItem) {
+                    if (bait.getItem() instanceof IBaitItem baitItem) {
                         lureSpeed += baitItem.getLureSpeedModifier();
                     }
-                }
                 }
                 lureSpeed = Math.min(500, lureSpeed);
 

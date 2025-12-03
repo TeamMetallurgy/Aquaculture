@@ -164,11 +164,11 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
                         ItemStackHandler rodHandler = AquaFishingRodItem.getHandler(this.fishingRod);
                         ItemStack bait = rodHandler.getStackInSlot(1);
                         if (!bait.isEmpty()) {
-                            if (bait.getItem().canBeDepleted()) {
-                                if (bait.hurt(1, level.random, null)) {
+                            if (bait.isDamageableItem()) {
+                                bait.hurtAndBreak(1, serverLevel, null, item -> {
                                     bait.shrink(1);
                                     this.playSound(AquaSounds.BOBBER_BAIT_BREAK.get(), 0.7F, 0.2F);
-                                }
+                                });
                             } else {
                                 bait.shrink(1);
                             }
