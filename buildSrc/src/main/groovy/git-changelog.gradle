@@ -1,37 +1,45 @@
 /* Originally made by DarkhaxDev */
 
-project.ext.mod_changelog = 'No changelog was provided. Please refer to the project page for more information.'
+project.ext.mod_changelog = providers.provider {
+    'No changelog was provided. Please refer to the project page for more information.'
+}
 
 try {
-    project.mod_changelog = 'No changelog was provided. Please refer to the project page for more information.'
-    def gitCommit = System.getenv('GIT_COMMIT') ?: getExecOutput(['git', 'log', '-n', '1', '--pretty=tformat:%h'])
-    def gitPrevCommit = System.getenv('GIT_PREVIOUS_COMMIT')
+    def gitCommit = providers.environmentVariable("GIT_COMMIT").orElse(
+            getExecOutput(["git", "log", "-n", "1", "--pretty=tformat:%h"])
+        )
+
+    def gitPrevCommit = providers.environmentVariable("GIT_PREVIOUS_COMMIT")
 
     // If a full range is available use that range.
-    if (gitCommit && gitPrevCommit) {
-        project.ext.mod_changelog = getExecOutput(['git', 'log', "--pretty=tformat:- %s", '' + gitPrevCommit + '..' + gitCommit])
-        project.logger.lifecycle("Generated changelog using commits ${gitPrevCommit} to ${gitCommit}.")
-    }
-
-    // If only one commit is available, use the last commit.
-    else if (gitCommit) {
-        project.ext.mod_changelog = getExecOutput(['git', 'log', '' + "--pretty=tformat:- %s", '-1', '' + gitCommit])
-        project.logger.lifecycle("Generated changelog using commit ${gitCommit}.")
-    }
+    project.ext.mod_changelog = gitPrevCommit.flatMap { prev ->
+        gitCommit.flatMap { commit ->
+            if (prev && commit) {
+                getExecOutput(["git", "log", "--pretty=tformat:- %s", "${prev}..${commit}"])
+                    .map {
+                        project.logger.lifecycle("Generated changelog using commits ${prev} to ${commit}.")
+                        it
+                    }
+            } else {
+                providers.provider { null }
+            }
+        }
+    }.orElse(
+        // If only one commit is available
+        gitCommit.flatMap { commit ->
+            getExecOutput(["git", "log", "--pretty=tformat:- %s", "-1", commit])
+                .map {
+                    project.logger.lifecycle("Generated changelog using commit ${commit}.")
+                    it
+                }
+        }
+    )
 }
 
 catch (Exception e) {
-
     project.logger.warn("Changelogs could not be generated! ${e.message}")
 }
 
-def getExecOutput(commands) {
-    def out = new ByteArrayOutputStream()
-
-    project.exec {
-        commandLine commands
-        standardOutput out
-    }
-
-    return out.toString().trim()
+def getExecOutput(List<String> commands) {
+    return providers.exec {commandLine commands}.standardOutput.asText.map { it.trim() }
 }

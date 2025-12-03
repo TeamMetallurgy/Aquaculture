@@ -121,7 +121,7 @@ publishing {
     tasks.publish.dependsOn 'build'
     publications {
         mavenJava(MavenPublication) {
-            artifactId "aquaculture2_${minecraft_version}"
+            artifactId = "aquaculture2_${minecraft_version}"
             artifact jar
 			artifact apiJar
         }
