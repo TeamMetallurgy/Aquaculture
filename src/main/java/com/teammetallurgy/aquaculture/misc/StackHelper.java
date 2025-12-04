@@ -1,9 +1,10 @@
 package com.teammetallurgy.aquaculture.misc;
 
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -12,6 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.storage.TagValueOutput;
 import net.neoforged.neoforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
@@ -39,10 +41,13 @@ public class StackHelper {
         return clazz.isAssignableFrom(stackMainHand.getItem().getClass()) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
     }
 
-    public static void saveToItem(ItemStack stack, HolderLookup.Provider p_323484_, BlockEntity blockEntity) {
-        CompoundTag compoundtag = blockEntity.saveCustomOnly(p_323484_);
-        blockEntity.removeComponentsFromTag(compoundtag);
-        BlockItem.setBlockEntityData(stack, blockEntity.getType(), compoundtag);
-        stack.applyComponents(blockEntity.collectComponents());
+    public static void saveToItem(ItemStack stack, HolderLookup.Provider provider, BlockEntity blockEntity) {
+        try (ProblemReporter.ScopedCollector scopedCollector = new ProblemReporter.ScopedCollector(blockEntity.problemPath(), LogUtils.getLogger())) {
+            TagValueOutput tagValueOutput = TagValueOutput.createWithContext(scopedCollector, provider);
+            blockEntity.saveCustomOnly(tagValueOutput);
+            blockEntity.removeComponentsFromTag(tagValueOutput);
+            BlockItem.setBlockEntityData(stack, blockEntity.getType(), tagValueOutput);
+            stack.applyComponents(blockEntity.collectComponents());
+        }
     }
 }

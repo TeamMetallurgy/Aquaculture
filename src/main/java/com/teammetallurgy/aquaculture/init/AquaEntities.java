@@ -19,7 +19,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
 
-@EventBusSubscriber(modid = Aquaculture.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Aquaculture.MOD_ID)
 public class AquaEntities {
     public static final DeferredRegister<EntityType<?>> ENTITY_DEFERRED = DeferredRegister.create(Registries.ENTITY_TYPE, Aquaculture.MOD_ID);
     public static final DeferredHolder<EntityType<?>, EntityType<AquaFishingBobberEntity>> BOBBER = register("bobber", () -> EntityType.Builder.<AquaFishingBobberEntity>of(AquaFishingBobberEntity::new, MobCategory.MISC)
