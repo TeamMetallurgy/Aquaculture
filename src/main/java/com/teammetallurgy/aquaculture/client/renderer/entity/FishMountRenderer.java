@@ -165,12 +165,12 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
 
     public StandaloneModelKey<BlockStateModel> getStandaloneKeyFromType(String mountType) {
         return switch (mountType) {
-            case "spruce_fish_mount" -> ClientHandler.SPRUCE_FISH_MOUNT;
-            case "birch_fish_mount" -> ClientHandler.BIRCH_FISH_MOUNT;
-            case "jungle_fish_mount" -> ClientHandler.JUNGLE_FISH_MOUNT;
-            case "acacia_fish_mount" -> ClientHandler.ACACIA_FISH_MOUNT;
-            case "dark_oak_fish_mount" -> ClientHandler.DARK_OAK_FISH_MOUNT;
-            default -> ClientHandler.OAK_FISH_MOUNT;
+            case "spruce_fish_mount" -> ClientHandler.SPRUCE_FISH_MOUNT_KEY;
+            case "birch_fish_mount" -> ClientHandler.BIRCH_FISH_MOUNT_KEY;
+            case "jungle_fish_mount" -> ClientHandler.JUNGLE_FISH_MOUNT_KEY;
+            case "acacia_fish_mount" -> ClientHandler.ACACIA_FISH_MOUNT_KEY;
+            case "dark_oak_fish_mount" -> ClientHandler.DARK_OAK_FISH_MOUNT_KEY;
+            default -> ClientHandler.OAK_FISH_MOUNT_KEY;
         };
     }
 }

@@ -5,9 +5,6 @@ import com.teammetallurgy.aquaculture.init.AquaSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -15,7 +12,6 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
@@ -37,6 +33,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DiodeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
@@ -68,16 +66,17 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
         builder.define(DATA_ITEM, ItemStack.EMPTY);
     }
 
     @Override
     public void setDirection(@Nonnull Direction direction) {
         Validate.notNull(direction);
-        this.direction = direction;
+        super.setDirectionRaw(direction);
         if (direction.getAxis().isHorizontal()) {
             this.setXRot(0.0F);
-            this.setYRot((float) (this.direction.get2DDataValue() * 90));
+            this.setYRot((float) (direction.get2DDataValue() * 90));
         } else {
             this.setXRot((float) (-90 * direction.getAxisDirection().getStep()));
             this.setYRot(0.0F);
@@ -92,8 +91,8 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
         if (!this.level().noCollision(this)) {
             return false;
         } else {
-            BlockState state = this.level().getBlockState(this.pos.relative(this.direction.getOpposite()));
-            return (state.isSolid() || this.direction.getAxis().isHorizontal() && DiodeBlock.isDiode(state)) && this.level().getEntities(this, this.getBoundingBox(), HANGING_ENTITY).isEmpty();        }
+            BlockState state = this.level().getBlockState(this.pos.relative(this.getDirection().getOpposite()));
+            return (state.isSolid() || this.getDirection().getAxis().isHorizontal() && DiodeBlock.isDiode(state)) && this.level().getEntities(this, this.getBoundingBox(), HANGING_ENTITY).isEmpty();        }
     }
 
     @Override
@@ -213,6 +212,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
 
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
         if (key.equals(DATA_ITEM)) {
             ItemStack displayStack = this.getItem();
             if (displayStack != null && !displayStack.isEmpty()) {
@@ -227,32 +227,30 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     }
 
     @Override
-    public void addAdditionalSaveData(@Nonnull CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
+    public void addAdditionalSaveData(@Nonnull ValueOutput output) {
+        super.addAdditionalSaveData(output);
         ItemStack stack = this.getItem();
         if (!stack.isEmpty()) {
-            RegistryOps<Tag> registryops = this.registryAccess().createSerializationContext(NbtOps.INSTANCE);
-            compound.store("Item", ItemStack.CODEC, registryops, stack);
+            output.store("Item", ItemStack.CODEC, stack);
         }
 
-        compound.putFloat("ItemDropChance", this.itemDropChance);
-        compound.store("Facing", Direction.LEGACY_ID_CODEC, this.direction);
+        output.putFloat("ItemDropChance", this.itemDropChance);
+        output.store("Facing", Direction.LEGACY_ID_CODEC, this.getDirection());
     }
 
     @Override
-    public void readAdditionalSaveData(@Nonnull CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
+    public void readAdditionalSaveData(@Nonnull ValueInput input) {
+        super.readAdditionalSaveData(input);
 
-        RegistryOps<Tag> registryops = this.registryAccess().createSerializationContext(NbtOps.INSTANCE);
-        ItemStack stack = tag.read("Item", ItemStack.CODEC, registryops).orElse(ItemStack.EMPTY);
+        ItemStack stack = input.read("Item", ItemStack.CODEC).orElse(ItemStack.EMPTY);
         ItemStack displayStack = this.getItem();
         if (!displayStack.isEmpty() && !ItemStack.matches(stack, displayStack)) {
             this.setDisplayedItem(displayStack);
         }
 
         this.setDisplayedItemWithUpdate(stack, false);
-        this.itemDropChance = tag.getFloatOr("ItemDropChance", 1.0F);
-        this.setDirection(tag.read("Facing", Direction.LEGACY_ID_CODEC).orElse(Direction.DOWN));
+        this.itemDropChance = input.getFloatOr("ItemDropChance", 1.0F);
+        this.setDirection(input.read("Facing", Direction.LEGACY_ID_CODEC).orElse(Direction.DOWN));
     }
 
     @Override
@@ -278,7 +276,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     @Override
     @Nonnull
     public Packet<ClientGamePacketListener> getAddEntityPacket(@Nonnull ServerEntity serverEntity) {
-        return new ClientboundAddEntityPacket(this, this.direction.get3DDataValue(), this.getPos());
+        return new ClientboundAddEntityPacket(this, this.getDirection().get3DDataValue(), this.getPos());
     }
 
     @Override

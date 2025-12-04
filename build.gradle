@@ -1,12 +1,12 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.78'
+    id 'net.neoforged.moddev' version '2.0.121'
     id 'idea'
 }
 
 tasks.named('wrapper', Wrapper).configure {
-    distributionType = Wrapper.DistributionType.BIN
+    distributionType = Wrapper.DistributionType.ALL
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -80,8 +80,8 @@ neoForge {
 }
 
 dependencies {
-    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
-    runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+    //compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+    //runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
     //compileOnly "com.blamejared.crafttweaker:CraftTweaker-neoforge-${minecraft_version}:${ct_version}"
 	//compileOnly "dev.emi:emi-neoforge:${emi_version}+${minecraft_version}:api"
 	//runtimeOnly "dev.emi:emi-neoforge:${emi_version}+${minecraft_version}" 

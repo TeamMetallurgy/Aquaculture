@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-@EventBusSubscriber(modid = Aquaculture.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Aquaculture.MOD_ID)
 public class FishRegistry {
     public static List<DeferredHolder<EntityType<?>, EntityType<AquaFishEntity>>> fishEntities = new ArrayList<>();
     public static List<DeferredHolder<EntityType<?>, EntityType<FishMountEntity>>> fishMounts = new ArrayList<>();

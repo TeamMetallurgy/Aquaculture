@@ -19,8 +19,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.joml.Vector3f;
 
 import javax.annotation.Nonnull;
+import java.util.Set;
 
 public class NeptunesBountySpecialRenderer implements NoDataSpecialModelRenderer {
     public static final ResourceLocation NEPTUNES_BOUNTY = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "neptunes");
@@ -39,6 +41,13 @@ public class NeptunesBountySpecialRenderer implements NoDataSpecialModelRenderer
         VertexConsumer vertexconsumer = this.material.buffer(bufferSource, RenderType::entitySolid);
         this.model.setupAnim(this.openness);
         this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, packedOverlay);
+    }
+
+    @Override
+    public void getExtents(Set<Vector3f> output) {
+        PoseStack posestack = new PoseStack();
+        this.model.setupAnim(this.openness);
+        this.model.root().getExtentsForGui(posestack, output);
     }
 
     @OnlyIn(Dist.CLIENT)

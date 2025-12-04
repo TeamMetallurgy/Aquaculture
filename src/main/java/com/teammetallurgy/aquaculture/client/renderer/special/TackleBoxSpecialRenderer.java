@@ -21,8 +21,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.joml.Vector3f;
 
 import javax.annotation.Nonnull;
+import java.util.Set;
 
 public class TackleBoxSpecialRenderer implements NoDataSpecialModelRenderer {
     public static final Material TACKLE_BOX_MATERIAL = new Material(TextureAtlas.LOCATION_BLOCKS, ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/tackle_box"));
@@ -45,6 +47,13 @@ public class TackleBoxSpecialRenderer implements NoDataSpecialModelRenderer {
         poseStack.mulPose(Axis.XN.rotationDegrees(-180)); //Flip
         this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, packedOverlay);
         poseStack.popPose();
+    }
+
+    @Override
+    public void getExtents(Set<Vector3f> output) {
+        PoseStack posestack = new PoseStack();
+        this.model.setupAnim(this.angle);
+        this.model.root().getExtentsForGui(posestack, output);
     }
 
     @OnlyIn(Dist.CLIENT)

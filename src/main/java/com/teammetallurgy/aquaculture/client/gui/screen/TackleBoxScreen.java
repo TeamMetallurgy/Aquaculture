@@ -4,7 +4,7 @@ import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.inventory.container.TackleBoxContainer;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -62,10 +62,10 @@ public class TackleBoxScreen extends AbstractContainerScreen<TackleBoxContainer>
     }
 
     private void renderSlot(int x, int y, int uOffset, int vOffset, int uWidth, int vHeight, GuiGraphics guiGraphics) {
-        guiGraphics.blit(RenderType::guiTextured, TACKLE_BOX_GUI, x, y, uOffset, vOffset, uWidth, vHeight, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TACKLE_BOX_GUI, x, y, uOffset, vOffset, uWidth, vHeight, 256, 256);
     }
 
     private void renderEmptySlot(int x, int y, GuiGraphics guiGraphics) {
-        guiGraphics.blit(RenderType::guiTextured, TackleBoxScreen.TACKLE_BOX_GUI, x, y, 7, 7, 18, 18, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TackleBoxScreen.TACKLE_BOX_GUI, x, y, 7, 7, 18, 18, 256, 256);
     }
 }
