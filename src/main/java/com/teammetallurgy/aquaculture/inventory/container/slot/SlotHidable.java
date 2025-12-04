@@ -5,8 +5,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
@@ -37,7 +35,6 @@ public class SlotHidable extends SlotItemHandler {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public boolean isActive() {
         return this.fishingRod.hasItem();
     }
