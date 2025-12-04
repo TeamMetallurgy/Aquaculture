@@ -11,8 +11,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.loading.StringUtils;
@@ -44,7 +42,6 @@ public class FishWeightHandler {
     }
 
     @SubscribeEvent
-    @OnlyIn(Dist.CLIENT)
     public static void onTooltip(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
         if (!stack.isEmpty() && stack != null && stack.has(AquaDataComponents.FISH_WEIGHT)) { //Keep stack null check, in case of other mods is doing bad things

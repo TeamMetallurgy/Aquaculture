@@ -37,8 +37,6 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import org.apache.commons.lang3.Validate;
 
@@ -133,7 +131,6 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public boolean shouldRenderAtSqrDistance(double distance) {
         double d0 = 16.0D;
         d0 = d0 * 64.0D * getViewScale();
