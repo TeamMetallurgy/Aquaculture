@@ -144,7 +144,7 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
     mainFile.addJavaVersion('Java 21')
     mainFile.releaseType = 'release'
     mainFile.addModLoader('NeoForge')
-    mainFile.addGameVersion('Server', 'Client')
+    mainFile.addGameVersion(parseVersionRange(minecraft_version_range).quoted)
 }
 
 modrinth {
@@ -157,8 +157,18 @@ modrinth {
     versionName = "Aquaculture 2-${minecraft_version}-${mod_version}"
     versionType = "release"
     loaders = ["neoforge"]
-    gameVersions = ["${minecraft_version}"]
+    gameVersions = parseVersionRange(minecraft_version_range).list
     uploadFile = jar
+}
+
+def parseVersionRange(String range) {
+    def cleaned = range.trim().substring(1, range.length() - 1)
+    def (minVer, maxVer) = cleaned.split(',')
+
+    return [
+        list:   [minVer, maxVer],           // For Modrinth
+        quoted: "'${minVer}', '${maxVer}'"  // For CurseForge
+    ]
 }
 
 artifacts {
