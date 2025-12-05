@@ -17,8 +17,10 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.SlotItemHandler;
+import net.neoforged.neoforge.transfer.IndexModifier;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
+import net.neoforged.neoforge.transfer.item.ResourceHandlerSlot;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -38,16 +40,18 @@ public class TackleBoxContainer extends AbstractContainerMenu {
         this.tackleBox = (TackleBoxBlockEntity) player.level().getBlockEntity(pos);
         if (this.tackleBox != null) {
             this.tackleBox.startOpen(player);
-            IItemHandler tackleBoxCapability = player.level().getCapability(Capabilities.ItemHandler.BLOCK, pos, null);
+            ItemStacksResourceHandler tackleBoxCapability = (ItemStacksResourceHandler) player.level().getCapability(Capabilities.Item.BLOCK, pos, null);
+            IndexModifier<ItemResource> slotModifier = tackleBoxCapability::set ; //TODO Test
+
             if (tackleBoxCapability != null) {
-                SlotFishingRod fishingRodSlot = (SlotFishingRod) addSlot(new SlotFishingRod(tackleBoxCapability, 0, 117, 21));
-                this.slotHook = this.addSlot(new SlotHidable(fishingRodSlot, 0, 106, 44) {
+                SlotFishingRod fishingRodSlot = (SlotFishingRod) addSlot(new SlotFishingRod(tackleBoxCapability, slotModifier, 0, 117, 21));
+                this.slotHook = this.addSlot(new SlotHidable(fishingRodSlot, slotModifier, 0, 106, 44) {
                     @Override
                     public boolean mayPlace(@Nonnull ItemStack stack) {
                         return stack.getItem() instanceof HookItem && super.mayPlace(stack);
                     }
                 });
-                this.slotBait = this.addSlot(new SlotHidable(fishingRodSlot, 1, 129, 44) {
+                this.slotBait = this.addSlot(new SlotHidable(fishingRodSlot, slotModifier, 1, 129, 44) {
                     @Override
                     public boolean mayPlace(@Nonnull ItemStack stack) {
                         return stack.getItem() instanceof IBaitItem && super.mayPlace(stack);
@@ -58,13 +62,13 @@ public class TackleBoxContainer extends AbstractContainerMenu {
                         return false;
                     }
                 });
-                this.slotLine = this.addSlot(new SlotHidable(fishingRodSlot, 2, 106, 67) {
+                this.slotLine = this.addSlot(new SlotHidable(fishingRodSlot, slotModifier , 2, 106, 67) {
                     @Override
                     public boolean mayPlace(@Nonnull ItemStack stack) {
                         return stack.is(AquacultureAPI.Tags.FISHING_LINE) && super.mayPlace(stack);
                     }
                 });
-                this.slotBobber = this.addSlot(new SlotHidable(fishingRodSlot, 3, 129, 67) {
+                this.slotBobber = this.addSlot(new SlotHidable(fishingRodSlot, slotModifier, 3, 129, 67) {
                     @Override
                     public boolean mayPlace(@Nonnull ItemStack stack) {
                         return stack.is(AquacultureAPI.Tags.BOBBER) && super.mayPlace(stack);
@@ -75,7 +79,7 @@ public class TackleBoxContainer extends AbstractContainerMenu {
             //Tackle Box
             for (int column = 0; column < collumns; ++column) {
                 for (int row = 0; row < rows; ++row) {
-                    this.addSlot(new SlotItemHandler(tackleBoxCapability, 1 + row + column * collumns, 8 + row * 18, 8 + column * 18) {
+                    this.addSlot(new ResourceHandlerSlot(tackleBoxCapability, slotModifier, 1 + row + column * collumns, 8 + row * 18, 8 + column * 18) {
                         @Override
                         public boolean mayPlace(@Nonnull ItemStack stack) {
                             return TackleBoxBlockEntity.canBePutInTackleBox(stack);
@@ -137,7 +141,7 @@ public class TackleBoxContainer extends AbstractContainerMenu {
         if (slotId >= 0 && clickType == ClickType.PICKUP) {
             Slot slot = this.slots.get(slotId);
             if (slot == this.slotBait) {
-                SlotItemHandler slotHandler = (SlotItemHandler) slot;
+                ResourceHandlerSlot slotHandler = (ResourceHandlerSlot) slot;
                 ItemStack mouseStack = player.containerMenu.getCarried();
                 if (slotHandler.mayPlace(mouseStack)) {
                     if (slot.getItem().isDamaged() || slot.getItem().isEmpty() || slot.getItem().getItem() != mouseStack.getItem()) {

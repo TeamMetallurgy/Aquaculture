@@ -30,7 +30,7 @@ public class AquaTooltip {
                 ResourceLocation id = BuiltInRegistries.ITEM.getKey(item);
                 if (id != null) {
                     String itemIdentifier = id.getPath() + ".tooltip";
-                    if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT)) {
+                    if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT)) {
                         event.getToolTip().add(Component.translatable(Aquaculture.MOD_ID + "." + itemIdentifier + ".desc").withStyle(ChatFormatting.AQUA));
                     } else {
                         event.getToolTip().add(Component.translatable(Aquaculture.MOD_ID + "." + itemIdentifier + ".title").withStyle(ChatFormatting.AQUA)

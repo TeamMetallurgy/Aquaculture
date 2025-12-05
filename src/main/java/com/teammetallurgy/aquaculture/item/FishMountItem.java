@@ -3,15 +3,14 @@ package com.teammetallurgy.aquaculture.item;
 import com.teammetallurgy.aquaculture.entity.FishMountEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.HangingEntityItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
@@ -38,14 +37,12 @@ public class FishMountItem extends HangingEntityItem {
             Level level = context.getLevel();
             FishMountEntity fishMountEntity = new FishMountEntity(this.fishMount.get(), level, offset, direction);
 
-            CustomData customData = useStack.getOrDefault(DataComponents.ENTITY_DATA, CustomData.EMPTY);
-            if (!customData.isEmpty()) {
-                EntityType.updateCustomEntityTag(level, player, fishMountEntity, customData);
-            }
+            EntityType.<FishMountEntity>createDefaultStackConfig(level, useStack, player).accept(fishMountEntity);
 
             if (fishMountEntity.survives()) {
-                if (!level.isClientSide) {
+                if (!level.isClientSide()) {
                     fishMountEntity.playPlacementSound();
+                    level.gameEvent(player, GameEvent.ENTITY_PLACE, fishMountEntity.position());
                     level.addFreshEntity(fishMountEntity);
                 }
                 useStack.shrink(1);

@@ -39,8 +39,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -91,7 +91,7 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
     @Override
     @Nonnull
     public InteractionResult useWithoutItem(@Nonnull BlockState state, Level level, @Nonnull BlockPos pos, @Nonnull Player player, @Nonnull BlockHitResult blockHitResult) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         } else {
             MenuProvider container = this.getMenuProvider(state, level, pos);
@@ -152,10 +152,10 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
     }
 
     @Override
-    public int getAnalogOutputSignal(@Nonnull BlockState state, Level level, @Nonnull BlockPos pos) {
-        IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, pos, null);
+    public int getAnalogOutputSignal(@Nonnull BlockState state, Level level, @Nonnull BlockPos pos, Direction direction) {
+        ItemStacksResourceHandler handler = (ItemStacksResourceHandler) level.getCapability(Capabilities.Item.BLOCK, pos, null);
         if (handler != null) {
-            return ItemHandlerHelper.calcRedstoneFromInventory(handler);
+            return ResourceHandlerUtil.getRedstoneSignalFromResourceHandler(handler);
         }
         return 0;
     }
@@ -217,8 +217,8 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
 
     @Override
     public void onBlockExploded(@Nonnull BlockState state, ServerLevel level, @Nonnull BlockPos pos, @Nonnull Explosion explosion) {
-        if (!level.isClientSide) {
-            IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, pos, null);
+        if (!level.isClientSide()) {
+            ItemStacksResourceHandler handler = (ItemStacksResourceHandler) level.getCapability(Capabilities.Item.BLOCK, pos, null);
             if (handler != null) {
                 StackHelper.dropInventory(level, pos, handler);
             }
@@ -229,7 +229,7 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, @Nonnull BlockState state, @Nonnull BlockEntityType<T> blockEntityType) {
-        return level.isClientSide ? createTickerHelper(blockEntityType, AquaBlockEntities.TACKLE_BOX.get(), TackleBoxBlockEntity::lidAnimateTick) : null;
+        return level.isClientSide() ? createTickerHelper(blockEntityType, AquaBlockEntities.TACKLE_BOX.get(), TackleBoxBlockEntity::lidAnimateTick) : null;
     }
 
     @Override

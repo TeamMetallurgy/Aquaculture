@@ -9,14 +9,15 @@ import com.teammetallurgy.aquaculture.entity.FishMountEntity;
 import com.teammetallurgy.aquaculture.entity.FishType;
 import com.teammetallurgy.aquaculture.init.AquaDataComponents;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.feature.FeatureRenderDispatcher;
 import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.ModelManager;
@@ -38,16 +39,14 @@ import java.text.DecimalFormat;
 
 public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer<T, FishMountRenderState> {
     private final Minecraft mc = Minecraft.getInstance();
-    private final ItemModelResolver itemModelResolver;
 
     public FishMountRenderer(EntityRendererProvider.Context context) {
         super(context);
-        this.itemModelResolver = context.getItemModelResolver();
     }
 
     @Override
-    public void render(@Nonnull FishMountRenderState renderState, @Nonnull PoseStack poseStack, @Nonnull MultiBufferSource buffer, int i) {
-        super.render(renderState, poseStack, buffer, i);
+    public void submit(@Nonnull FishMountRenderState renderState, @Nonnull PoseStack poseStack, @Nonnull SubmitNodeCollector nodeCollector, @Nonnull CameraRenderState cameraRenderState) {
+        super.submit(renderState, poseStack, nodeCollector, cameraRenderState);
         poseStack.pushPose();
         Direction direction = renderState.direction;
         Vec3 pos = this.getRenderOffset(renderState);
@@ -75,16 +74,26 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
             if (entityTypeID != null) {
                 BlockStateModel model = manager.getStandaloneModel(getStandaloneKeyFromType(entityTypeID.getPath()));
                 if (model != null) {
-                    ModelBlockRenderer.renderModel(poseStack.last(), buffer.getBuffer(RenderType.entitySolidZOffsetForward(TextureAtlas.LOCATION_BLOCKS)), model, 1.0F, 1.0F, 1.0F, i, OverlayTexture.NO_OVERLAY);
+                    nodeCollector.submitBlockModel(
+                            poseStack,
+                            RenderType.entitySolidZOffsetForward(TextureAtlas.LOCATION_BLOCKS),
+                            model,
+                            1.0F,
+                            1.0F,
+                            1.0F,
+                            renderState.lightCoords,
+                            OverlayTexture.NO_OVERLAY,
+                            renderState.outlineColor
+                    );
                 }
             }
             poseStack.popPose();
         }
-        this.renderFish(renderState, poseStack, buffer, i);
+        this.renderFish(renderState, poseStack, nodeCollector, cameraRenderState);
         poseStack.popPose();
     }
 
-    private void renderFish(FishMountRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int i) {
+    private void renderFish(@Nonnull FishMountRenderState renderState, @Nonnull PoseStack poseStack, @Nonnull SubmitNodeCollector nodeCollector, @Nonnull CameraRenderState cameraRenderState) {
         Entity entity = renderState.mountedFish;
         if (entity instanceof Mob fish) {
             double x = 0.0D;
@@ -100,7 +109,9 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
             poseStack.translate(x, y, depth);
             poseStack.mulPose(Axis.XP.rotationDegrees(-90.0F));
             poseStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
-            this.mc.getEntityRenderDispatcher().render(fish, 0.0D, 0.0D, 0.0D, 0.0F, poseStack, buffer, i);
+            if (renderState.fishRenderState != null) {
+                this.entityRenderDispatcher.submit(renderState.fishRenderState, cameraRenderState, 0.0D, 0.0D, 0.0F, poseStack, nodeCollector);
+            }
         }
     }
 
@@ -122,8 +133,20 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
     }
 
     @Override
-    protected void renderNameTag(@Nonnull FishMountRenderState renderState, @Nonnull Component name, @Nonnull PoseStack matrixStack, @Nonnull MultiBufferSource buffer, int i) {
-        super.renderNameTag(renderState, renderState.mountedFish.getName(), matrixStack, buffer, i);
+    protected void submitNameTag(@Nonnull FishMountRenderState renderState, @Nonnull PoseStack poseStack, @Nonnull SubmitNodeCollector nodeCollector, @Nonnull CameraRenderState cameraRenderState) {
+        //Render Fish Name
+        if (renderState.mountedFish != null) {
+            nodeCollector.submitNameTag(
+                    poseStack,
+                    renderState.nameTagAttachment,
+                    0,
+                    renderState.mountedFish.getName(),
+                    !renderState.isDiscrete,
+                    renderState.lightCoords,
+                    renderState.distanceToCameraSq,
+                    cameraRenderState
+            );
+        }
 
         ItemStack stack = renderState.stack;
         Float fishWeight = stack.get(AquaDataComponents.FISH_WEIGHT.get());
@@ -135,14 +158,32 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
             BigDecimal bd = new BigDecimal(weight);
             bd = bd.round(new MathContext(3));
 
-            matrixStack.pushPose();
-            matrixStack.translate(0.0D, -0.25D, 0.0D); //Adjust weight label height
+            poseStack.pushPose();
+            poseStack.translate(0.0D, -0.25D, 0.0D); //Adjust weight label height
             if (bd.doubleValue() > 999) {
-                super.renderNameTag(renderState, Component.translatable("aquaculture.fishWeight.weight", df.format((int) bd.doubleValue()) + lb), matrixStack, buffer, i - 100);
+                nodeCollector.submitNameTag(
+                        poseStack,
+                        renderState.nameTagAttachment,
+                        0,
+                        Component.translatable("aquaculture.fishWeight.weight", df.format((int) bd.doubleValue()) + lb),
+                        !renderState.isDiscrete,
+                        renderState.lightCoords,
+                        renderState.distanceToCameraSq,
+                        cameraRenderState
+                );
             } else {
-                super.renderNameTag(renderState, Component.translatable("aquaculture.fishWeight.weight", bd + lb), matrixStack, buffer, i);
+                nodeCollector.submitNameTag(
+                        poseStack,
+                        renderState.nameTagAttachment,
+                        0,
+                        Component.translatable("aquaculture.fishWeight.weight", bd + lb),
+                        !renderState.isDiscrete,
+                        renderState.lightCoords,
+                        renderState.distanceToCameraSq,
+                        cameraRenderState
+                );
             }
-            matrixStack.popPose();
+            poseStack.popPose();
         }
     }
 
@@ -156,12 +197,15 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
     public void extractRenderState(@Nonnull T entity, @Nonnull FishMountRenderState renderState, float partialTicks) {
         super.extractRenderState(entity, renderState, partialTicks);
         renderState.direction = entity.getDirection();
-        ItemStack itemstack = entity.getItem();
-        renderState.stack = itemstack;
-        this.itemModelResolver.updateForNonLiving(renderState.item, itemstack, ItemDisplayContext.FIXED, entity);
+        renderState.stack = entity.getItem();
         renderState.byName = entity.byName();
         renderState.mountedFish = entity.entity;
+        if (entity.level() != null && renderState.mountedFish != null) {
+            renderState.fishRenderState = this.entityRenderDispatcher.extractEntity(renderState.mountedFish, 0.0F);
+            renderState.fishRenderState.lightCoords = renderState.lightCoords;
+        }
     }
+
 
     public StandaloneModelKey<BlockStateModel> getStandaloneKeyFromType(String mountType) {
         return switch (mountType) {

@@ -9,10 +9,11 @@ import com.teammetallurgy.aquaculture.client.renderer.entity.state.AquaFishRende
 import com.teammetallurgy.aquaculture.entity.AquaFishEntity;
 import com.teammetallurgy.aquaculture.entity.FishType;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
@@ -52,7 +53,7 @@ public class AquaFishRenderer extends MobRenderer<AquaFishEntity, AquaFishRender
     }
 
     @Override
-    public void render(@Nonnull AquaFishRenderState renderState, @Nonnull PoseStack matrixStack, @Nonnull MultiBufferSource buffer, int i) {
+    public void submit(@Nonnull AquaFishRenderState renderState, @Nonnull PoseStack poseStack, @Nonnull SubmitNodeCollector nodeCollector, @Nonnull CameraRenderState cameraRenderState) {
         switch (renderState.fishType) {
             case SMALL -> this.model = smallModel;
             case LARGE -> this.model = largeModel;
@@ -62,7 +63,7 @@ public class AquaFishRenderer extends MobRenderer<AquaFishEntity, AquaFishRender
             case HALIBUT -> this.model = tropicalFishBModel;
             default -> this.model = mediumModel;
         }
-        super.render(renderState, matrixStack, buffer, i);
+        super.submit(renderState, poseStack, nodeCollector, cameraRenderState);
     }
 
     @Override

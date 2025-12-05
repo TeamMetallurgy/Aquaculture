@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -21,9 +22,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.ChestLidController;
 import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -46,7 +46,7 @@ public class TackleBoxBlockEntity extends IItemHandlerBEBase implements MenuProv
         }
 
         @Override
-        protected boolean isOwnContainer(Player player) {
+        public boolean isOwnContainer(Player player) {
             return player.containerMenu instanceof TackleBoxContainer;
         }
     };
@@ -58,19 +58,19 @@ public class TackleBoxBlockEntity extends IItemHandlerBEBase implements MenuProv
 
     @Override
     @Nonnull
-    protected IItemHandler createItemHandler() {
-        return new ItemStackHandler(17) {
+    protected ItemStacksResourceHandler createItemHandler() { //TODO
+        return new ItemStacksResourceHandler(17) {
             @Override
-            protected void onContentsChanged(int slot) {
-                super.onContentsChanged(slot);
+            protected void onContentsChanged(int index, @Nonnull ItemStack previousContents) {
+                super.onContentsChanged(index, previousContents);
                 TackleBoxBlockEntity.this.setChanged();
             }
 
             @Override
-            public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-                Item item = stack.getItem();
+            public boolean isValid(int slot, @Nonnull ItemResource resource) {
+                ItemStack stack = resource.toStack();
                 if (slot == 0) {
-                 return item instanceof AquaFishingRodItem;
+                 return stack.getItem() instanceof AquaFishingRodItem;
                 } else {
                     return canBePutInTackleBox(stack);
                 }
@@ -116,16 +116,15 @@ public class TackleBoxBlockEntity extends IItemHandlerBEBase implements MenuProv
         }
     }
 
-    public void startOpen(Player player) {
-        if (!this.remove && !player.isSpectator()) {
-            this.openersCounter.incrementOpeners(player, this.getLevel(), this.getBlockPos(), this.getBlockState());
+    public void startOpen(ContainerUser user) {
+        if (!this.remove && !user.getLivingEntity().isSpectator()) {
+            this.openersCounter.incrementOpeners(user.getLivingEntity(), this.getLevel(), this.getBlockPos(), this.getBlockState(), user.getContainerInteractionRange());
         }
-
     }
 
-    public void stopOpen(Player player) {
-        if (!this.remove && !player.isSpectator()) {
-            this.openersCounter.decrementOpeners(player, this.getLevel(), this.getBlockPos(), this.getBlockState());
+    public void stopOpen(ContainerUser user) {
+        if (!this.remove && !user.getLivingEntity().isSpectator()) {
+            this.openersCounter.decrementOpeners(user.getLivingEntity(), this.getLevel(), this.getBlockPos(), this.getBlockState());
         }
     }
 

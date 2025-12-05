@@ -5,23 +5,20 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.SlotItemHandler;
+import net.neoforged.neoforge.transfer.IndexModifier;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
+import net.neoforged.neoforge.transfer.item.ResourceHandlerSlot;
 
 import javax.annotation.Nonnull;
 
-public class SlotHidable extends SlotItemHandler {
+public class SlotHidable extends ResourceHandlerSlot { //TODO Test
     private final SlotFishingRod fishingRod;
 
-    public SlotHidable(SlotFishingRod fishingRod, int index, int xPosition, int yPosition) {
-        super(fishingRod.rodHandler, index, xPosition, yPosition);
+    public SlotHidable(SlotFishingRod fishingRod, IndexModifier<ItemResource> slotModifier, int index, int xPosition, int yPosition) {
+        super(fishingRod.rodHandler, slotModifier, index, xPosition, yPosition);
         this.fishingRod = fishingRod;
-    }
-
-    @Override
-    @Nonnull
-    public IItemHandler getItemHandler() {
-        return this.fishingRod.rodHandler;
+        this.saveChanges(); //Todo Test if calling this here works. Was setChanged before, but is final now
     }
 
     @Override
@@ -39,14 +36,14 @@ public class SlotHidable extends SlotItemHandler {
         return this.fishingRod.hasItem();
     }
 
-    @Override
-    public void setChanged() { //Save changes to the rod
+    public void saveChanges() { //Save changes to the rod
         ItemStack stack = this.fishingRod.getItem();
         if (!stack.isEmpty()) {
 
             NonNullList<ItemStack> list = NonNullList.create();
-            for (int slot = 0; slot < getItemHandler().getSlots(); slot++) {
-                list.add(getItemHandler().getStackInSlot(slot));
+            ItemStacksResourceHandler stacksResourceHandler = (ItemStacksResourceHandler) this.getResourceHandler();
+            for (int slot = 0; slot < stacksResourceHandler.size(); slot++) {
+                list.add(stacksResourceHandler.getResource(slot).toStack());
             }
 
             stack.set(AquaDataComponents.ROD_INVENTORY, ItemContainerContents.fromItems(list));

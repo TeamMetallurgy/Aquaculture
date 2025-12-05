@@ -49,7 +49,7 @@ public class WormFarmBlock extends ComposterBlock {
         ItemStack heldStack = player.getItemInHand(hand);
 
         if (heldStack.getItemHolder().getData(NeoForgeDataMaps.COMPOSTABLES) != null) {
-            if (stateLevel < 8 && !level.isClientSide) {
+            if (stateLevel < 8 && !level.isClientSide()) {
                 boolean addItem = WormFarmBlock.addItem(state, level, pos, heldStack);
                 level.levelEvent(1500, pos, addItem ? 1 : 0);
                 if (!player.getAbilities().instabuild) {
@@ -58,7 +58,7 @@ public class WormFarmBlock extends ComposterBlock {
             }
             return InteractionResult .SUCCESS;
         } else if (stateLevel > 0) {
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 double x = (double) (level.random.nextFloat() * 0.7F) + 0.15000000596046448D;
                 double y = (double) (level.random.nextFloat() * 0.7F) + 0.06000000238418579D + 0.6D;
                 double z = (double) (level.random.nextFloat() * 0.7F) + 0.15000000596046448D;

@@ -35,7 +35,7 @@ public class AquaFishBucket extends MobBucketItem {
     @Nonnull
     public InteractionResult use(Level world, Player player, @Nonnull InteractionHand hand) {
         ItemStack heldStack = player.getItemInHand(hand);
-        if (world.isClientSide) {
+        if (world.isClientSide()) {
             return InteractionResult.PASS;
         } else {
             BlockHitResult raytrace = getPlayerPOVHitResult(world, player, ClipContext.Fluid.SOURCE_ONLY);

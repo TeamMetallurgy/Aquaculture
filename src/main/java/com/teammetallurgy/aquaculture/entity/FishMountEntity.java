@@ -89,8 +89,9 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
         if (!this.level().noCollision(this)) {
             return false;
         } else {
-            BlockState state = this.level().getBlockState(this.pos.relative(this.getDirection().getOpposite()));
-            return (state.isSolid() || this.getDirection().getAxis().isHorizontal() && DiodeBlock.isDiode(state)) && this.level().getEntities(this, this.getBoundingBox(), HANGING_ENTITY).isEmpty();        }
+            BlockState blockstate = this.level().getBlockState(this.pos.relative(this.getDirection().getOpposite()));
+            return blockstate.isSolid() || this.getDirection().getAxis().isHorizontal() && DiodeBlock.isDiode(blockstate) ? this.canCoexist(true) : false;
+        }
     }
 
     @Override
@@ -254,7 +255,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     @Nonnull
     public InteractionResult interact(Player player, @Nonnull InteractionHand hand) {
         ItemStack heldStack = player.getItemInHand(hand);
-        if (!this.level().isClientSide) {
+        if (!this.level().isClientSide()) {
             if (this.getItem().isEmpty()) {
                 Item heldItem = heldStack.getItem();
                 EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.getValue(BuiltInRegistries.ITEM.getKey(heldItem));

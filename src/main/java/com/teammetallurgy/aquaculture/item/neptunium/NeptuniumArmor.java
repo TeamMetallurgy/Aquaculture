@@ -57,7 +57,7 @@ public class NeptuniumArmor extends Item {
     public static void onLivingTick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
 
-        if (!player.level().isClientSide) {
+        if (!player.level().isClientSide()) {
             AttributeInstance swimSpeed = player.getAttribute(NeoForgeMod.SWIM_SPEED);
             if (swimSpeed != null) {
                 if (player.isInWater() && player.getItemBySlot(EquipmentSlot.FEET).getItem() == AquaItems.NEPTUNIUM_BOOTS.get()) {

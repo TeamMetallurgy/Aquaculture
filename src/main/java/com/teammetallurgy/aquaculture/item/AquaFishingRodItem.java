@@ -17,7 +17,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.*;
@@ -30,7 +29,9 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 
 import javax.annotation.Nonnull;
 import java.util.function.Consumer;
@@ -65,7 +66,7 @@ public class AquaFishingRodItem extends FishingRodItem {
             return InteractionResult.FAIL;
         Hook hook = getHookType(heldStack);
         if (player.fishing != null) {
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 int retrieve = player.fishing.retrieve(heldStack);
                 int currentDamage = this.getMaxDamage(heldStack) - damage;
                 if (retrieve >= currentDamage) {
@@ -74,10 +75,10 @@ public class AquaFishingRodItem extends FishingRodItem {
                 if (!isAdminRod) {
                     if (hook != Hooks.EMPTY && hook.getDurabilityChance() > 0) {
                         if (level.random.nextDouble() >= hook.getDurabilityChance()) {
-                            heldStack.hurtAndBreak(retrieve, player, LivingEntity.getSlotForHand(hand));
+                            heldStack.hurtAndBreak(retrieve, player, hand);
                         }
                     } else {
-                        heldStack.hurtAndBreak(retrieve, player, LivingEntity.getSlotForHand(hand));
+                        heldStack.hurtAndBreak(retrieve, player, hand);
                     }
                 }
             }
@@ -118,7 +119,7 @@ public class AquaFishingRodItem extends FishingRodItem {
     @Nonnull
     public static Hook getHookType(@Nonnull ItemStack fishingRod) {
         Hook hook = Hooks.EMPTY;
-        ItemStack hookStack = getHandler(fishingRod).getStackInSlot(0);
+        ItemStack hookStack = getHandler(fishingRod).getResource(0).toStack();
         if (hookStack.getItem() instanceof HookItem) {
             hook = ((HookItem) hookStack.getItem()).getHookType();
         }
@@ -127,28 +128,28 @@ public class AquaFishingRodItem extends FishingRodItem {
 
     @Nonnull
     public static ItemStack getBait(@Nonnull ItemStack fishingRod) {
-        return getHandler(fishingRod).getStackInSlot(1);
+        return getHandler(fishingRod).getResource(1).toStack();
     }
 
     @Nonnull
     public static ItemStack getFishingLine(@Nonnull ItemStack fishingRod) {
-        return getHandler(fishingRod).getStackInSlot(2);
+        return getHandler(fishingRod).getResource(2).toStack();
     }
 
     @Nonnull
     public static ItemStack getBobber(@Nonnull ItemStack fishingRod) {
-        return getHandler(fishingRod).getStackInSlot(3);
+        return getHandler(fishingRod).getResource(3).toStack();
     }
 
-    public static ItemStackHandler getHandler(@Nonnull ItemStack fishingRod) {
-        ItemStackHandler rodHandler = (ItemStackHandler) fishingRod.getCapability(Capabilities.ItemHandler.ITEM);
+    public static ItemStacksResourceHandler getHandler(@Nonnull ItemStack fishingRod) {
+        ItemStacksResourceHandler rodHandler = (ItemStacksResourceHandler) fishingRod.getCapability(Capabilities.Item.ITEM, ItemAccess.forStack(fishingRod)); //TODO Test, probably wrong
         if (rodHandler == null) {
             rodHandler = FishingRodEquipmentHandler.EMPTY;
         } else {
             ItemContainerContents rodInventory = fishingRod.get(AquaDataComponents.ROD_INVENTORY);
             if (!fishingRod.isEmpty() && rodInventory != null && fishingRod.has(AquaDataComponents.ROD_INVENTORY)) {
                 for (int slot = 0; slot < rodInventory.getSlots(); slot++) {
-                    rodHandler.setStackInSlot(slot, rodInventory.getStackInSlot(slot)); //Reload
+                    rodHandler.set(slot, ItemResource.of(rodInventory.getStackInSlot(slot)), 1); //Reload
                 }
             }
         }
@@ -169,22 +170,23 @@ public class AquaFishingRodItem extends FishingRodItem {
         }
     }
 
-    public static class FishingRodEquipmentHandler extends ItemStackHandler {
+    public static class FishingRodEquipmentHandler extends ItemStacksResourceHandler {
         public static final FishingRodEquipmentHandler EMPTY = new FishingRodEquipmentHandler(ItemStack.EMPTY);
-        private final ItemStack stack;
+        private final ItemStack rodStack;
 
-        public FishingRodEquipmentHandler(ItemStack stack) {
+        public FishingRodEquipmentHandler(ItemStack rodStack) {
             super(4);
-            this.stack = stack;
+            this.rodStack = rodStack;
         }
 
         @Override
-        public int getSlotLimit(int slot) {
+        public int getCapacity(int slot, @Nonnull ItemResource resource) {
             return 1;
         }
 
         @Override
-        public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+        public boolean isValid(int slot, @Nonnull ItemResource resource) {
+            ItemStack stack = resource.toStack();
             return switch (slot) {
                 case 0 -> stack.getItem() instanceof HookItem;
                 case 1 -> stack.getItem() instanceof IBaitItem;
@@ -195,15 +197,14 @@ public class AquaFishingRodItem extends FishingRodItem {
         }
 
         @Override
-        protected void onContentsChanged(int slot) {
-            ItemContainerContents rodInventory = stack.get(AquaDataComponents.ROD_INVENTORY);
-            if (!stack.isEmpty() && rodInventory != null && stack.has(AquaDataComponents.ROD_INVENTORY)) {
+        protected void onContentsChanged(int index, @Nonnull ItemStack previousContents) { //TODO Test
+            ItemContainerContents rodInventory = rodStack.get(AquaDataComponents.ROD_INVENTORY);
+            if (!rodStack.isEmpty() && rodInventory != null && rodStack.has(AquaDataComponents.ROD_INVENTORY)) {
                 NonNullList<ItemStack> list = NonNullList.create();
-                for (int i = 0; i < getSlots(); i++) {
-                    list.add(getStackInSlot(i));
+                for (int i = 0; i < rodInventory.getSlots(); i++) {
+                    list.add(rodInventory.getStackInSlot(i));
                 }
-
-                stack.set(AquaDataComponents.ROD_INVENTORY, ItemContainerContents.fromItems(list));
+                rodStack.set(AquaDataComponents.ROD_INVENTORY, ItemContainerContents.fromItems(list));
             }
         }
     }

@@ -5,6 +5,7 @@ import com.teammetallurgy.aquaculture.block.blockentity.NeptunesBountyBlockEntit
 import com.teammetallurgy.aquaculture.init.AquaBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelReader;
@@ -28,7 +29,7 @@ public class NeptunesBountyBlock extends ChestBlock {
     public static final MapCodec<NeptunesBountyBlock> CODEC = simpleCodec((p) -> new NeptunesBountyBlock(AquaBlockEntities.NEPTUNES_BOUNTY::get, p));
 
     public NeptunesBountyBlock(Supplier<BlockEntityType<? extends ChestBlockEntity>> block, BlockBehaviour.Properties properties) {
-        super(block, properties.mapColor(MapColor.METAL).strength(3.5F, 8.0F).sound(SoundType.METAL));
+        super(block, SoundEvents.CHEST_OPEN, SoundEvents.CHEST_CLOSE, properties.mapColor(MapColor.METAL).strength(3.5F, 8.0F).sound(SoundType.METAL));
     }
 
     @Override

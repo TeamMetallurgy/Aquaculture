@@ -6,8 +6,8 @@ import com.teammetallurgy.aquaculture.client.model.NeptunesBountyModel;
 import com.teammetallurgy.aquaculture.client.model.TackleBoxModel;
 import com.teammetallurgy.aquaculture.client.renderer.blockentity.NeptunesBountyRenderer;
 import com.teammetallurgy.aquaculture.client.renderer.blockentity.TackleBoxRenderer;
-import com.teammetallurgy.aquaculture.client.renderer.entity.AquaBobberRenderer;
 import com.teammetallurgy.aquaculture.client.renderer.entity.AquaFishRenderer;
+import com.teammetallurgy.aquaculture.client.renderer.entity.AquaFishingHookRenderer;
 import com.teammetallurgy.aquaculture.client.renderer.entity.FishMountRenderer;
 import com.teammetallurgy.aquaculture.client.renderer.entity.TurtleLandRenderer;
 import com.teammetallurgy.aquaculture.client.renderer.entity.model.*;
@@ -83,7 +83,7 @@ public class ClientHandler {
 
     @SubscribeEvent
     public static void registerEntityRenders(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(AquaEntities.BOBBER.get(), AquaBobberRenderer::new);
+        event.registerEntityRenderer(AquaEntities.BOBBER.get(), AquaFishingHookRenderer::new);
         for (DeferredHolder<EntityType<?>, EntityType<AquaFishEntity>> fish : FishRegistry.fishEntities) {
             event.registerEntityRenderer(fish.get(), AquaFishRenderer::new);
         }

@@ -9,14 +9,13 @@ import net.minecraft.world.item.ItemStack;
 
 public class FishMountRenderState extends EntityRenderState {
     public Direction direction;
-    public final ItemStackRenderState item;
     public ItemStack stack;
     public ResourceLocation byName;
     public Entity mountedFish;
+    public EntityRenderState fishRenderState;
 
     public FishMountRenderState() {
         this.direction = Direction.NORTH;
         this.stack = ItemStack.EMPTY;
-        this.item = new ItemStackRenderState();
     }
 }

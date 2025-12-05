@@ -9,7 +9,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 
-public class TackleBoxModel extends Model {
+public class TackleBoxModel extends Model<Float> {
     private final ModelPart base;
     private final ModelPart lid;
 
