@@ -1,12 +1,12 @@
 package com.teammetallurgy.aquaculture.item.neptunium;
 
-import com.teammetallurgy.aquaculture.Aquaculture;
-import com.teammetallurgy.aquaculture.init.AquaItems;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
@@ -16,14 +16,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;
 
-@Mod.EventBusSubscriber(modid = Aquaculture.MOD_ID)
 public class NeptuniumArmor extends ArmorItem {
     private static final AttributeModifier INCREASED_SWIM_SPEED = new AttributeModifier(UUID.fromString("d820cadc-2d19-421c-b19f-4c1f5b84a418"), "Neptunium Boots swim speed boost", 0.5D, AttributeModifier.Operation.ADDITION);
     private String texture;
@@ -47,26 +43,12 @@ public class NeptuniumArmor extends ArmorItem {
         }
     }
 
-    @SubscribeEvent
-    public static void onLivingTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            Player player = event.player;
-
-            if (!player.level().isClientSide) {
-                AttributeInstance swimSpeed = player.getAttribute(ForgeMod.SWIM_SPEED.get());
-                if (swimSpeed != null) {
-                    if (player.isInWater() && player.getItemBySlot(EquipmentSlot.FEET).getItem() == AquaItems.NEPTUNIUM_BOOTS.get()) {
-                        if (!swimSpeed.hasModifier(INCREASED_SWIM_SPEED)) {
-                            swimSpeed.addPermanentModifier(INCREASED_SWIM_SPEED);
-                        }
-                    } else {
-                        if (swimSpeed.hasModifier(INCREASED_SWIM_SPEED)) {
-                            swimSpeed.removeModifier(INCREASED_SWIM_SPEED);
-                        }
-                    }
-                }
-            }
-        }
+    @Override
+    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
+        ImmutableMultimap.Builder<Attribute, AttributeModifier> attributeBuilder = ImmutableMultimap.builder();
+        attributeBuilder.putAll(super.getDefaultAttributeModifiers(slot));
+        attributeBuilder.put(ForgeMod.SWIM_SPEED.get(), INCREASED_SWIM_SPEED);
+        return slot == EquipmentSlot.FEET ? attributeBuilder.build() : super.getDefaultAttributeModifiers(slot);
     }
 
     public Item setArmorTexture(String string) {
