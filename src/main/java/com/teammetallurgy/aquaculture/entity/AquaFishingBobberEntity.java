@@ -187,6 +187,7 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityAddit
                             if (bait.getItem().canBeDepleted()) {
                                 if (bait.hurt(1, level.random, null)) {
                                     bait.shrink(1);
+                                    bait.setDamageValue(0);
                                     this.playSound(AquaSounds.BOBBER_BAIT_BREAK.get(), 0.7F, 0.2F);
                                 }
                             } else {
