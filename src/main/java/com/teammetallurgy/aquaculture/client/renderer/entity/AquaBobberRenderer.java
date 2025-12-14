@@ -118,8 +118,8 @@ public class AquaBobberRenderer extends EntityRenderer<AquaFishingBobberEntity> 
                     }
                 }
             }
-            for (int size = 0; size < 16; ++size) {
-                stringVertex(x, y, z, vertexConsumer, pose, fraction(size, 15), fraction(size + 1, 16), r, g, b);
+            for (int size = 0; size <= 16; ++size) {
+                stringVertex(x, y, z, vertexConsumer, pose, fraction(size, 16), fraction(size + 1, 16), r, g, b);
             }
             poseStack.popPose();
             super.render(bobber, entityYaw, partialTicks, poseStack, buffer, i);
