@@ -30,7 +30,6 @@ public class SlotFishingRod extends ResourceHandlerSlot {
         ItemStack stack = this.getItem();
         System.out.println("FISHING ROD SLOT HAS DATA COMPONENT?: " + stack.has(DataComponents.CONTAINER));
 
-
         if (this.rodHandler == null) {
             this.rodHandler = new AquaFishingRodItem.FishingRodEquipmentHandler(stack);
             System.out.println("RodHandler null");

@@ -4,21 +4,19 @@ import com.teammetallurgy.aquaculture.item.AquaFishingRodItem;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
-import net.neoforged.neoforge.transfer.IndexModifier;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.item.ResourceHandlerSlot;
 
 import javax.annotation.Nonnull;
 
-public class SlotHidable extends ResourceHandlerSlot {
+public class SlotHidable extends Slot {
     private final SlotFishingRod fishingRodSlot;
 
-    public SlotHidable(IndexModifier<ItemResource> slotModifier, SlotFishingRod fishingRodSlot, int index, int xPosition, int yPosition) {
-        super(fishingRodSlot.getResourceHandler(), slotModifier, index, xPosition, yPosition);
+    public SlotHidable(SlotFishingRod fishingRodSlot, int index, int xPosition, int yPosition) {
+        super(fishingRodSlot.rodHandler, index, xPosition, yPosition);
         this.fishingRodSlot = fishingRodSlot;
-        this.onChange();
+        this.setChanged();
     }
 
     @Override
@@ -36,14 +34,16 @@ public class SlotHidable extends ResourceHandlerSlot {
         return this.fishingRodSlot.hasItem();
     }
 
-    public void onChange() {
+    @Override
+    public void setChanged() {
         super.setChanged();
         ItemStack fishingRod = this.fishingRodSlot.getItem();
-        AquaFishingRodItem.FishingRodEquipmentHandler handler = this.fishingRodSlot.rodHandler;
         if (!fishingRod.isEmpty()) {
+            System.out.println("Not empty");
             NonNullList<ItemStack> list = NonNullList.create();
-            for (int slot = 0; slot < handler.getContainerSize(); slot++) {
-                list.add(handler.getItem(slot));
+            for (int slot = 0; slot < this.container.getContainerSize(); slot++) {
+                System.out.println("Add item to list: " + this.container.getItem(slot));
+                list.add(this.container.getItem(slot));
             }
             System.out.println("SlotHideble - saveChanges - stack.set to: " + list + " for: " + fishingRod.getItem().getDescriptionId());
             System.out.println("SlotHideable - fishing rod has data component: " + fishingRod.has(DataComponents.CONTAINER));
