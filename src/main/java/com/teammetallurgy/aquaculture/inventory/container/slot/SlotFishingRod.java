@@ -26,22 +26,18 @@ public class SlotFishingRod extends ResourceHandlerSlot {
 
     public void onChange() {
         super.setChanged();
-
         ItemStack stack = this.getItem();
-        System.out.println("FISHING ROD SLOT HAS DATA COMPONENT?: " + stack.has(DataComponents.CONTAINER));
 
-        if (this.rodHandler == null) {
-            this.rodHandler = new AquaFishingRodItem.FishingRodEquipmentHandler(stack);
-            System.out.println("RodHandler null");
-        } else {
-            ItemContainerContents rodInventory = stack.get(DataComponents.CONTAINER);
-            if (!stack.isEmpty() && rodInventory!= null && stack.has(DataComponents.CONTAINER)) {
-                for (int slot = 0; slot < rodInventory.getSlots(); slot++) {
-                    ItemStack slotStack = rodInventory.getStackInSlot(slot);
-                    System.out.println("RODHANDLER SET");
-                    this.rodHandler.setItem(slot, slotStack);
-                }
+        this.rodHandler = new AquaFishingRodItem.FishingRodEquipmentHandler(stack);
+        System.out.println("RodHandler null");
+        ItemContainerContents rodInventory = stack.get(DataComponents.CONTAINER);
+        if (!stack.isEmpty() && rodInventory != null && stack.has(DataComponents.CONTAINER)) {
+            for (int slot = 0; slot < rodInventory.getSlots(); slot++) {
+                ItemStack slotStack = rodInventory.getStackInSlot(slot);
+                System.out.println("RODHANDLER SET");
+                this.rodHandler.setItem(slot, slotStack);
             }
         }
+        stack.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(this.rodHandler.getItems()));
     }
 }

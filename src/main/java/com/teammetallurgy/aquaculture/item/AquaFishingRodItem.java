@@ -144,7 +144,17 @@ public class AquaFishingRodItem extends FishingRodItem {
     }
 
     public static ItemContainerContents getHandler(@Nonnull ItemStack fishingRod) {
-        return fishingRod.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY);
+        FishingRodEquipmentHandler rodHandler = new FishingRodEquipmentHandler(fishingRod); //Clearly not working...
+
+        ItemContainerContents rodInventory = fishingRod.get(DataComponents.CONTAINER);
+        if (!fishingRod.isEmpty() && rodInventory != null && fishingRod.has(DataComponents.CONTAINER)) {
+            for (int slot = 0; slot < rodInventory.getSlots(); slot++) {
+                ItemStack slotStack = rodInventory.getStackInSlot(slot);
+                rodHandler.setItem(slot, slotStack); //reload
+            }
+        }
+
+        return fishingRod.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.fromItems(rodHandler.getItems()));
     }
 
     @Override
