@@ -72,7 +72,7 @@ public class ClientHandler {
 
     @SubscribeEvent
     public static void registerSpecialModelRenderers(RegisterSpecialModelRendererEvent event) {
-        event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "neptunes"), NeptunesBountySpecialRenderer.Unbaked.MAP_CODEC);
+        event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "neptunes_bounty"), NeptunesBountySpecialRenderer.Unbaked.MAP_CODEC);
         event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "tackle_box"), TackleBoxSpecialRenderer.Unbaked.MAP_CODEC);
     }
 

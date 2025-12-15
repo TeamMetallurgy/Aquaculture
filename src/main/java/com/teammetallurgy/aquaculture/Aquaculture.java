@@ -4,7 +4,6 @@ import com.teammetallurgy.aquaculture.api.AquacultureAPI;
 import com.teammetallurgy.aquaculture.api.fishing.Hooks;
 import com.teammetallurgy.aquaculture.client.ClientHandler;
 import com.teammetallurgy.aquaculture.init.*;
-import com.teammetallurgy.aquaculture.item.AquaFishingRodItem;
 import com.teammetallurgy.aquaculture.item.crafting.ConditionFactory;
 import com.teammetallurgy.aquaculture.loot.AquaBiomeModifiers;
 import com.teammetallurgy.aquaculture.loot.FishWeightHandler;
@@ -87,6 +86,5 @@ public class Aquaculture {
 
     public void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(Capabilities.Item.BLOCK, AquaBlockEntities.TACKLE_BOX.get(), (blockEntity, side) -> blockEntity.handler);
-        event.registerItem(Capabilities.Item.ITEM, (stack, context) -> new AquaFishingRodItem.FishingRodEquipmentHandler(stack), AquaItems.IRON_FISHING_ROD.get(), AquaItems.GOLD_FISHING_ROD.get(), AquaItems.DIAMOND_FISHING_ROD.get(), AquaItems.NEPTUNIUM_FISHING_ROD.get());
     }
 }

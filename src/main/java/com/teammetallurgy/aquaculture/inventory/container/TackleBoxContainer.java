@@ -41,34 +41,35 @@ public class TackleBoxContainer extends AbstractContainerMenu {
         if (this.tackleBox != null) {
             this.tackleBox.startOpen(player);
             ItemStacksResourceHandler tackleBoxCapability = (ItemStacksResourceHandler) player.level().getCapability(Capabilities.Item.BLOCK, pos, null);
-            IndexModifier<ItemResource> slotModifier = tackleBoxCapability::set ; //TODO Test
+            IndexModifier<ItemResource> slotModifier = tackleBoxCapability::set; //TODO Test
 
             if (tackleBoxCapability != null) {
+                System.out.println("TackleBoxContainer - tackleBoxCapability not null");
                 SlotFishingRod fishingRodSlot = (SlotFishingRod) addSlot(new SlotFishingRod(tackleBoxCapability, slotModifier, 0, 117, 21));
-                this.slotHook = this.addSlot(new SlotHidable(fishingRodSlot, slotModifier, 0, 106, 44) {
+                this.slotHook = this.addSlot(new SlotHidable(slotModifier, fishingRodSlot, 0, 106, 44) {
                     @Override
                     public boolean mayPlace(@Nonnull ItemStack stack) {
                         return stack.getItem() instanceof HookItem && super.mayPlace(stack);
                     }
                 });
-                this.slotBait = this.addSlot(new SlotHidable(fishingRodSlot, slotModifier, 1, 129, 44) {
+                this.slotBait = this.addSlot(new SlotHidable(slotModifier, fishingRodSlot, 1, 129, 44) {
                     @Override
                     public boolean mayPlace(@Nonnull ItemStack stack) {
                         return stack.getItem() instanceof IBaitItem && super.mayPlace(stack);
                     }
 
                     @Override
-                    public boolean mayPickup(Player player) {
+                    public boolean mayPickup(@Nonnull Player player) {
                         return false;
                     }
                 });
-                this.slotLine = this.addSlot(new SlotHidable(fishingRodSlot, slotModifier , 2, 106, 67) {
+                this.slotLine = this.addSlot(new SlotHidable(slotModifier, fishingRodSlot, 2, 106, 67) {
                     @Override
                     public boolean mayPlace(@Nonnull ItemStack stack) {
                         return stack.is(AquacultureAPI.Tags.FISHING_LINE) && super.mayPlace(stack);
                     }
                 });
-                this.slotBobber = this.addSlot(new SlotHidable(fishingRodSlot, slotModifier, 3, 129, 67) {
+                this.slotBobber = this.addSlot(new SlotHidable(slotModifier, fishingRodSlot, 3, 129, 67) {
                     @Override
                     public boolean mayPlace(@Nonnull ItemStack stack) {
                         return stack.is(AquacultureAPI.Tags.BOBBER) && super.mayPlace(stack);

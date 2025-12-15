@@ -40,7 +40,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
-import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemAccessItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -153,7 +153,7 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
 
     @Override
     public int getAnalogOutputSignal(@Nonnull BlockState state, Level level, @Nonnull BlockPos pos, Direction direction) {
-        ItemStacksResourceHandler handler = (ItemStacksResourceHandler) level.getCapability(Capabilities.Item.BLOCK, pos, null);
+        ItemAccessItemHandler handler = (ItemAccessItemHandler) level.getCapability(Capabilities.Item.BLOCK, pos, null);
         if (handler != null) {
             return ResourceHandlerUtil.getRedstoneSignalFromResourceHandler(handler);
         }
@@ -194,7 +194,7 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
     }
 
     @Override
-    public boolean onDestroyedByPlayer(@Nonnull BlockState state, Level level, @Nonnull BlockPos pos, @Nonnull Player player, boolean willHarvest, @Nonnull FluidState fluid) {
+    public boolean onDestroyedByPlayer(@Nonnull BlockState state, Level level, @Nonnull BlockPos pos, @Nonnull Player player, @Nonnull ItemStack toolStack, boolean willHarvest, @Nonnull FluidState fluid) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
 
         if (blockEntity instanceof TackleBoxBlockEntity) {
@@ -202,7 +202,7 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
             StackHelper.saveToItem(tackleBox, player.level().registryAccess(), blockEntity);
             Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), tackleBox);
         }
-        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+        return super.onDestroyedByPlayer(state, level, pos, player, toolStack, willHarvest, fluid);
     }
 
     @Override
@@ -218,7 +218,7 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
     @Override
     public void onBlockExploded(@Nonnull BlockState state, ServerLevel level, @Nonnull BlockPos pos, @Nonnull Explosion explosion) {
         if (!level.isClientSide()) {
-            ItemStacksResourceHandler handler = (ItemStacksResourceHandler) level.getCapability(Capabilities.Item.BLOCK, pos, null);
+            ItemAccessItemHandler handler = (ItemAccessItemHandler) level.getCapability(Capabilities.Item.BLOCK, pos, null);
             if (handler != null) {
                 StackHelper.dropInventory(level, pos, handler);
             }

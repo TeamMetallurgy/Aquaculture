@@ -3,7 +3,7 @@
     "type": "minecraft:special",
     "base": "aquaculture:item/neptunes_bounty",
     "model": {
-      "type": "aquaculture:neptunes",
+      "type": "aquaculture:neptunes_bounty",
       "texture": "aquaculture:neptunes_bounty"
     }
   }

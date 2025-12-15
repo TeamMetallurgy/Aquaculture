@@ -1,7 +1,6 @@
 package com.teammetallurgy.aquaculture.client.renderer.entity.state;
 
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;

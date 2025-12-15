@@ -12,6 +12,7 @@ import com.teammetallurgy.aquaculture.item.HookItem;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -24,6 +25,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.MoverType;
@@ -33,6 +35,7 @@ import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
@@ -45,8 +48,9 @@ import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.neoforged.neoforge.event.entity.player.ItemFishedEvent;
+import net.neoforged.neoforge.transfer.item.ItemAccessItemHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
@@ -160,8 +164,7 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
 
                     //Bait
                     if (!angler.isCreative()) {
-                        ItemStacksResourceHandler rodHandler = AquaFishingRodItem.getHandler(this.fishingRod);
-                        ItemStack bait = rodHandler.getResource(1).toStack();
+                        ItemStack bait = AquaFishingRodItem.getHandler(this.fishingRod).getStackInSlot(1);
                         if (!bait.isEmpty()) {
                             if (bait.isDamageableItem()) {
                                 bait.hurtAndBreak(1, serverLevel, null, item -> {
@@ -171,7 +174,7 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
                             } else {
                                 bait.shrink(1);
                             }
-                            rodHandler.set(1, ItemResource.of(bait), bait.getCount());
+                            this.fishingRod.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(List.of(bait))); //TODO test, not sure it sets it correctly, as no slot is set. Maybe stack.update is the way to go? Documentation is vague.
                         }
                     }
                     rodDamage = 1;

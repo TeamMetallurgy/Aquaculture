@@ -30,6 +30,7 @@ public class NeptunesBountyModel extends Model<Float> {
     }
 
     public void setupAnim(float openness) {
+        super.setupAnim(openness);
         this.lid.xRot = -(openness * (float) (Math.PI / 2));
     }
 }

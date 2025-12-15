@@ -118,7 +118,10 @@ public class AquaFishingHookRenderer extends EntityRenderer<AquaFishingBobberEnt
                 }
             }
             for (int size = 0; size < 16; ++size) {
-                stringVertex(x, y, z, vertexConsumer, pose, (float) size / 14.9F, (float) (size + 1) / 14.9F, r, g, b);
+                float sizeFraction = fraction(size, 16);
+                float sizeFraction1 = fraction(size + 1, 16);
+                stringVertex(x, y, z, vertexConsumer, pose, sizeFraction, sizeFraction1, r, g, b);
+                stringVertex(x, y, z, vertexConsumer, pose, sizeFraction1, sizeFraction, r, g, b);
             }
         });
         poseStack.popPose();

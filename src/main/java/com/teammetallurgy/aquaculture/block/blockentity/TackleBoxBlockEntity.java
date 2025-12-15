@@ -21,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.ChestLidController;
 import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
+import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
@@ -28,7 +29,7 @@ import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TackleBoxBlockEntity extends IItemHandlerBEBase implements MenuProvider {
+public class TackleBoxBlockEntity extends IItemHandlerBEBase implements MenuProvider, LidBlockEntity {
     private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
         @Override
         protected void onOpen(@Nonnull Level level, @Nonnull BlockPos pos, @Nonnull BlockState state) {
@@ -58,7 +59,7 @@ public class TackleBoxBlockEntity extends IItemHandlerBEBase implements MenuProv
 
     @Override
     @Nonnull
-    protected ItemStacksResourceHandler createItemHandler() { //TODO
+    protected ItemStacksResourceHandler createItemHandler() {
         return new ItemStacksResourceHandler(17) {
             @Override
             protected void onContentsChanged(int index, @Nonnull ItemStack previousContents) {
