@@ -44,7 +44,6 @@ public class TackleBoxContainer extends AbstractContainerMenu {
             IndexModifier<ItemResource> slotModifier = tackleBoxCapability::set; //TODO Test
 
             if (tackleBoxCapability != null) {
-                System.out.println("TackleBoxContainer - tackleBoxCapability not null");
                 SlotFishingRod fishingRodSlot = (SlotFishingRod) addSlot(new SlotFishingRod(tackleBoxCapability, slotModifier, 0, 117, 21));
                 this.slotHook = this.addSlot(new SlotHidable(fishingRodSlot, 0, 106, 44) {
                     @Override
@@ -142,11 +141,10 @@ public class TackleBoxContainer extends AbstractContainerMenu {
         if (slotId >= 0 && clickType == ClickType.PICKUP) {
             Slot slot = this.slots.get(slotId);
             if (slot == this.slotBait) {
-                ResourceHandlerSlot slotHandler = (ResourceHandlerSlot) slot;
                 ItemStack mouseStack = player.containerMenu.getCarried();
-                if (slotHandler.mayPlace(mouseStack)) {
+                if (slot.mayPlace(mouseStack)) {
                     if (slot.getItem().isDamaged() || slot.getItem().isEmpty() || slot.getItem().getItem() != mouseStack.getItem()) {
-                        slotHandler.set(ItemStack.EMPTY); //Set to empty, to allow new bait to get put in
+                        slot.set(ItemStack.EMPTY); //Set to empty, to allow new bait to get put in
                     }
                 }
             }

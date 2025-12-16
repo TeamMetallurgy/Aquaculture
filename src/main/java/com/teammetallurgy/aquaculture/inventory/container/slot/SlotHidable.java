@@ -1,6 +1,5 @@
 package com.teammetallurgy.aquaculture.inventory.container.slot;
 
-import com.teammetallurgy.aquaculture.item.AquaFishingRodItem;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.player.Player;
@@ -35,7 +34,17 @@ public class SlotHidable extends Slot {
     }
 
     @Override
-    public void setChanged() {
+    public int getMaxStackSize() {
+        return 1;
+    }
+
+    @Override
+    public boolean isSameInventory( @Nonnull Slot other) {
+        return other instanceof SlotHidable hideable && hideable.fishingRodSlot.rodHandler == this.fishingRodSlot.rodHandler;
+    }
+
+    @Override
+    public void setChanged() { //Old Update code
         super.setChanged();
         ItemStack fishingRod = this.fishingRodSlot.getItem();
         if (!fishingRod.isEmpty()) {

@@ -160,17 +160,20 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
 
                     //Bait
                     if (!angler.isCreative()) {
-                        ItemStack bait = AquaFishingRodItem.getHandler(this.fishingRod).getStackInSlot(1);
-                        if (!bait.isEmpty()) {
-                            if (bait.isDamageableItem()) {
-                                bait.hurtAndBreak(1, serverLevel, null, item -> {
+                        ItemContainerContents handler = AquaFishingRodItem.getHandler(this.fishingRod);
+                        if (handler != ItemContainerContents.EMPTY) {
+                            ItemStack bait = handler.getStackInSlot(1);
+                            if (!bait.isEmpty()) {
+                                if (bait.isDamageableItem()) {
+                                    bait.hurtAndBreak(1, serverLevel, null, item -> {
+                                        bait.shrink(1);
+                                        this.playSound(AquaSounds.BOBBER_BAIT_BREAK.get(), 0.7F, 0.2F);
+                                    });
+                                } else {
                                     bait.shrink(1);
-                                    this.playSound(AquaSounds.BOBBER_BAIT_BREAK.get(), 0.7F, 0.2F);
-                                });
-                            } else {
-                                bait.shrink(1);
+                                }
+                                this.fishingRod.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(List.of(bait))); //TODO test, not sure it sets it correctly, as no slot is set. Maybe stack.update is the way to go? Documentation is vague.
                             }
-                            this.fishingRod.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(List.of(bait))); //TODO test, not sure it sets it correctly, as no slot is set. Maybe stack.update is the way to go? Documentation is vague.
                         }
                     }
                     rodDamage = 1;

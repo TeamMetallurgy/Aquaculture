@@ -16,7 +16,16 @@ public class SlotFishingRod extends ResourceHandlerSlot {
 
     public SlotFishingRod(ResourceHandler<ItemResource> itemHandler, IndexModifier<ItemResource> slotModifier, int index, int xPosition, int yPosition) {
         super(itemHandler, slotModifier, index, xPosition, yPosition);
-        this.onChange();
+
+        ItemContainerContents contents = this.getItem().get(DataComponents.CONTAINER);
+
+        if (contents == null) {
+            System.out.println("SlotFishingRod, contents is EMPTY");
+            this.rodHandler = AquaFishingRodItem.FishingRodEquipmentHandler.EMPTY;
+        } else {
+            System.out.println("SlotFishingRod, contents is: " + contents.nonEmptyItems());
+            this.rodHandler = new AquaFishingRodItem.FishingRodEquipmentHandler(this.getStackCopy());
+        }
     }
 
     @Override
@@ -24,20 +33,16 @@ public class SlotFishingRod extends ResourceHandlerSlot {
         return stack.getItem() instanceof AquaFishingRodItem;
     }
 
-    public void onChange() {
-        super.setChanged();
-        ItemStack stack = this.getItem();
+    @Override
+    @Nonnull
+    protected ItemStack getStackCopy() {
+        return super.getStackCopy();
+    }
 
-        this.rodHandler = new AquaFishingRodItem.FishingRodEquipmentHandler(stack);
-        System.out.println("RodHandler null");
-        ItemContainerContents rodInventory = stack.get(DataComponents.CONTAINER);
-        if (!stack.isEmpty() && rodInventory != null && stack.has(DataComponents.CONTAINER)) {
-            for (int slot = 0; slot < rodInventory.getSlots(); slot++) {
-                ItemStack slotStack = rodInventory.getStackInSlot(slot);
-                System.out.println("RODHANDLER SET");
-                this.rodHandler.setItem(slot, slotStack);
-            }
-        }
-        stack.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(this.rodHandler.getItems()));
+    @Override
+    protected void setStackCopy(@Nonnull ItemStack stack) {
+        super.setStackCopy(stack);
+
+        this.getStackCopy().set(DataComponents.CONTAINER, ItemContainerContents.fromItems(this.rodHandler.getItems()));
     }
 }

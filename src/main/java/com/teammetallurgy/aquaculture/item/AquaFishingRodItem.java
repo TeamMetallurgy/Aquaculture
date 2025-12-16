@@ -36,7 +36,7 @@ public class AquaFishingRodItem extends FishingRodItem {
     private final ToolMaterial toolMaterial;
 
     public AquaFishingRodItem(ToolMaterial toolMaterial, Properties properties) {
-        super(properties.enchantable(toolMaterial == ToolMaterial.WOOD ? 10 : toolMaterial.enchantmentValue()).repairable(toolMaterial.repairItems()));
+        super(properties.enchantable(toolMaterial == ToolMaterial.WOOD ? 10 : toolMaterial.enchantmentValue()).repairable(toolMaterial.repairItems()).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY));
         this.toolMaterial = toolMaterial;
     }
 
@@ -116,8 +116,8 @@ public class AquaFishingRodItem extends FishingRodItem {
     public static Hook getHookType(@Nonnull ItemStack fishingRod) {
         Hook hook = Hooks.EMPTY;
         ItemContainerContents handler = getHandler(fishingRod);
-        if (!handler.copyOne().isEmpty()) {
-            ItemStack hookStack = getHandler(fishingRod).getStackInSlot(0);
+        if (handler != ItemContainerContents.EMPTY) {
+            ItemStack hookStack = handler.getStackInSlot(0);
             if (hookStack.getItem() instanceof HookItem) {
                 hook = ((HookItem) hookStack.getItem()).getHookType();
             }
@@ -128,33 +128,23 @@ public class AquaFishingRodItem extends FishingRodItem {
     @Nonnull
     public static ItemStack getBait(@Nonnull ItemStack fishingRod) {
         ItemContainerContents handler = getHandler(fishingRod);
-        return !handler.copyOne().isEmpty() ? getHandler(fishingRod).getStackInSlot(1) : ItemStack.EMPTY;
+        return handler != ItemContainerContents.EMPTY ? handler.getStackInSlot(1) : ItemStack.EMPTY;
     }
 
     @Nonnull
     public static ItemStack getFishingLine(@Nonnull ItemStack fishingRod) {
         ItemContainerContents handler = getHandler(fishingRod);
-        return !handler.copyOne().isEmpty() ?  getHandler(fishingRod).getStackInSlot(2)  : ItemStack.EMPTY;
+        return handler != ItemContainerContents.EMPTY ? handler.getStackInSlot(2) : ItemStack.EMPTY;
     }
 
     @Nonnull
     public static ItemStack getBobber(@Nonnull ItemStack fishingRod) {
         ItemContainerContents handler = getHandler(fishingRod);
-        return !handler.copyOne().isEmpty() ? getHandler(fishingRod).getStackInSlot(3)  : ItemStack.EMPTY;
+        return handler != ItemContainerContents.EMPTY ? handler.getStackInSlot(3) : ItemStack.EMPTY;
     }
 
     public static ItemContainerContents getHandler(@Nonnull ItemStack fishingRod) {
-        FishingRodEquipmentHandler rodHandler = new FishingRodEquipmentHandler(fishingRod); //Clearly not working...
-
-        ItemContainerContents rodInventory = fishingRod.get(DataComponents.CONTAINER);
-        if (!fishingRod.isEmpty() && rodInventory != null && fishingRod.has(DataComponents.CONTAINER)) {
-            for (int slot = 0; slot < rodInventory.getSlots(); slot++) {
-                ItemStack slotStack = rodInventory.getStackInSlot(slot);
-                rodHandler.setItem(slot, slotStack); //reload
-            }
-        }
-
-        return fishingRod.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.fromItems(rodHandler.getItems()));
+        return fishingRod.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY);
     }
 
     @Override
