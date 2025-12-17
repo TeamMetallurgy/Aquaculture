@@ -9,6 +9,7 @@ import com.teammetallurgy.aquaculture.inventory.container.slot.SlotFishingRod;
 import com.teammetallurgy.aquaculture.inventory.container.slot.SlotHidable;
 import com.teammetallurgy.aquaculture.item.HookItem;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -16,6 +17,7 @@ import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.transfer.IndexModifier;
 import net.neoforged.neoforge.transfer.item.ItemResource;
@@ -41,17 +43,23 @@ public class TackleBoxContainer extends AbstractContainerMenu {
         if (this.tackleBox != null) {
             this.tackleBox.startOpen(player);
             ItemStacksResourceHandler tackleBoxCapability = (ItemStacksResourceHandler) player.level().getCapability(Capabilities.Item.BLOCK, pos, null);
-            IndexModifier<ItemResource> slotModifier = tackleBoxCapability::set; //TODO Test
+            IndexModifier<ItemResource> slotModifier = tackleBoxCapability::set;
 
             if (tackleBoxCapability != null) {
                 SlotFishingRod fishingRodSlot = (SlotFishingRod) addSlot(new SlotFishingRod(tackleBoxCapability, slotModifier, 0, 117, 21));
-                this.slotHook = this.addSlot(new SlotHidable(fishingRodSlot, 0, 106, 44) {
+
+                ItemStack fishingRod = fishingRodSlot.getRod();
+                System.out.println("Fishing Rod in container: " + fishingRod.getItem());
+                ItemContainerContents inventory = fishingRod.get(DataComponents.CONTAINER);
+                FishingRodContainerWrapper wrapper = new FishingRodContainerWrapper(inventory, 4, fishingRod, tackleBoxCapability);
+
+                this.slotHook = this.addSlot(new SlotHidable(fishingRodSlot, wrapper, 0, 106, 44) {
                     @Override
                     public boolean mayPlace(@Nonnull ItemStack stack) {
                         return stack.getItem() instanceof HookItem && super.mayPlace(stack);
                     }
                 });
-                this.slotBait = this.addSlot(new SlotHidable(fishingRodSlot, 1, 129, 44) {
+                this.slotBait = this.addSlot(new SlotHidable(fishingRodSlot, wrapper, 1, 129, 44) {
                     @Override
                     public boolean mayPlace(@Nonnull ItemStack stack) {
                         return stack.getItem() instanceof IBaitItem && super.mayPlace(stack);
@@ -62,13 +70,13 @@ public class TackleBoxContainer extends AbstractContainerMenu {
                         return false;
                     }
                 });
-                this.slotLine = this.addSlot(new SlotHidable(fishingRodSlot, 2, 106, 67) {
+                this.slotLine = this.addSlot(new SlotHidable(fishingRodSlot, wrapper, 2, 106, 67) {
                     @Override
                     public boolean mayPlace(@Nonnull ItemStack stack) {
                         return stack.is(AquacultureAPI.Tags.FISHING_LINE) && super.mayPlace(stack);
                     }
                 });
-                this.slotBobber = this.addSlot(new SlotHidable(fishingRodSlot, 3, 129, 67) {
+                this.slotBobber = this.addSlot(new SlotHidable(fishingRodSlot, wrapper, 3, 129, 67) {
                     @Override
                     public boolean mayPlace(@Nonnull ItemStack stack) {
                         return stack.is(AquacultureAPI.Tags.BOBBER) && super.mayPlace(stack);

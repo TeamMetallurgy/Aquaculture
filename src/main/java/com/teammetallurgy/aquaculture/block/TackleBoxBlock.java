@@ -41,6 +41,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
 import net.neoforged.neoforge.transfer.item.ItemAccessItemHandler;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -218,7 +219,7 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
     @Override
     public void onBlockExploded(@Nonnull BlockState state, ServerLevel level, @Nonnull BlockPos pos, @Nonnull Explosion explosion) {
         if (!level.isClientSide()) {
-            ItemAccessItemHandler handler = (ItemAccessItemHandler) level.getCapability(Capabilities.Item.BLOCK, pos, null);
+            ItemStacksResourceHandler handler = (ItemStacksResourceHandler) level.getCapability(Capabilities.Item.BLOCK, pos, null);
             if (handler != null) {
                 StackHelper.dropInventory(level, pos, handler);
             }

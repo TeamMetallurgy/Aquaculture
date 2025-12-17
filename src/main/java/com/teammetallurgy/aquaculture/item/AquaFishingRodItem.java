@@ -16,7 +16,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.*;
@@ -36,7 +35,7 @@ public class AquaFishingRodItem extends FishingRodItem {
     private final ToolMaterial toolMaterial;
 
     public AquaFishingRodItem(ToolMaterial toolMaterial, Properties properties) {
-        super(properties.enchantable(toolMaterial == ToolMaterial.WOOD ? 10 : toolMaterial.enchantmentValue()).repairable(toolMaterial.repairItems()).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY));
+        super(properties.enchantable(toolMaterial == ToolMaterial.WOOD ? 10 : toolMaterial.enchantmentValue()).repairable(toolMaterial.repairItems()));
         this.toolMaterial = toolMaterial;
     }
 
@@ -88,6 +87,7 @@ public class AquaFishingRodItem extends FishingRodItem {
                 int lureSpeed = (int) (EnchantmentHelper.getFishingTimeReduction(serverLevel, heldStack, player) * 20.0F);
                 if (this.toolMaterial == AquacultureAPI.MATS.NEPTUNIUM) lureSpeed += 100;
                 ItemStack bait = getBait(heldStack);
+                System.out.println("bait: " + bait);
                 if (!isAdminRod && !bait.isEmpty()) {
                     if (bait.getItem() instanceof IBaitItem baitItem) {
                         lureSpeed += baitItem.getLureSpeedModifier();
@@ -128,19 +128,20 @@ public class AquaFishingRodItem extends FishingRodItem {
     @Nonnull
     public static ItemStack getBait(@Nonnull ItemStack fishingRod) {
         ItemContainerContents handler = getHandler(fishingRod);
-        return handler != ItemContainerContents.EMPTY ? handler.getStackInSlot(1) : ItemStack.EMPTY;
+        System.out.println("SIZE: " + handler.getSlots());
+        return handler != ItemContainerContents.EMPTY && handler.getSlots() > 1 ? handler.getStackInSlot(1) : ItemStack.EMPTY;
     }
 
     @Nonnull
     public static ItemStack getFishingLine(@Nonnull ItemStack fishingRod) {
         ItemContainerContents handler = getHandler(fishingRod);
-        return handler != ItemContainerContents.EMPTY ? handler.getStackInSlot(2) : ItemStack.EMPTY;
+        return handler != ItemContainerContents.EMPTY & handler.getSlots() > 2 ? handler.getStackInSlot(2) : ItemStack.EMPTY;
     }
 
     @Nonnull
     public static ItemStack getBobber(@Nonnull ItemStack fishingRod) {
         ItemContainerContents handler = getHandler(fishingRod);
-        return handler != ItemContainerContents.EMPTY ? handler.getStackInSlot(3) : ItemStack.EMPTY;
+        return handler != ItemContainerContents.EMPTY && handler.getSlots() > 3 ? handler.getStackInSlot(3) : ItemStack.EMPTY;
     }
 
     public static ItemContainerContents getHandler(@Nonnull ItemStack fishingRod) {
@@ -158,41 +159,6 @@ public class AquaFishingRodItem extends FishingRodItem {
         if (hook != Hooks.EMPTY) {
             MutableComponent hookColor = Component.translatable(hook.getItem().getDescriptionId());
             tooltips.accept(hookColor.withStyle(hookColor.getStyle().withColor(hook.getColor())));
-        }
-    }
-
-    public static class FishingRodEquipmentHandler extends SimpleContainer {
-        public static final FishingRodEquipmentHandler EMPTY = new FishingRodEquipmentHandler(ItemStack.EMPTY);
-        private final ItemStack rodStack;
-
-        public FishingRodEquipmentHandler(ItemStack rodStack) {
-            super(4);
-            this.rodStack = rodStack;
-
-            ItemContainerContents contents = rodStack.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY);
-            contents.copyInto(this.getItems());
-        }
-
-        @Override
-        public int getMaxStackSize() {
-            return 1;
-        }
-
-        @Override
-        public boolean canPlaceItem(int slot, @Nonnull ItemStack stack) {
-            return switch (slot) {
-                case 0 -> stack.getItem() instanceof HookItem;
-                case 1 -> stack.getItem() instanceof IBaitItem;
-                case 2 -> stack.is(AquacultureAPI.Tags.FISHING_LINE);
-                case 3 -> stack.is(AquacultureAPI.Tags.BOBBER);
-                default -> false;
-            };
-        }
-
-        @Override
-        public void setChanged() {
-            super.setChanged();
-            this.rodStack.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(this.getItems()));
         }
     }
 }

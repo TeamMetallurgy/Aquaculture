@@ -1,6 +1,7 @@
 package com.teammetallurgy.aquaculture.entity;
 
 import com.teammetallurgy.aquaculture.Aquaculture;
+import com.teammetallurgy.aquaculture.api.bait.IBaitItem;
 import com.teammetallurgy.aquaculture.api.fishing.Hook;
 import com.teammetallurgy.aquaculture.api.fishing.Hooks;
 import com.teammetallurgy.aquaculture.init.AquaEntities;
@@ -49,6 +50,7 @@ import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.neoforged.neoforge.event.entity.player.ItemFishedEvent;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -160,19 +162,26 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
 
                     //Bait
                     if (!angler.isCreative()) {
-                        ItemContainerContents handler = AquaFishingRodItem.getHandler(this.fishingRod);
-                        if (handler != ItemContainerContents.EMPTY) {
-                            ItemStack bait = handler.getStackInSlot(1);
-                            if (!bait.isEmpty()) {
-                                if (bait.isDamageableItem()) {
-                                    bait.hurtAndBreak(1, serverLevel, null, item -> {
-                                        bait.shrink(1);
-                                        this.playSound(AquaSounds.BOBBER_BAIT_BREAK.get(), 0.7F, 0.2F);
-                                    });
-                                } else {
+                        ItemStack bait = AquaFishingRodItem.getBait(this.fishingRod);
+                        if (!bait.isEmpty()) {
+                            if (bait.isDamageableItem()) {
+                                bait.hurtAndBreak(1, serverLevel, null, item -> {
                                     bait.shrink(1);
+                                    this.playSound(AquaSounds.BOBBER_BAIT_BREAK.get(), 0.7F, 0.2F);
+                                });
+                            } else {
+                                bait.shrink(1);
+                            }
+                            ItemContainerContents container = this.fishingRod.get(DataComponents.CONTAINER);
+                            if (container != null) {
+                                List<ItemStack> inventory = new ArrayList<>(container.getSlots());
+
+                                for (int i = 0; i < container.getSlots(); i++) {
+                                    inventory.add(container.getStackInSlot(i));
                                 }
-                                this.fishingRod.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(List.of(bait))); //TODO test, not sure it sets it correctly, as no slot is set. Maybe stack.update is the way to go? Documentation is vague.
+                                inventory.set(1, bait); //Replace original bait with damaged bait in specifically slot 1, to keep order.
+
+                                this.fishingRod.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(inventory));
                             }
                         }
                     }

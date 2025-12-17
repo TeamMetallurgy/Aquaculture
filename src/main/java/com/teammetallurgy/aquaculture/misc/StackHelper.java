@@ -14,7 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.storage.TagValueOutput;
-import net.neoforged.neoforge.transfer.item.ItemAccessItemHandler;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemUtil;
 
 import javax.annotation.Nonnull;
 
@@ -31,9 +32,10 @@ public class StackHelper {
         }
     }
 
-    public static void dropInventory(Level world, BlockPos pos, ItemAccessItemHandler handler) {
-        for (int slot = 0; slot < handler.size(); ++slot) { //TODO Test
-            Containers.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), handler.getResource(slot).toStack());
+    public static void dropInventory(Level world, BlockPos pos, ItemStacksResourceHandler handler) {
+        for (int slot = 0; slot < handler.size(); ++slot) {
+            ItemStack slotStack = ItemUtil.getStack(handler, slot);
+            Containers.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), slotStack);
         }
     }
 
