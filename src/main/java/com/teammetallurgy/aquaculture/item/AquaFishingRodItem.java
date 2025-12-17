@@ -35,7 +35,7 @@ public class AquaFishingRodItem extends FishingRodItem {
     private final ToolMaterial toolMaterial;
 
     public AquaFishingRodItem(ToolMaterial toolMaterial, Properties properties) {
-        super(properties.enchantable(toolMaterial == ToolMaterial.WOOD ? 10 : toolMaterial.enchantmentValue()).repairable(toolMaterial.repairItems()));
+        super(properties.enchantable(toolMaterial == ToolMaterial.WOOD ? 10 : toolMaterial.enchantmentValue()).repairable(toolMaterial.repairItems()).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY));
         this.toolMaterial = toolMaterial;
     }
 
@@ -87,7 +87,6 @@ public class AquaFishingRodItem extends FishingRodItem {
                 int lureSpeed = (int) (EnchantmentHelper.getFishingTimeReduction(serverLevel, heldStack, player) * 20.0F);
                 if (this.toolMaterial == AquacultureAPI.MATS.NEPTUNIUM) lureSpeed += 100;
                 ItemStack bait = getBait(heldStack);
-                System.out.println("bait: " + bait);
                 if (!isAdminRod && !bait.isEmpty()) {
                     if (bait.getItem() instanceof IBaitItem baitItem) {
                         lureSpeed += baitItem.getLureSpeedModifier();
@@ -128,7 +127,6 @@ public class AquaFishingRodItem extends FishingRodItem {
     @Nonnull
     public static ItemStack getBait(@Nonnull ItemStack fishingRod) {
         ItemContainerContents handler = getHandler(fishingRod);
-        System.out.println("SIZE: " + handler.getSlots());
         return handler != ItemContainerContents.EMPTY && handler.getSlots() > 1 ? handler.getStackInSlot(1) : ItemStack.EMPTY;
     }
 

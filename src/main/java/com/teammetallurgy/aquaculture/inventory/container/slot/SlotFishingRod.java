@@ -2,7 +2,6 @@ package com.teammetallurgy.aquaculture.inventory.container.slot;
 
 import com.teammetallurgy.aquaculture.item.AquaFishingRodItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.neoforge.transfer.IndexModifier;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
@@ -19,7 +18,6 @@ public class SlotFishingRod extends ResourceHandlerSlot {
 
     @Override
     public boolean mayPlace(@Nonnull ItemStack stack) {
-        ItemContainerContents
         return stack.getItem() instanceof AquaFishingRodItem;
     }
 

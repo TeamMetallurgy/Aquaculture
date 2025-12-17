@@ -9,7 +9,6 @@ import com.teammetallurgy.aquaculture.inventory.container.slot.SlotFishingRod;
 import com.teammetallurgy.aquaculture.inventory.container.slot.SlotHidable;
 import com.teammetallurgy.aquaculture.item.HookItem;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -17,7 +16,6 @@ import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.transfer.IndexModifier;
 import net.neoforged.neoforge.transfer.item.ItemResource;
@@ -48,11 +46,7 @@ public class TackleBoxContainer extends AbstractContainerMenu {
             if (tackleBoxCapability != null) {
                 SlotFishingRod fishingRodSlot = (SlotFishingRod) addSlot(new SlotFishingRod(tackleBoxCapability, slotModifier, 0, 117, 21));
 
-                ItemStack fishingRod = fishingRodSlot.getRod();
-                System.out.println("Fishing Rod in container: " + fishingRod.getItem());
-                ItemContainerContents inventory = fishingRod.get(DataComponents.CONTAINER);
-                FishingRodContainerWrapper wrapper = new FishingRodContainerWrapper(inventory, 4, fishingRod, tackleBoxCapability);
-
+                FishingRodContainerWrapper wrapper = new FishingRodContainerWrapper(fishingRodSlot, 4, tackleBoxCapability);
                 this.slotHook = this.addSlot(new SlotHidable(fishingRodSlot, wrapper, 0, 106, 44) {
                     @Override
                     public boolean mayPlace(@Nonnull ItemStack stack) {
