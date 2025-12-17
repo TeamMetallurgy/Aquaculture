@@ -3,10 +3,7 @@ package com.teammetallurgy.aquaculture.entity;
 import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.api.fishing.Hook;
 import com.teammetallurgy.aquaculture.api.fishing.Hooks;
-import com.teammetallurgy.aquaculture.init.AquaEntities;
-import com.teammetallurgy.aquaculture.init.AquaItems;
-import com.teammetallurgy.aquaculture.init.AquaLootTables;
-import com.teammetallurgy.aquaculture.init.AquaSounds;
+import com.teammetallurgy.aquaculture.init.*;
 import com.teammetallurgy.aquaculture.item.AquaFishingRodItem;
 import com.teammetallurgy.aquaculture.item.HookItem;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
@@ -33,6 +30,7 @@ import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
@@ -45,9 +43,9 @@ import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.neoforged.neoforge.event.entity.player.ItemFishedEvent;
-import net.neoforged.neoforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -111,7 +109,7 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
         boolean isAdminRod = AquaConfig.BASIC_OPTIONS.debugMode.get() && stack.getItem() == AquaItems.NEPTUNIUM_FISHING_ROD.get();
         Player angler = this.getPlayerOwner();
         Level level = this.level();
-        if (!level.isClientSide && angler != null && !this.shouldStopFishing(angler)) {
+        if (!level.isClientSide() && angler != null && !this.shouldStopFishing(angler)) {
             int rodDamage = 0;
             ItemFishedEvent event = null;
             if (this.getHookedIn() != null && !isAdminRod) {
@@ -159,8 +157,7 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
 
                     //Bait
                     if (!angler.isCreative()) {
-                        ItemStackHandler rodHandler = AquaFishingRodItem.getHandler(this.fishingRod);
-                        ItemStack bait = rodHandler.getStackInSlot(1);
+                        ItemStack bait = AquaFishingRodItem.getBait(this.fishingRod);
                         if (!bait.isEmpty()) {
                             if (bait.isDamageableItem()) {
                                 bait.hurtAndBreak(1, serverLevel, null, item -> {
@@ -170,7 +167,17 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
                             } else {
                                 bait.shrink(1);
                             }
-                            rodHandler.setStackInSlot(1, bait);
+                            ItemContainerContents container = this.fishingRod.get(AquaDataComponents.ROD_INVENTORY);
+                            if (container != null) {
+                                List<ItemStack> inventory = new ArrayList<>(container.getSlots());
+
+                                for (int i = 0; i < container.getSlots(); i++) {
+                                    inventory.add(container.getStackInSlot(i));
+                                }
+                                inventory.set(1, bait); //Replace original bait with damaged bait in specifically slot 1, to keep order.
+
+                                this.fishingRod.set(AquaDataComponents.ROD_INVENTORY, ItemContainerContents.fromItems(inventory));
+                            }
                         }
                     }
                     rodDamage = 1;
@@ -270,7 +277,7 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
         Player angler = this.getPlayerOwner();
         if (angler == null) {
             this.discard();
-        } else if (this.level().isClientSide || !this.shouldStopFishing(angler)) {
+        } else if (this.level().isClientSide() || !this.shouldStopFishing(angler)) {
             if (this.onGround()) {
                 ++this.life;
                 if (this.life >= 1200) {
@@ -336,7 +343,7 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
                             this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.1D * (double) this.lavaTickRand.nextFloat() * (double) this.lavaTickRand.nextFloat(), 0.0D));
                         }
 
-                        if (!this.level().isClientSide) {
+                        if (!this.level().isClientSide()) {
                             this.catchingFish(bobberPos);
                         }
                     } else {

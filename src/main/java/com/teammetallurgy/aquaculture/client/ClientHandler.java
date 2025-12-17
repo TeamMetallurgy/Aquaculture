@@ -6,8 +6,8 @@ import com.teammetallurgy.aquaculture.client.model.NeptunesBountyModel;
 import com.teammetallurgy.aquaculture.client.model.TackleBoxModel;
 import com.teammetallurgy.aquaculture.client.renderer.blockentity.NeptunesBountyRenderer;
 import com.teammetallurgy.aquaculture.client.renderer.blockentity.TackleBoxRenderer;
-import com.teammetallurgy.aquaculture.client.renderer.entity.AquaBobberRenderer;
 import com.teammetallurgy.aquaculture.client.renderer.entity.AquaFishRenderer;
+import com.teammetallurgy.aquaculture.client.renderer.entity.AquaFishingHookRenderer;
 import com.teammetallurgy.aquaculture.client.renderer.entity.FishMountRenderer;
 import com.teammetallurgy.aquaculture.client.renderer.entity.TurtleLandRenderer;
 import com.teammetallurgy.aquaculture.client.renderer.entity.model.*;
@@ -23,7 +23,6 @@ import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.SpectralArrowRenderer;
 import net.minecraft.client.renderer.entity.TippableArrowRenderer;
-import net.minecraft.client.resources.model.ModelDebugName;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.api.distmarker.Dist;
@@ -73,7 +72,7 @@ public class ClientHandler {
 
     @SubscribeEvent
     public static void registerSpecialModelRenderers(RegisterSpecialModelRendererEvent event) {
-        event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "neptunes"), NeptunesBountySpecialRenderer.Unbaked.MAP_CODEC);
+        event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "neptunes_bounty"), NeptunesBountySpecialRenderer.Unbaked.MAP_CODEC);
         event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "tackle_box"), TackleBoxSpecialRenderer.Unbaked.MAP_CODEC);
     }
 
@@ -84,7 +83,7 @@ public class ClientHandler {
 
     @SubscribeEvent
     public static void registerEntityRenders(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(AquaEntities.BOBBER.get(), AquaBobberRenderer::new);
+        event.registerEntityRenderer(AquaEntities.BOBBER.get(), AquaFishingHookRenderer::new);
         for (DeferredHolder<EntityType<?>, EntityType<AquaFishEntity>> fish : FishRegistry.fishEntities) {
             event.registerEntityRenderer(fish.get(), AquaFishRenderer::new);
         }

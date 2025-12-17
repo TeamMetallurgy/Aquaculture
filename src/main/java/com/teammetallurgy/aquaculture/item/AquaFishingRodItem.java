@@ -8,7 +8,6 @@ import com.teammetallurgy.aquaculture.entity.AquaFishingBobberEntity;
 import com.teammetallurgy.aquaculture.init.AquaDataComponents;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -17,7 +16,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.*;
@@ -26,11 +24,9 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import java.util.function.Consumer;
@@ -39,7 +35,7 @@ public class AquaFishingRodItem extends FishingRodItem {
     private final ToolMaterial toolMaterial;
 
     public AquaFishingRodItem(ToolMaterial toolMaterial, Properties properties) {
-        super(properties.enchantable(toolMaterial == ToolMaterial.WOOD ? 10 : toolMaterial.enchantmentValue()).repairable(toolMaterial.repairItems()));
+        super(properties.enchantable(toolMaterial == ToolMaterial.WOOD ? 10 : toolMaterial.enchantmentValue()).repairable(toolMaterial.repairItems()).component(AquaDataComponents.ROD_INVENTORY, ItemContainerContents.EMPTY));
         this.toolMaterial = toolMaterial;
     }
 
@@ -65,7 +61,7 @@ public class AquaFishingRodItem extends FishingRodItem {
             return InteractionResult.FAIL;
         Hook hook = getHookType(heldStack);
         if (player.fishing != null) {
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 int retrieve = player.fishing.retrieve(heldStack);
                 int currentDamage = this.getMaxDamage(heldStack) - damage;
                 if (retrieve >= currentDamage) {
@@ -74,10 +70,10 @@ public class AquaFishingRodItem extends FishingRodItem {
                 if (!isAdminRod) {
                     if (hook != Hooks.EMPTY && hook.getDurabilityChance() > 0) {
                         if (level.random.nextDouble() >= hook.getDurabilityChance()) {
-                            heldStack.hurtAndBreak(retrieve, player, LivingEntity.getSlotForHand(hand));
+                            heldStack.hurtAndBreak(retrieve, player, hand);
                         }
                     } else {
-                        heldStack.hurtAndBreak(retrieve, player, LivingEntity.getSlotForHand(hand));
+                        heldStack.hurtAndBreak(retrieve, player, hand);
                     }
                 }
             }
@@ -118,41 +114,36 @@ public class AquaFishingRodItem extends FishingRodItem {
     @Nonnull
     public static Hook getHookType(@Nonnull ItemStack fishingRod) {
         Hook hook = Hooks.EMPTY;
-        ItemStack hookStack = getHandler(fishingRod).getStackInSlot(0);
-        if (hookStack.getItem() instanceof HookItem) {
-            hook = ((HookItem) hookStack.getItem()).getHookType();
+        ItemContainerContents handler = getHandler(fishingRod);
+        if (handler != ItemContainerContents.EMPTY) {
+            ItemStack hookStack = handler.getStackInSlot(0);
+            if (hookStack.getItem() instanceof HookItem) {
+                hook = ((HookItem) hookStack.getItem()).getHookType();
+            }
         }
         return hook;
     }
 
     @Nonnull
     public static ItemStack getBait(@Nonnull ItemStack fishingRod) {
-        return getHandler(fishingRod).getStackInSlot(1);
+        ItemContainerContents handler = getHandler(fishingRod);
+        return handler != ItemContainerContents.EMPTY && handler.getSlots() > 1 ? handler.getStackInSlot(1) : ItemStack.EMPTY;
     }
 
     @Nonnull
     public static ItemStack getFishingLine(@Nonnull ItemStack fishingRod) {
-        return getHandler(fishingRod).getStackInSlot(2);
+        ItemContainerContents handler = getHandler(fishingRod);
+        return handler != ItemContainerContents.EMPTY & handler.getSlots() > 2 ? handler.getStackInSlot(2) : ItemStack.EMPTY;
     }
 
     @Nonnull
     public static ItemStack getBobber(@Nonnull ItemStack fishingRod) {
-        return getHandler(fishingRod).getStackInSlot(3);
+        ItemContainerContents handler = getHandler(fishingRod);
+        return handler != ItemContainerContents.EMPTY && handler.getSlots() > 3 ? handler.getStackInSlot(3) : ItemStack.EMPTY;
     }
 
-    public static ItemStackHandler getHandler(@Nonnull ItemStack fishingRod) {
-        ItemStackHandler rodHandler = (ItemStackHandler) fishingRod.getCapability(Capabilities.ItemHandler.ITEM);
-        if (rodHandler == null) {
-            rodHandler = FishingRodEquipmentHandler.EMPTY;
-        } else {
-            ItemContainerContents rodInventory = fishingRod.get(AquaDataComponents.ROD_INVENTORY);
-            if (!fishingRod.isEmpty() && rodInventory != null && fishingRod.has(AquaDataComponents.ROD_INVENTORY)) {
-                for (int slot = 0; slot < rodInventory.getSlots(); slot++) {
-                    rodHandler.setStackInSlot(slot, rodInventory.getStackInSlot(slot)); //Reload
-                }
-            }
-        }
-        return rodHandler;
+    public static ItemContainerContents getHandler(@Nonnull ItemStack fishingRod) {
+        return fishingRod.getOrDefault(AquaDataComponents.ROD_INVENTORY, ItemContainerContents.EMPTY);
     }
 
     @Override
@@ -166,45 +157,6 @@ public class AquaFishingRodItem extends FishingRodItem {
         if (hook != Hooks.EMPTY) {
             MutableComponent hookColor = Component.translatable(hook.getItem().getDescriptionId());
             tooltips.accept(hookColor.withStyle(hookColor.getStyle().withColor(hook.getColor())));
-        }
-    }
-
-    public static class FishingRodEquipmentHandler extends ItemStackHandler {
-        public static final FishingRodEquipmentHandler EMPTY = new FishingRodEquipmentHandler(ItemStack.EMPTY);
-        private final ItemStack stack;
-
-        public FishingRodEquipmentHandler(ItemStack stack) {
-            super(4);
-            this.stack = stack;
-        }
-
-        @Override
-        public int getSlotLimit(int slot) {
-            return 1;
-        }
-
-        @Override
-        public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-            return switch (slot) {
-                case 0 -> stack.getItem() instanceof HookItem;
-                case 1 -> stack.getItem() instanceof IBaitItem;
-                case 2 -> stack.is(AquacultureAPI.Tags.FISHING_LINE);
-                case 3 -> stack.is(AquacultureAPI.Tags.BOBBER);
-                default -> false;
-            };
-        }
-
-        @Override
-        protected void onContentsChanged(int slot) {
-            ItemContainerContents rodInventory = stack.get(AquaDataComponents.ROD_INVENTORY);
-            if (!stack.isEmpty() && rodInventory != null && stack.has(AquaDataComponents.ROD_INVENTORY)) {
-                NonNullList<ItemStack> list = NonNullList.create();
-                for (int i = 0; i < getSlots(); i++) {
-                    list.add(getStackInSlot(i));
-                }
-
-                stack.set(AquaDataComponents.ROD_INVENTORY, ItemContainerContents.fromItems(list));
-            }
         }
     }
 }

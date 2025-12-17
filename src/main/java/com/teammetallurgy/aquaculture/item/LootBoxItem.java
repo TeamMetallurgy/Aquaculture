@@ -30,7 +30,7 @@ public class LootBoxItem extends Item {
     @Nonnull
     public InteractionResult use(Level world, Player player, @Nonnull InteractionHand hand) {
         ItemStack heldStack = player.getItemInHand(hand);
-        if (world.isClientSide || this.lootTable == null) return InteractionResult.FAIL;
+        if (world.isClientSide() || this.lootTable == null) return InteractionResult.FAIL;
 
         if (world instanceof ServerLevel serverLevel) {
             LootParams.Builder builder = new LootParams.Builder(serverLevel);

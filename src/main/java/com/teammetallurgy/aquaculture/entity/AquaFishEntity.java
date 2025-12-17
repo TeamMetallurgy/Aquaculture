@@ -113,7 +113,7 @@ public class AquaFishEntity extends AbstractSchoolingFish {
     @SubscribeEvent
     public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
         Player player = event.getEntity();
-        if (player.level().isClientSide) return;
+        if (player.level().isClientSide()) return;
         if (!(player instanceof ServerPlayer serverPlayer)) return;
 
         Entity target = event.getTarget();

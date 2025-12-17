@@ -6,12 +6,13 @@ import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.client.renderer.entity.state.AquaBobberRenderState;
 import com.teammetallurgy.aquaculture.entity.AquaFishingBobberEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.FishingHookRenderer;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
@@ -26,7 +27,7 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nonnull;
 
-public class AquaBobberRenderer extends EntityRenderer<AquaFishingBobberEntity, AquaBobberRenderState> {
+public class AquaFishingHookRenderer extends EntityRenderer<AquaFishingBobberEntity, AquaBobberRenderState> {
     private static final ResourceLocation BOBBER = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/rod/bobber/bobber.png");
     private static final ResourceLocation BOBBER_OVERLAY = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/rod/bobber/bobber_overlay.png");
     private static final ResourceLocation BOBBER_VANILLA = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/rod/bobber/bobber_vanilla.png");
@@ -36,7 +37,7 @@ public class AquaBobberRenderer extends EntityRenderer<AquaFishingBobberEntity, 
     private static final RenderType BOBBER_VANILLA_RENDER = RenderType.entityCutout(BOBBER_VANILLA);
     private static final RenderType HOOK_RENDER = RenderType.entityCutout(HOOK);
 
-    public AquaBobberRenderer(EntityRendererProvider.Context context) {
+    public AquaFishingHookRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
@@ -46,80 +47,85 @@ public class AquaBobberRenderer extends EntityRenderer<AquaFishingBobberEntity, 
     }
 
     @Override
-    public void render(@Nonnull AquaBobberRenderState bobber, @Nonnull PoseStack poseStack, @Nonnull MultiBufferSource buffer, int packedLight) {
+    public void submit(@Nonnull AquaBobberRenderState renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
         poseStack.pushPose(); //Start Hook/Bobber rendering
         poseStack.scale(0.5F, 0.5F, 0.5F);
-        poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
-        PoseStack.Pose pose = poseStack.last();
-        //Bobber + Bobber Overlay
-        VertexConsumer bobberOverlayVertex = bobber.hasBobber ? buffer.getBuffer(BOBBER_OVERLAY_RENDER) : buffer.getBuffer(BOBBER_VANILLA_RENDER);
+        poseStack.mulPose(cameraRenderState.orientation);
+
         //Bobber Overlay
-        ItemStack bobberStack = bobber.bobber;
-        float bobberR = 1.0F;
-        float bobberG = 1.0F;
-        float bobberB = 1.0F;
-        int bobberColorInt = ARGB.color(193, 38, 38);
-        if (!bobberStack.isEmpty()) {
-            if (bobberStack.is(ItemTags.DYEABLE)) {
-                DyedItemColor dyeditemcolor = bobberStack.get(DataComponents.DYED_COLOR);
-                if (dyeditemcolor != null) {
-                    bobberColorInt = dyeditemcolor.rgb();
+        nodeCollector.submitCustomGeometry(poseStack, renderState.hasBobber ? BOBBER_OVERLAY_RENDER : BOBBER_VANILLA_RENDER, (pose, vertexConsumer) -> {
+            ItemStack bobberStack = renderState.bobber;
+            float bobberR = 1.0F;
+            float bobberG = 1.0F;
+            float bobberB = 1.0F;
+            int bobberColorInt = ARGB.color(193, 38, 38);
+            if (!bobberStack.isEmpty()) {
+                if (bobberStack.is(ItemTags.DYEABLE)) {
+                    DyedItemColor dyeditemcolor = bobberStack.get(DataComponents.DYED_COLOR);
+                    if (dyeditemcolor != null) {
+                        bobberColorInt = dyeditemcolor.rgb();
+                    }
+                    bobberR = (float) (bobberColorInt >> 16 & 255) / 255.0F;
+                    bobberG = (float) (bobberColorInt >> 8 & 255) / 255.0F;
+                    bobberB = (float) (bobberColorInt & 255) / 255.0F;
                 }
-                bobberR = (float) (bobberColorInt >> 16 & 255) / 255.0F;
-                bobberG = (float) (bobberColorInt >> 8 & 255) / 255.0F;
-                bobberB = (float) (bobberColorInt & 255) / 255.0F;
             }
-        }
-        vertex(bobberOverlayVertex, pose, packedLight, 0.0F, 0, 0, 1, bobberR, bobberG, bobberB);
-        vertex(bobberOverlayVertex, pose, packedLight, 1.0F, 0, 1, 1, bobberR, bobberG, bobberB);
-        vertex(bobberOverlayVertex, pose, packedLight, 1.0F, 1, 1, 0, bobberR, bobberG, bobberB);
-        vertex(bobberOverlayVertex, pose, packedLight, 0.0F, 1, 0, 0, bobberR, bobberG, bobberB);
+            vertex(vertexConsumer, pose, renderState.lightCoords, 0.0F, 0, 0, 1, bobberR, bobberG, bobberB);
+            vertex(vertexConsumer, pose, renderState.lightCoords, 1.0F, 0, 1, 1, bobberR, bobberG, bobberB);
+            vertex(vertexConsumer, pose, renderState.lightCoords, 1.0F, 1, 1, 0, bobberR, bobberG, bobberB);
+            vertex(vertexConsumer, pose, renderState.lightCoords, 0.0F, 1, 0, 0, bobberR, bobberG, bobberB);
+        });
 
         //Bobber Background
-        if (bobber.hasBobber) {
-            VertexConsumer bobberVertex = buffer.getBuffer(BOBBER_RENDER);
-            renderPosTexture(bobberVertex, pose, packedLight, 0.0F, 0, 0, 1);
-            renderPosTexture(bobberVertex, pose, packedLight, 1.0F, 0, 1, 1);
-            renderPosTexture(bobberVertex, pose, packedLight, 1.0F, 1, 1, 0);
-            renderPosTexture(bobberVertex, pose, packedLight, 0.0F, 1, 0, 0);
-        }
+        nodeCollector.submitCustomGeometry(poseStack, BOBBER_RENDER, (pose, vertexConsumer) -> {
+            if (renderState.hasBobber) {
+                renderPosTexture(vertexConsumer, pose, renderState.lightCoords, 0.0F, 0, 0, 1);
+                renderPosTexture(vertexConsumer, pose, renderState.lightCoords, 1.0F, 0, 1, 1);
+                renderPosTexture(vertexConsumer, pose, renderState.lightCoords, 1.0F, 1, 1, 0);
+                renderPosTexture(vertexConsumer, pose, renderState.lightCoords, 0.0F, 1, 0, 0);
+            }
+        });
+
         //Hook
-        VertexConsumer hookVertex = bobber.hasHook ? buffer.getBuffer(RenderType.entityCutout(bobber.hook.getTexture())) : buffer.getBuffer(HOOK_RENDER);
-        renderPosTexture(hookVertex, pose, packedLight, 0.0F, 0, 0, 1);
-        renderPosTexture(hookVertex, pose, packedLight, 1.0F, 0, 1, 1);
-        renderPosTexture(hookVertex, pose, packedLight, 1.0F, 1, 1, 0);
-        renderPosTexture(hookVertex, pose, packedLight, 0.0F, 1, 0, 0);
+        nodeCollector.submitCustomGeometry(poseStack, renderState.hasHook ? RenderType.entityCutout(renderState.hook.getTexture()) : HOOK_RENDER, (pose, vertexConsumer) -> {
+            renderPosTexture(vertexConsumer, pose, renderState.lightCoords, 0.0F, 0, 0, 1);
+            renderPosTexture(vertexConsumer, pose, renderState.lightCoords, 1.0F, 0, 1, 1);
+            renderPosTexture(vertexConsumer, pose, renderState.lightCoords, 1.0F, 1, 1, 0);
+            renderPosTexture(vertexConsumer, pose, renderState.lightCoords, 0.0F, 1, 0, 0);
+        });
 
         poseStack.popPose(); //End Hook/Bobber rendering
 
-        float x = (float) bobber.lineOriginOffset.x;
-        float y = (float) bobber.lineOriginOffset.y;
-        float z = (float) bobber.lineOriginOffset.z;
-        VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.lineStrip());
-        PoseStack.Pose linePose = poseStack.last();
-
         //Line color
-        ItemStack line = bobber.fishingLine;
-        float r = 0;
-        float g = 0;
-        float b = 0;
-        if (!line.isEmpty()) {
-            if (line.is(ItemTags.DYEABLE)) {
-                DyedItemColor dyeditemcolor = line.get(DataComponents.DYED_COLOR);
-                if (dyeditemcolor != null) {
-                    int colorInt = dyeditemcolor.rgb();
-                    r = (float) (colorInt >> 16 & 255) / 255.0F;
-                    g = (float) (colorInt >> 8 & 255) / 255.0F;
-                    b = (float) (colorInt & 255) / 255.0F;
+        float x = (float) renderState.lineOriginOffset.x;
+        float y = (float) renderState.lineOriginOffset.y;
+        float z = (float) renderState.lineOriginOffset.z;
+        nodeCollector.submitCustomGeometry(poseStack, RenderType.lineStrip(), (pose, vertexConsumer) -> {
+            ItemStack line = renderState.fishingLine;
+            float r = 0;
+            float g = 0;
+            float b = 0;
+            if (!line.isEmpty()) {
+                if (line.is(ItemTags.DYEABLE)) {
+                    DyedItemColor dyeditemcolor = line.get(DataComponents.DYED_COLOR);
+                    if (dyeditemcolor != null) {
+                        int colorInt = dyeditemcolor.rgb();
+                        r = (float) (colorInt >> 16 & 255) / 255.0F;
+                        g = (float) (colorInt >> 8 & 255) / 255.0F;
+                        b = (float) (colorInt & 255) / 255.0F;
+                    }
                 }
             }
-        }
-        for (int size = 0; size < 16; ++size) {
-            stringVertex(x, y, z, vertexConsumer, linePose, (float) size / 14.9F, (float) (size + 1) / 14.9F, r, g, b);
-        }
+            for (int size = 0; size < 16; ++size) {
+                float sizeFraction = fraction(size, 16);
+                float sizeFraction1 = fraction(size + 1, 16);
+                stringVertex(x, y, z, vertexConsumer, pose, sizeFraction, sizeFraction1, r, g, b);
+                stringVertex(x, y, z, vertexConsumer, pose, sizeFraction1, sizeFraction, r, g, b);
+            }
+        });
         poseStack.popPose();
-        super.render(bobber, poseStack, buffer, packedLight);
+        super.submit(renderState, poseStack, nodeCollector, cameraRenderState);
     }
 
     private static void renderPosTexture(VertexConsumer builder, PoseStack.Pose pose, int packedLight, float x, int y, int u, int v) {

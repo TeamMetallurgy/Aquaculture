@@ -10,20 +10,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.common.util.ValueIOSerializable;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 
 import javax.annotation.Nonnull;
 
 public abstract class IItemHandlerBEBase extends BlockEntity implements Nameable {
     private Component customName;
-    public final IItemHandler handler = createItemHandler();
+    public final ItemStacksResourceHandler handler = createItemHandler();
 
     public IItemHandlerBEBase(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
         super(blockEntityType, pos, state);
     }
 
     @Nonnull
-    protected abstract IItemHandler createItemHandler();
+    protected abstract ItemStacksResourceHandler createItemHandler();
 
     @Override
     protected void loadAdditional(@Nonnull ValueInput input) {

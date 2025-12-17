@@ -46,7 +46,7 @@ public class AquaEntities {
 
     private static <T extends Mob> DeferredHolder<EntityType<?>, EntityType<T>> registerMob(String name, Supplier<EntityType.Builder<T>> builder) {
         DeferredHolder<EntityType<?>, EntityType<T>> entityType = register(name, builder);
-        DeferredItem<Item> spawnEggItem = AquaItems.registerWithTab(p -> new SpawnEggItem(entityType.get(), p), name + "_spawn_egg");
+        DeferredItem<Item> spawnEggItem = AquaItems.registerWithTab(p -> new SpawnEggItem(p.spawnEgg(entityType.get())), name + "_spawn_egg");
         AquaItems.SPAWN_EGGS.add(spawnEggItem);
         return entityType;
     }

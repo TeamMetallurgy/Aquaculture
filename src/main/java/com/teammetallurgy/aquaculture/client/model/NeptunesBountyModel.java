@@ -9,7 +9,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 
-public class NeptunesBountyModel extends Model {
+public class NeptunesBountyModel extends Model<Float> {
     private static final String BOTTOM = "bottom";
     private static final String LID = "lid";
     private final ModelPart lid;
@@ -30,6 +30,7 @@ public class NeptunesBountyModel extends Model {
     }
 
     public void setupAnim(float openness) {
+        super.setupAnim(openness);
         this.lid.xRot = -(openness * (float) (Math.PI / 2));
     }
 }

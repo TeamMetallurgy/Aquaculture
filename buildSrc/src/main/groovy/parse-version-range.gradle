@@ -1,0 +1,27 @@
+ext {
+    parseVersionRange = { String range ->
+        def cleaned = range.trim().substring(1, range.length() - 1)
+        def (minVer, maxVerRaw) = cleaned.split(',')
+
+        def (maj, min, patch) = maxVerRaw.tokenize('.').collect { it.toInteger() }
+        def maxVer = "${maj}.${min}.${patch - 1}"
+
+        def expand = { a, b ->
+            def (majA, minA, patchA) = a.tokenize('.').collect { it.toInteger() }
+            def (majB, minB, patchB) = b.tokenize('.').collect { it.toInteger() }
+
+            def list = []
+            for (p = patchA; p <= patchB; p++) {
+                list << "${majA}.${minA}.${p}"
+            }
+            return list
+        }
+
+        def expanded = expand(minVer, maxVer)
+
+        [
+            list: expanded,   // For Modrinth
+            quoted: expanded  // For CurseForge
+        ]
+    }
+}

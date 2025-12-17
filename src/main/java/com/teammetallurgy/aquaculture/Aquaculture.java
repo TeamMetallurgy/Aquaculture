@@ -4,13 +4,10 @@ import com.teammetallurgy.aquaculture.api.AquacultureAPI;
 import com.teammetallurgy.aquaculture.api.fishing.Hooks;
 import com.teammetallurgy.aquaculture.client.ClientHandler;
 import com.teammetallurgy.aquaculture.init.*;
-import com.teammetallurgy.aquaculture.item.AquaFishingRodItem;
 import com.teammetallurgy.aquaculture.item.crafting.ConditionFactory;
 import com.teammetallurgy.aquaculture.loot.AquaBiomeModifiers;
 import com.teammetallurgy.aquaculture.loot.FishWeightHandler;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
-import cpw.mods.modlauncher.Environment;
-import cpw.mods.modlauncher.Launcher;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -33,7 +30,6 @@ import org.apache.logging.log4j.Logger;
 @Mod(value = Aquaculture.MOD_ID)
 public class Aquaculture {
     public static Aquaculture instance;
-    public static final boolean IS_DEV = Launcher.INSTANCE.environment().getProperty(Environment.Keys.VERSION.get()).filter(v -> v.equals("MOD_DEV")).isPresent();
     public final static String MOD_ID = "aquaculture";
     public static final Logger LOG = LogManager.getLogger(MOD_ID);
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
@@ -89,7 +85,6 @@ public class Aquaculture {
     }
 
     public void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, AquaBlockEntities.TACKLE_BOX.get(), (blockEntity, side) -> blockEntity.handler);
-        event.registerItem(Capabilities.ItemHandler.ITEM, (stack, context) -> new AquaFishingRodItem.FishingRodEquipmentHandler(stack), AquaItems.IRON_FISHING_ROD.get(), AquaItems.GOLD_FISHING_ROD.get(), AquaItems.DIAMOND_FISHING_ROD.get(), AquaItems.NEPTUNIUM_FISHING_ROD.get());
+        event.registerBlockEntity(Capabilities.Item.BLOCK, AquaBlockEntities.TACKLE_BOX.get(), (blockEntity, side) -> blockEntity.handler);
     }
 }

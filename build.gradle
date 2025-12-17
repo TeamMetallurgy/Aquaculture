@@ -6,6 +6,7 @@ plugins {
     id 'net.darkhax.curseforgegradle' version '1.1.+'
     id "com.modrinth.minotaur" version "2.+"
     id 'git-changelog'
+    id 'parse-version-range'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -144,7 +145,8 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
     mainFile.addJavaVersion('Java 21')
     mainFile.releaseType = 'release'
     mainFile.addModLoader('NeoForge')
-    mainFile.addGameVersion(*parseVersionRange(minecraft_version_range))
+    def vr = rootProject.parseVersionRange(minecraft_version_range)
+    mainFile.addGameVersion(*vr.quoted)
 }
 
 modrinth {
@@ -157,15 +159,8 @@ modrinth {
     versionName = "Aquaculture 2-${minecraft_version}-${mod_version}"
     versionType = "release"
     loaders = ["neoforge"]
-    gameVersions = parseVersionRange(minecraft_version_range)
+    gameVersions = rootProject.parseVersionRange(minecraft_version_range).list
     uploadFile = jar
-}
-
-def parseVersionRange(String range) {
-    def cleaned = range.trim().substring(1, range.length() - 1)
-    def (minVer, maxVer) = cleaned.split(',')
-
-    return [minVer, maxVer]
 }
 
 artifacts {

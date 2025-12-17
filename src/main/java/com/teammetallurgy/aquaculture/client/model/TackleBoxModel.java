@@ -1,5 +1,6 @@
 package com.teammetallurgy.aquaculture.client.model;
 
+import com.teammetallurgy.aquaculture.client.renderer.blockentity.state.TackleBoxRenderState;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -9,7 +10,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 
-public class TackleBoxModel extends Model {
+public class TackleBoxModel extends Model<TackleBoxRenderState> {
     private final ModelPart base;
     private final ModelPart lid;
 
@@ -29,7 +30,12 @@ public class TackleBoxModel extends Model {
         return LayerDefinition.create(meshDefinition, 64, 32);
     }
 
-    public void setupAnim(float angle) {
-        this.lid.xRot = -(angle * 1.5707964F);
+    @Override
+    public void setupAnim(TackleBoxRenderState renderState) {
+        float openness = renderState.openness;
+        openness = 1.0F - openness;
+        openness = 1.0F - openness * openness * openness;
+
+        this.lid.xRot = -(openness * (float) (Math.PI / 2));
     }
 }
