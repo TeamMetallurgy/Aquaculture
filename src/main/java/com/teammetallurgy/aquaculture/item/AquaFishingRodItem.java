@@ -5,9 +5,9 @@ import com.teammetallurgy.aquaculture.api.bait.IBaitItem;
 import com.teammetallurgy.aquaculture.api.fishing.Hook;
 import com.teammetallurgy.aquaculture.api.fishing.Hooks;
 import com.teammetallurgy.aquaculture.entity.AquaFishingBobberEntity;
+import com.teammetallurgy.aquaculture.init.AquaDataComponents;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -35,7 +35,7 @@ public class AquaFishingRodItem extends FishingRodItem {
     private final ToolMaterial toolMaterial;
 
     public AquaFishingRodItem(ToolMaterial toolMaterial, Properties properties) {
-        super(properties.enchantable(toolMaterial == ToolMaterial.WOOD ? 10 : toolMaterial.enchantmentValue()).repairable(toolMaterial.repairItems()).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY));
+        super(properties.enchantable(toolMaterial == ToolMaterial.WOOD ? 10 : toolMaterial.enchantmentValue()).repairable(toolMaterial.repairItems()).component(AquaDataComponents.ROD_INVENTORY, ItemContainerContents.EMPTY));
         this.toolMaterial = toolMaterial;
     }
 
@@ -143,7 +143,7 @@ public class AquaFishingRodItem extends FishingRodItem {
     }
 
     public static ItemContainerContents getHandler(@Nonnull ItemStack fishingRod) {
-        return fishingRod.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY);
+        return fishingRod.getOrDefault(AquaDataComponents.ROD_INVENTORY, ItemContainerContents.EMPTY);
     }
 
     @Override

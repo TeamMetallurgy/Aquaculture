@@ -3,16 +3,12 @@ package com.teammetallurgy.aquaculture.entity;
 import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.api.fishing.Hook;
 import com.teammetallurgy.aquaculture.api.fishing.Hooks;
-import com.teammetallurgy.aquaculture.init.AquaEntities;
-import com.teammetallurgy.aquaculture.init.AquaItems;
-import com.teammetallurgy.aquaculture.init.AquaLootTables;
-import com.teammetallurgy.aquaculture.init.AquaSounds;
+import com.teammetallurgy.aquaculture.init.*;
 import com.teammetallurgy.aquaculture.item.AquaFishingRodItem;
 import com.teammetallurgy.aquaculture.item.HookItem;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -171,7 +167,7 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
                             } else {
                                 bait.shrink(1);
                             }
-                            ItemContainerContents container = this.fishingRod.get(DataComponents.CONTAINER);
+                            ItemContainerContents container = this.fishingRod.get(AquaDataComponents.ROD_INVENTORY);
                             if (container != null) {
                                 List<ItemStack> inventory = new ArrayList<>(container.getSlots());
 
@@ -180,7 +176,7 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
                                 }
                                 inventory.set(1, bait); //Replace original bait with damaged bait in specifically slot 1, to keep order.
 
-                                this.fishingRod.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(inventory));
+                                this.fishingRod.set(AquaDataComponents.ROD_INVENTORY, ItemContainerContents.fromItems(inventory));
                             }
                         }
                     }

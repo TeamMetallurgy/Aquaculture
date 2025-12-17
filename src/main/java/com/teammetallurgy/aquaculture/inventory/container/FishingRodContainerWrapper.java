@@ -2,9 +2,9 @@ package com.teammetallurgy.aquaculture.inventory.container;
 
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
 import com.teammetallurgy.aquaculture.api.bait.IBaitItem;
+import com.teammetallurgy.aquaculture.init.AquaDataComponents;
 import com.teammetallurgy.aquaculture.inventory.container.slot.SlotFishingRod;
 import com.teammetallurgy.aquaculture.item.HookItem;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -38,7 +38,7 @@ public class FishingRodContainerWrapper implements Container {
     @Nullable
     private ItemContainerContents inv() {
         ItemStack rod = rod();
-        return rod.isEmpty() ? null : rod.get(DataComponents.CONTAINER);
+        return rod.isEmpty() ? null : rod.get(AquaDataComponents.ROD_INVENTORY);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class FishingRodContainerWrapper implements Container {
         }
 
         ItemContainerContents newInv = ItemContainerContents.fromItems(items);
-        rod.set(DataComponents.CONTAINER, newInv);
+        rod.set(AquaDataComponents.ROD_INVENTORY, newInv);
 
         this.tackleBox.set(0, ItemResource.of(rod), 1);
     }
@@ -140,7 +140,7 @@ public class FishingRodContainerWrapper implements Container {
 
     @Override
     public void clearContent() {
-        this.rod().remove(DataComponents.CONTAINER);
+        this.rod().remove(AquaDataComponents.ROD_INVENTORY);
         this.tackleBox.set(0, ItemResource.EMPTY, 0);
     }
 }
