@@ -7,7 +7,7 @@
 //import mezz.jei.api.JeiPlugin;
 //import mezz.jei.api.constants.RecipeTypes;
 //import mezz.jei.api.registration.IRecipeRegistration;
-//import net.minecraft.resources.ResourceLocation;
+//import net.minecraft.resources.Identifier;
 //
 //import javax.annotation.Nonnull;
 //
@@ -16,8 +16,8 @@
 //
 //    @Override
 //    @Nonnull
-//    public ResourceLocation getPluginUid() {
-//        return ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "jei_support");
+//    public Identifier getPluginUid() {
+//        return Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "jei_support");
 //    }
 //
 //    @Override

@@ -2,11 +2,11 @@ package com.teammetallurgy.aquaculture.init;
 
 import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.FishingHookPredicate;
+import net.minecraft.advancements.criterion.EntityPredicate;
+import net.minecraft.advancements.criterion.FishingHookPredicate;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -42,13 +42,13 @@ public class AquaLootTables {
     public static final ResourceKey<LootTable> NETHER_TREASURE = register("gameplay/fishing/nether/treasure");
 
     private static ResourceKey<LootTable> register(String path) {
-        return BuiltInLootTables.register(ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, path)));
+        return BuiltInLootTables.register(ResourceKey.create(Registries.LOOT_TABLE, Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, path)));
     }
 
     @SubscribeEvent
     public static void onLootTableLoad(LootTableLoadEvent event) {
-        ResourceLocation name = event.getName();
-        if (name != null && name.equals(BuiltInLootTables.FISHING.location())) {
+        Identifier name = event.getName();
+        if (name != null && name.equals(BuiltInLootTables.FISHING.identifier())) {
             LootPool pool = event.getTable().getPool("main");
             if (pool != null) {
                 addEntry(pool, getInjectEntry(FISH, 85, -1));

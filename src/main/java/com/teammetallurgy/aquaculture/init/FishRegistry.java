@@ -8,8 +8,8 @@ import com.teammetallurgy.aquaculture.item.AquaFishBucket;
 import com.teammetallurgy.aquaculture.item.FishMountItem;
 import com.teammetallurgy.aquaculture.loot.BiomeTagCheck;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
@@ -33,7 +33,7 @@ public class FishRegistry {
         DeferredHolder<EntityType<?>, EntityType<FishMountEntity>> fishMount = AquaEntities.ENTITY_DEFERRED.register(name, () -> EntityType.Builder.<FishMountEntity>of(FishMountEntity::new, MobCategory.MISC)
                 .sized(0.5F, 0.5F)
                 .eyeHeight(0.0F)
-                .build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, name))));
+                .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, name))));
         DeferredItem<Item> fishMountItem = AquaItems.registerWithTab(p -> new FishMountItem(fishMount, p), name);
         fishMounts.add(fishMount);
         return fishMountItem;
@@ -54,7 +54,7 @@ public class FishRegistry {
      * @return The fish Item that was registered
      */
     public static DeferredItem<Item> register(Function<Item.Properties, ? extends Item> function, @Nonnull String name, FishType fishType) {
-        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, name);
+        Identifier id = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, name);
         DeferredHolder<EntityType<?>, EntityType<AquaFishEntity>> fish = AquaEntities.ENTITY_DEFERRED.register(name, () -> EntityType.Builder.<AquaFishEntity>of((f, w) -> new AquaFishEntity(f, w, fishType), MobCategory.WATER_AMBIENT).sized(fishType.getWidth(), fishType.getHeight()).build(ResourceKey.create(Registries.ENTITY_TYPE, id)));
         fishEntities.add(fish);
 
@@ -68,6 +68,6 @@ public class FishRegistry {
     @SubscribeEvent
     public static void registerFishies(RegisterEvent event) {
         if (!event.getRegistryKey().equals(Registries.LOOT_CONDITION_TYPE)) return;
-        event.register(Registries.LOOT_CONDITION_TYPE, ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "biome_tag_check"), () -> BiomeTagCheck.BIOME_TAG_CHECK);
+        event.register(Registries.LOOT_CONDITION_TYPE, Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "biome_tag_check"), () -> BiomeTagCheck.BIOME_TAG_CHECK);
     }
 }

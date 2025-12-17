@@ -8,7 +8,7 @@ import com.teammetallurgy.aquaculture.init.FishRegistry;
 import com.teammetallurgy.aquaculture.item.BaitItem;
 import com.teammetallurgy.aquaculture.item.HookItem;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -54,11 +54,11 @@ public class AquacultureAPI {
         public static final TagKey<Biome> EMPTY = biomeTag("aquaculture","empty");
 
         public static TagKey<Item> tag(String modID, String name) {
-            return ItemTags.create(ResourceLocation.fromNamespaceAndPath(modID, name));
+            return ItemTags.create(Identifier.fromNamespaceAndPath(modID, name));
         }
 
         public static TagKey<Biome> biomeTag(String modID, String name) {
-            return TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(modID, name));
+            return TagKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath(modID, name));
         }
 
         public static void init() {

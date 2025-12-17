@@ -12,7 +12,7 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
@@ -27,12 +27,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DiodeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
@@ -58,7 +58,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
         this.setDirection(direction);
     }
 
-    public ResourceLocation byName() {
+    public Identifier byName() {
         return BuiltInRegistries.ENTITY_TYPE.getKey(this.getType());
     }
 
@@ -153,7 +153,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     private void dropItemOrSelf(ServerLevel level, @Nullable Entity entity, boolean shouldDropSelf) {
         ItemStack displayedStack = this.getItem();
         this.setDisplayedItem(ItemStack.EMPTY);
-        if (!level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+        if (!level.getGameRules().get(GameRules.ENTITY_DROPS)) {
             if (entity == null) {
                 this.setDisplayedItem(ItemStack.EMPTY);
             }
@@ -177,7 +177,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
     }
 
     private Item getItemVariant() {
-        ResourceLocation location = BuiltInRegistries.ENTITY_TYPE.getKey(this.getType());
+        Identifier location = BuiltInRegistries.ENTITY_TYPE.getKey(this.getType());
         if (BuiltInRegistries.ITEM.containsKey(location) && location != null) {
             return BuiltInRegistries.ITEM.getValue(location);
         }
@@ -300,7 +300,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
 
     @Override
     public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
-        buffer.writeResourceLocation(Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(this.getType())));
+        buffer.writeIdentifier(Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(this.getType())));
     }
 
     @Override

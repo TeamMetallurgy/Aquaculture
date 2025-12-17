@@ -5,7 +5,7 @@ import com.teammetallurgy.aquaculture.entity.ai.goal.FollowTypeSchoolLeaderGoal;
 import com.teammetallurgy.aquaculture.init.AquaSounds;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -13,7 +13,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.FollowFlockLeaderGoal;
-import net.minecraft.world.entity.animal.AbstractSchoolingFish;
+import net.minecraft.world.entity.animal.fish.AbstractSchoolingFish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
@@ -40,7 +40,7 @@ public class AquaFishEntity extends AbstractSchoolingFish {
         return this.fishType;
     }
 
-    public ResourceLocation byName() {
+    public Identifier byName() {
         return BuiltInRegistries.ENTITY_TYPE.getKey(this.getType());
     }
 
@@ -64,7 +64,7 @@ public class AquaFishEntity extends AbstractSchoolingFish {
     @Override
     @Nonnull
     public ItemStack getBucketItemStack() {
-        return new ItemStack(BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(BuiltInRegistries.ENTITY_TYPE.getKey(this.getType()) + "_bucket")));
+        return new ItemStack(BuiltInRegistries.ITEM.getValue(Identifier.parse(BuiltInRegistries.ENTITY_TYPE.getKey(this.getType()) + "_bucket")));
     }
 
     @Override
@@ -94,7 +94,7 @@ public class AquaFishEntity extends AbstractSchoolingFish {
     @Override
     public void playerTouch(@Nonnull Player player) {
         super.playerTouch(player);
-        if (Objects.equals(BuiltInRegistries.ENTITY_TYPE.getKey(this.getType()), ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "jellyfish"))) {
+        if (Objects.equals(BuiltInRegistries.ENTITY_TYPE.getKey(this.getType()), Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "jellyfish"))) {
             if (this.isAlive() && player.level() instanceof ServerLevel level) {
                 if (this.distanceToSqr(player) < 1.0D && player.hurtServer(level, this.damageSources().mobAttack(this), 0.5F)) {
                     this.playSound(AquaSounds.JELLYFISH_COLLIDE.get(), 0.5F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);

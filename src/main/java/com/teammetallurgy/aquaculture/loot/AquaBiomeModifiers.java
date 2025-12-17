@@ -103,7 +103,7 @@ public class AquaBiomeModifiers {
         private void debugOutput(Holder<Biome> biomeHolder, String s) {
             if (AquaConfig.BASIC_OPTIONS.debugMode.get()) {
                 for (Weighted<MobSpawnSettings.SpawnerData> spawner : this.spawners.unwrap()) {
-                    Aquaculture.LOG.info("Fish: " + BuiltInRegistries.ENTITY_TYPE.getKey(spawner.value().type()) + " | " + s + ": " + biomeHolder.unwrapKey().get().location());
+                    Aquaculture.LOG.info("Fish: " + BuiltInRegistries.ENTITY_TYPE.getKey(spawner.value().type()) + " | " + s + ": " + biomeHolder.unwrapKey().get().identifier());
                 }
             }
         }

@@ -9,20 +9,21 @@ import com.teammetallurgy.aquaculture.client.renderer.entity.state.AquaFishRende
 import com.teammetallurgy.aquaculture.entity.AquaFishEntity;
 import com.teammetallurgy.aquaculture.entity.FishType;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 
 public class AquaFishRenderer extends MobRenderer<AquaFishEntity, AquaFishRenderState, FishBaseModel> {
-    private static final ResourceLocation DEFAULT_LOCATION = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/fish/atlantic_cod.png");
-    public static final ResourceLocation JELLYFISH = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/fish/jellyfish.png");
+    private static final Identifier DEFAULT_LOCATION = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/fish/atlantic_cod.png");
+    public static final Identifier JELLYFISH = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/fish/jellyfish.png");
     private final AquaTropicalFishBModel tropicalFishBModel;
     private final FishSmallModel smallModel;
     private final FishMediumModel mediumModel;
@@ -46,7 +47,7 @@ public class AquaFishRenderer extends MobRenderer<AquaFishEntity, AquaFishRender
     @Override
     protected RenderType getRenderType(@Nonnull AquaFishRenderState renderState, boolean isVisible, boolean renderTranslucent, boolean appearsGlowing) {
         if (renderState.fishType == FishType.JELLYFISH) {
-            return RenderType.entityTranslucent(AquaFishRenderer.JELLYFISH);
+            return RenderTypes.entityTranslucent(AquaFishRenderer.JELLYFISH);
         } else {
             return super.getRenderType(renderState, isVisible, renderTranslucent, appearsGlowing);
         }
@@ -68,10 +69,10 @@ public class AquaFishRenderer extends MobRenderer<AquaFishEntity, AquaFishRender
 
     @Override
     @Nonnull
-    public ResourceLocation getTextureLocation(@Nonnull AquaFishRenderState renderState) {
-        ResourceLocation location = renderState.byName;
+    public Identifier getTextureLocation(@Nonnull AquaFishRenderState renderState) {
+        Identifier location = renderState.byName;
         if (location != null) {
-            return ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/fish/" + location.getPath() + ".png");
+            return Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/fish/" + location.getPath() + ".png");
         }
         return DEFAULT_LOCATION;
     }
@@ -112,7 +113,7 @@ public class AquaFishRenderer extends MobRenderer<AquaFishEntity, AquaFishRender
 
     @Override
     protected void scale(AquaFishRenderState renderState, @Nonnull PoseStack matrixStack) {
-        ResourceLocation location = renderState.byName;
+        Identifier location = renderState.byName;
         float scale = 0.0F;
         if (location != null) {
             switch (location.getPath()) {

@@ -9,22 +9,22 @@ import com.teammetallurgy.aquaculture.entity.FishMountEntity;
 import com.teammetallurgy.aquaculture.entity.FishType;
 import com.teammetallurgy.aquaculture.init.AquaDataComponents;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.animal.Pufferfish;
+import net.minecraft.world.entity.animal.fish.Pufferfish;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
@@ -67,13 +67,13 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
 
             poseStack.pushPose();
             poseStack.translate(-0.5D, -0.5D, -0.5D);
-            ResourceLocation entityTypeID = renderState.byName;
+            Identifier entityTypeID = renderState.byName;
             if (entityTypeID != null) {
                 BlockStateModel model = manager.getStandaloneModel(getStandaloneKeyFromType(entityTypeID.getPath()));
                 if (model != null) {
                     nodeCollector.submitBlockModel(
                             poseStack,
-                            RenderType.entitySolidZOffsetForward(TextureAtlas.LOCATION_BLOCKS),
+                            RenderTypes.entitySolidZOffsetForward(TextureAtlas.LOCATION_BLOCKS),
                             model,
                             1.0F,
                             1.0F,

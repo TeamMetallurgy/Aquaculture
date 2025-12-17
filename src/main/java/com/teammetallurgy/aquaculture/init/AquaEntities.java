@@ -3,8 +3,8 @@ package com.teammetallurgy.aquaculture.init;
 import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.entity.*;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 @EventBusSubscriber(modid = Aquaculture.MOD_ID)
 public class AquaEntities {
     public static final DeferredRegister<EntityType<?>> ENTITY_DEFERRED = DeferredRegister.create(Registries.ENTITY_TYPE, Aquaculture.MOD_ID);
-    public static final DeferredHolder<EntityType<?>, EntityType<AquaFishingBobberEntity>> BOBBER = register("bobber", () -> EntityType.Builder.<AquaFishingBobberEntity>of(AquaFishingBobberEntity::new, MobCategory.MISC)
+    public static final DeferredHolder<EntityType<?>, EntityType<AquaFishingHookEntity>> BOBBER = register("bobber", () -> EntityType.Builder.<AquaFishingHookEntity>of(AquaFishingHookEntity::new, MobCategory.MISC)
             .noSave()
             .noSummon()
             .sized(0.25F, 0.25F)
@@ -52,7 +52,7 @@ public class AquaEntities {
     }
 
     public static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> register(String name, Supplier<EntityType.Builder<T>> builder) {
-        ResourceLocation location = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, name);
+        Identifier location = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, name);
         return ENTITY_DEFERRED.register(name, () -> builder.get().build(ResourceKey.create(Registries.ENTITY_TYPE, location)));
     }
 

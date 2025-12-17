@@ -11,7 +11,7 @@
 //import dev.emi.emi.api.stack.EmiStack;
 //import net.minecraft.core.NonNullList;
 //import net.minecraft.core.registries.BuiltInRegistries;
-//import net.minecraft.resources.ResourceLocation;
+//import net.minecraft.resources.Identifier;
 //import net.minecraft.tags.TagKey;
 //import net.minecraft.world.item.Item;
 //import net.minecraft.world.item.ItemStack;
@@ -28,7 +28,7 @@
 //                NonNullList<EmiIngredient> input = NonNullList.of(EmiIngredient.of(Ingredient.EMPTY), EmiIngredient.of(Ingredient.of(filletKnifeTag)), EmiIngredient.of(Ingredient.of(fish)));
 //                if (AquacultureAPI.FISH_DATA.hasFilletAmount(fish)) {
 //                    EmiStack output = EmiStack.of(new ItemStack(AquaItems.FISH_FILLET.get(), AquacultureAPI.FISH_DATA.getFilletAmount(fish)));
-//                    registry.addRecipe(new EmiCraftingRecipe(input, output, ResourceLocation.parse("/aquaculture.fish_fillet_" + BuiltInRegistries.ITEM.getKey(fish).getPath())));
+//                    registry.addRecipe(new EmiCraftingRecipe(input, output, Identifier.parse("/aquaculture.fish_fillet_" + BuiltInRegistries.ITEM.getKey(fish).getPath())));
 //                }
 //            }
 //        }

@@ -2,7 +2,7 @@ package com.teammetallurgy.aquaculture.init;
 
 import com.teammetallurgy.aquaculture.Aquaculture;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -28,7 +28,7 @@ public final class AquaSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> BOBBER_NOTE = registerSound("bobber_note_catch");
 
     private static DeferredHolder<SoundEvent, SoundEvent> registerSound(String name) {
-        ResourceLocation resourceLocation = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, name);
-        return SOUND_EVENT_DEFERRED.register(name, () -> SoundEvent.createVariableRangeEvent(resourceLocation));
+        Identifier identifier = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, name);
+        return SOUND_EVENT_DEFERRED.register(name, () -> SoundEvent.createVariableRangeEvent(identifier));
     }
 }
