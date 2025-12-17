@@ -1,10 +1,10 @@
 package com.teammetallurgy.aquaculture.api;
 
 import com.teammetallurgy.aquaculture.Aquaculture;
-import net.minecraft.Util;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Util;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.equipment.EquipmentAsset;
@@ -23,6 +23,6 @@ public class AquaArmorMaterials {
     }), 14, SoundEvents.ARMOR_EQUIP_DIAMOND, 2.0F, 0.0F, AquacultureAPI.Tags.REPAIRS_NEPTUNIUM, NEPTUNIUM_ASSET);
 
     public static ResourceKey<EquipmentAsset> createId(String name) {
-        return ResourceKey.create(EquipmentAssets.ROOT_ID, ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, name));
+        return ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, name));
     }
 }

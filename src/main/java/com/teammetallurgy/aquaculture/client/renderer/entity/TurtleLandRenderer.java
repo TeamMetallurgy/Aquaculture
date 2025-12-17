@@ -8,14 +8,14 @@ import com.teammetallurgy.aquaculture.entity.TurtleLandEntity;
 import com.teammetallurgy.aquaculture.init.AquaEntities;
 import net.minecraft.client.renderer.entity.AgeableMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import javax.annotation.Nonnull;
 
 public class TurtleLandRenderer extends AgeableMobRenderer<TurtleLandEntity, TurtleLandRenderState, TurtleLandModel> {
-    private static final ResourceLocation BOX_TURTLE = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/turtle/box_turtle.png");
-    private static final ResourceLocation ARRAU_TURTLE = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/turtle/arrau_turtle.png");
-    private static final ResourceLocation STARSHELL_TURTLE = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/turtle/starshell_turtle.png");
+    private static final Identifier BOX_TURTLE = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/turtle/box_turtle.png");
+    private static final Identifier ARRAU_TURTLE = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/turtle/arrau_turtle.png");
+    private static final Identifier STARSHELL_TURTLE = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/entity/turtle/starshell_turtle.png");
 
     public TurtleLandRenderer(EntityRendererProvider.Context context) {
         super(context, new TurtleLandModel(context.bakeLayer(ClientHandler.TURTLE_LAND_LAYER)), new TurtleLandModel(context.bakeLayer(ClientHandler.TURTLE_LAND_BABY_LAYER)), 0.25F);
@@ -29,7 +29,7 @@ public class TurtleLandRenderer extends AgeableMobRenderer<TurtleLandEntity, Tur
 
     @Override
     @Nonnull
-    public ResourceLocation getTextureLocation(@Nonnull TurtleLandRenderState turtle) {
+    public Identifier getTextureLocation(@Nonnull TurtleLandRenderState turtle) {
         if (AquaEntities.ARRAU_TURTLE.get().equals(turtle.type)) {
             return ARRAU_TURTLE;
         } else if (AquaEntities.STARSHELL_TURTLE.get().equals(turtle.type)) {

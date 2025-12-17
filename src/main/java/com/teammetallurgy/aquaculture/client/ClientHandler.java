@@ -23,7 +23,7 @@ import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.SpectralArrowRenderer;
 import net.minecraft.client.renderer.entity.TippableArrowRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -35,23 +35,23 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 @EventBusSubscriber(modid = Aquaculture.MOD_ID, value = Dist.CLIENT)
 public class ClientHandler {
-    public static final ModelLayerLocation NEPTUNES_BOUNTY = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "neptunes_bounty"), "neptunes_bounty");
-    public static final ModelLayerLocation TACKLE_BOX = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "tackle_box"), "tackle_box");
-    public static final ModelLayerLocation TURTLE_LAND_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "turtle_land"), "turtle_land");
-    public static final ModelLayerLocation TURTLE_LAND_BABY_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "turtle_land"), "turtle_land_baby");
-    public static final ModelLayerLocation SMALL_MODEL = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "small_model"), "small_model");
-    public static final ModelLayerLocation MEDIUM_MODEL = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "medium_model"), "medium_model");
-    public static final ModelLayerLocation LARGE_MODEL = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "large_model"), "large_model");
-    public static final ModelLayerLocation LONGNOSE_MODEL = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "longnose_model"), "longnose_model");
-    public static final ModelLayerLocation CATFISH_MODEL = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "catfish_model"), "catfish_model");
+    public static final ModelLayerLocation NEPTUNES_BOUNTY = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "neptunes_bounty"), "neptunes_bounty");
+    public static final ModelLayerLocation TACKLE_BOX = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "tackle_box"), "tackle_box");
+    public static final ModelLayerLocation TURTLE_LAND_LAYER = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "turtle_land"), "turtle_land");
+    public static final ModelLayerLocation TURTLE_LAND_BABY_LAYER = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "turtle_land"), "turtle_land_baby");
+    public static final ModelLayerLocation SMALL_MODEL = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "small_model"), "small_model");
+    public static final ModelLayerLocation MEDIUM_MODEL = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "medium_model"), "medium_model");
+    public static final ModelLayerLocation LARGE_MODEL = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "large_model"), "large_model");
+    public static final ModelLayerLocation LONGNOSE_MODEL = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "longnose_model"), "longnose_model");
+    public static final ModelLayerLocation CATFISH_MODEL = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "catfish_model"), "catfish_model");
     public static final ModelLayerLocation TROPICAL_FISH_B = new ModelLayerLocation(ModelLayers.TROPICAL_FISH_SMALL.model(), "tropical_fish_b");
-    public static final ModelLayerLocation JELLYFISH_MODEL = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "jellyfish_model"), "jellyfish_model");
-    public static final ResourceLocation OAK_FISH_MOUNT = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/oak_fish_mount");
-    public static final ResourceLocation SPRUCE_FISH_MOUNT = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/spruce_fish_mount");
-    public static final ResourceLocation BIRCH_FISH_MOUNT = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/birch_fish_mount");
-    public static final ResourceLocation JUNGLE_FISH_MOUNT = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/jungle_fish_mount");
-    public static final ResourceLocation ACACIA_FISH_MOUNT = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/acacia_fish_mount");
-    public static final ResourceLocation DARK_OAK_FISH_MOUNT = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/dark_oak_fish_mount");
+    public static final ModelLayerLocation JELLYFISH_MODEL = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "jellyfish_model"), "jellyfish_model");
+    public static final Identifier OAK_FISH_MOUNT = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/oak_fish_mount");
+    public static final Identifier SPRUCE_FISH_MOUNT = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/spruce_fish_mount");
+    public static final Identifier BIRCH_FISH_MOUNT = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/birch_fish_mount");
+    public static final Identifier JUNGLE_FISH_MOUNT = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/jungle_fish_mount");
+    public static final Identifier ACACIA_FISH_MOUNT = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/acacia_fish_mount");
+    public static final Identifier DARK_OAK_FISH_MOUNT = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/dark_oak_fish_mount");
     public static final StandaloneModelKey<BlockStateModel> OAK_FISH_MOUNT_KEY = new StandaloneModelKey<>(() -> "aquaculture: Oak Fish Mount");
     public static final StandaloneModelKey<BlockStateModel> SPRUCE_FISH_MOUNT_KEY = new StandaloneModelKey<>(() -> "aquaculture: Spruce Fish Mount");
     public static final StandaloneModelKey<BlockStateModel> BIRCH_FISH_MOUNT_KEY = new StandaloneModelKey<>(() -> "aquaculture: Birch Fish Mount");
@@ -72,8 +72,8 @@ public class ClientHandler {
 
     @SubscribeEvent
     public static void registerSpecialModelRenderers(RegisterSpecialModelRendererEvent event) {
-        event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "neptunes_bounty"), NeptunesBountySpecialRenderer.Unbaked.MAP_CODEC);
-        event.register(ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "tackle_box"), TackleBoxSpecialRenderer.Unbaked.MAP_CODEC);
+        event.register(Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "neptunes_bounty"), NeptunesBountySpecialRenderer.Unbaked.MAP_CODEC);
+        event.register(Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "tackle_box"), TackleBoxSpecialRenderer.Unbaked.MAP_CODEC);
     }
 
     @SubscribeEvent

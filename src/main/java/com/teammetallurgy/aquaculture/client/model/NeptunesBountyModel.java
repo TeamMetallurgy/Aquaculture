@@ -7,7 +7,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 
 public class NeptunesBountyModel extends Model<Float> {
     private static final String BOTTOM = "bottom";
@@ -15,7 +15,7 @@ public class NeptunesBountyModel extends Model<Float> {
     private final ModelPart lid;
 
     public NeptunesBountyModel(ModelPart root) {
-        super(root, RenderType::entitySolid);
+        super(root, RenderTypes::entitySolid);
         this.lid = root.getChild("lid");
     }
 

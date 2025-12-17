@@ -2,7 +2,7 @@ package com.teammetallurgy.aquaculture.item.neptunium;
 
 import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.init.AquaItems;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
 
 @EventBusSubscriber(modid = Aquaculture.MOD_ID)
 public class NeptuniumArmor extends Item {
-    protected static final ResourceLocation NEPTUNIUM_BOOTS_SWIM_SPEED = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "neptunium_boots_swim_speed");
+    protected static final Identifier NEPTUNIUM_BOOTS_SWIM_SPEED = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "neptunium_boots_swim_speed");
     private static final AttributeModifier INCREASED_SWIM_SPEED = new AttributeModifier(NEPTUNIUM_BOOTS_SWIM_SPEED, 0.5D, AttributeModifier.Operation.ADD_VALUE);
 
     public NeptuniumArmor(ArmorMaterial armorMaterial, ArmorType type, Item.Properties properties) {

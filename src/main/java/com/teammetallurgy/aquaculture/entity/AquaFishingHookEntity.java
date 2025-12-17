@@ -12,8 +12,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -50,7 +50,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class AquaFishingBobberEntity extends FishingHook implements IEntityWithComplexSpawn {
+public class AquaFishingHookEntity extends FishingHook implements IEntityWithComplexSpawn {
     private final Random lavaTickRand = new Random();
     private Hook hook;
     private ItemStack fishingLine;
@@ -58,11 +58,11 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
     private ItemStack fishingRod;
     private int luck;
 
-    public AquaFishingBobberEntity(EntityType<? extends AquaFishingBobberEntity> entityType, Level level) {
+    public AquaFishingHookEntity(EntityType<? extends AquaFishingHookEntity> entityType, Level level) {
         super(entityType, level);
     }
 
-    public AquaFishingBobberEntity(Player player, Level level, int luck, int lureSpeed, @Nonnull Hook hook, @Nonnull ItemStack fishingLine, @Nonnull ItemStack bobber, @Nonnull ItemStack rod) {
+    public AquaFishingHookEntity(Player player, Level level, int luck, int lureSpeed, @Nonnull Hook hook, @Nonnull ItemStack fishingLine, @Nonnull ItemStack bobber, @Nonnull ItemStack rod) {
         super(player, level, luck, lureSpeed);
         this.luck = luck;
         player.fishing = this;
@@ -127,7 +127,7 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
                     } else {
                         if (!level.isEmptyBlock(this.blockPosition()) && (level.getFluidState(this.blockPosition()).isSource())) {
                             lootEntries.add(new ItemStack(Items.COD)); //Last resort fallback, for edge-cases
-                            ResourceLocation biomeFromRegistry = level.registryAccess().lookupOrThrow(Registries.BIOME).getKey(level.getBiome(this.blockPosition()).value());
+                            Identifier biomeFromRegistry = level.registryAccess().lookupOrThrow(Registries.BIOME).getKey(level.getBiome(this.blockPosition()).value());
                             if (biomeFromRegistry != null) {
                                 Aquaculture.LOG.error("Loot was empty in Biome: " + biomeFromRegistry + ". Please report on Github");
                             }
@@ -238,8 +238,8 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
 
                 @Override
                 public boolean isInvulnerable() {
-                    BlockPos spawnPos = new BlockPos((int) AquaFishingBobberEntity.this.getX(), (int) AquaFishingBobberEntity.this.getY(), (int) AquaFishingBobberEntity.this.getZ());
-                    return AquaFishingBobberEntity.this.isLavaHookInLava(AquaFishingBobberEntity.this, level, spawnPos);
+                    BlockPos spawnPos = new BlockPos((int) AquaFishingHookEntity.this.getX(), (int) AquaFishingHookEntity.this.getY(), (int) AquaFishingHookEntity.this.getZ());
+                    return AquaFishingHookEntity.this.isLavaHookInLava(AquaFishingHookEntity.this, level, spawnPos);
                 }
             };
             double x = angler.getX() - this.getX();
@@ -254,7 +254,7 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
         }
     }
 
-    public boolean isLavaHookInLava(AquaFishingBobberEntity bobber, Level world, BlockPos pos) {
+    public boolean isLavaHookInLava(AquaFishingHookEntity bobber, Level world, BlockPos pos) {
         return bobber.hasHook() && bobber.hook.getFluids().contains(FluidTags.LAVA) && world.getFluidState(pos).is(FluidTags.LAVA);
     }
 

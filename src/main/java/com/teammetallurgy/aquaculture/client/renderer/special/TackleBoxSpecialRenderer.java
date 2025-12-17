@@ -12,15 +12,15 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemDisplayContext;
-import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 import javax.annotation.Nonnull;
-import java.util.Set;
+import java.util.function.Consumer;
 
 public class TackleBoxSpecialRenderer implements NoDataSpecialModelRenderer {
-    public static final ResourceLocation TACKLE_BOX = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/block/tackle_box.png");
+    public static final Identifier TACKLE_BOX = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/block/tackle_box.png");
     private final TackleBoxModel model;
     private final float openness;
 
@@ -53,9 +53,9 @@ public class TackleBoxSpecialRenderer implements NoDataSpecialModelRenderer {
     }
 
     @Override
-    public void getExtents(Set<Vector3f> output) {
+    public void getExtents(Consumer<Vector3fc> consumer) {
         PoseStack posestack = new PoseStack();
-        this.model.root().getExtentsForGui(posestack, output);
+        this.model.root().getExtentsForGui(posestack, consumer);
     }
 
     public record Unbaked(float openness) implements SpecialModelRenderer.Unbaked {

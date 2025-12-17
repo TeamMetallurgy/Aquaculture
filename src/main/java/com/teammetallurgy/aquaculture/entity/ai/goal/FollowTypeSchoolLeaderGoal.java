@@ -2,7 +2,7 @@ package com.teammetallurgy.aquaculture.entity.ai.goal;
 
 import com.mojang.datafixers.DataFixUtils;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.animal.AbstractSchoolingFish;
+import net.minecraft.world.entity.animal.fish.AbstractSchoolingFish;
 
 import java.util.List;
 import java.util.function.Predicate;

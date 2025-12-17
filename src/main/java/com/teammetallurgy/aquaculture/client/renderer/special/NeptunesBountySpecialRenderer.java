@@ -10,15 +10,15 @@ import com.teammetallurgy.aquaculture.client.model.NeptunesBountyModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemDisplayContext;
-import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 import javax.annotation.Nonnull;
-import java.util.Set;
+import java.util.function.Consumer;
 
 public class NeptunesBountySpecialRenderer implements NoDataSpecialModelRenderer {
-    public static final ResourceLocation NEPTUNES_BOUNTY = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/block/neptunes_bounty.png");
+    public static final Identifier NEPTUNES_BOUNTY = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "textures/block/neptunes_bounty.png");
     private final NeptunesBountyModel model;
     private final float openness;
 
@@ -44,10 +44,10 @@ public class NeptunesBountySpecialRenderer implements NoDataSpecialModelRenderer
     }
 
     @Override
-    public void getExtents(Set<Vector3f> output) {
+    public void getExtents(Consumer<Vector3fc> consumer) {
         PoseStack posestack = new PoseStack();
         this.model.setupAnim(this.openness);
-        this.model.root().getExtentsForGui(posestack, output);
+        this.model.root().getExtentsForGui(posestack, consumer);
     }
 
     public static record Unbaked(float openness) implements SpecialModelRenderer.Unbaked {
@@ -58,7 +58,7 @@ public class NeptunesBountySpecialRenderer implements NoDataSpecialModelRenderer
                         .apply(m, NeptunesBountySpecialRenderer.Unbaked::new)
         );
 
-        public Unbaked(ResourceLocation location) {
+        public Unbaked(Identifier location) {
             this(0.0F);
         }
 

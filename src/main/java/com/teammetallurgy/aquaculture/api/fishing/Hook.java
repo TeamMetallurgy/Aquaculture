@@ -2,7 +2,7 @@ package com.teammetallurgy.aquaculture.api.fishing;
 
 import com.teammetallurgy.aquaculture.Aquaculture;
 import net.minecraft.ChatFormatting;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
@@ -22,7 +22,7 @@ public class Hook {
     public static final HashMap<String, DeferredItem<Item>> HOOKS = new HashMap<>();
     private final String name;
     private final String modID;
-    private final ResourceLocation texture;
+    private final Identifier texture;
     private final ChatFormatting color;
     private final int minCatchable;
     private final int maxCatchable;
@@ -45,7 +45,7 @@ public class Hook {
         this.luckModifier = luckModifier;
         this.doubleCatchChance = doubleCatchChance;
         this.catchSound = catchSound;
-        this.texture = ResourceLocation.fromNamespaceAndPath(modID, "textures/entity/rod/hook/" + name + "_hook" + ".png");
+        this.texture = Identifier.fromNamespaceAndPath(modID, "textures/entity/rod/hook/" + name + "_hook" + ".png");
     }
 
     public String getName() {
@@ -58,7 +58,7 @@ public class Hook {
         return hookItem != null ? hookItem.get() : Items.AIR;
     }
 
-    public ResourceLocation getTexture() {
+    public Identifier getTexture() {
         return this.texture;
     }
 
