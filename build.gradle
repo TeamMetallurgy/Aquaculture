@@ -12,12 +12,8 @@ tasks.named('wrapper', Wrapper).configure {
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 repositories {
-  maven {
-    name = "JEI maven"
-    url = "https://dvs1.progwml6.com/files/maven/"
-  }
   maven { 
-    name = "CraftTweaker2"
+    name = "CraftTweaker2 / JEI"
     url = "https://maven.blamejared.com" 
   }
   maven {
@@ -80,8 +76,8 @@ neoForge {
 }
 
 dependencies {
-    //compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
-    //runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+    runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
     //compileOnly "com.blamejared.crafttweaker:CraftTweaker-neoforge-${minecraft_version}:${ct_version}"
 	//compileOnly "dev.emi:emi-neoforge:${emi_version}+${minecraft_version}:api"
 	//runtimeOnly "dev.emi:emi-neoforge:${emi_version}+${minecraft_version}" 
