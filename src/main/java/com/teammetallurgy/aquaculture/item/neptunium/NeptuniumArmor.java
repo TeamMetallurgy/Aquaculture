@@ -1,6 +1,8 @@
 package com.teammetallurgy.aquaculture.item.neptunium;
 
+import com.google.common.collect.ImmutableList;
 import com.teammetallurgy.aquaculture.Aquaculture;
+import com.teammetallurgy.aquaculture.api.AquaArmorMaterials;
 import com.teammetallurgy.aquaculture.init.AquaItems;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
@@ -8,27 +10,28 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForgeMod;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import javax.annotation.Nonnull;
 
-@EventBusSubscriber(modid = Aquaculture.MOD_ID)
 public class NeptuniumArmor extends Item {
     protected static final Identifier NEPTUNIUM_BOOTS_SWIM_SPEED = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "neptunium_boots_swim_speed");
-    private static final AttributeModifier INCREASED_SWIM_SPEED = new AttributeModifier(NEPTUNIUM_BOOTS_SWIM_SPEED, 0.5D, AttributeModifier.Operation.ADD_VALUE);
+    private static final AttributeModifier INCREASED_SWIM_SPEED = new AttributeModifier(NEPTUNIUM_BOOTS_SWIM_SPEED, 1.5D, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 
     public NeptuniumArmor(ArmorMaterial armorMaterial, ArmorType type, Item.Properties properties) {
         super(properties.humanoidArmor(armorMaterial, type).durability(type.getDurability(35)));
+    }
+
+    public NeptuniumArmor(ArmorMaterial armorMaterial, ArmorType type, Item.Properties properties, ItemAttributeModifiers attributes) {
+        super(properties.humanoidArmor(armorMaterial, type).durability(type.getDurability(35)).attributes(attributes));
     }
 
     @Override
@@ -53,23 +56,16 @@ public class NeptuniumArmor extends Item {
         }
     }
 
-    @SubscribeEvent
-    public static void onLivingTick(PlayerTickEvent.Post event) {
-        Player player = event.getEntity();
+    public static ItemAttributeModifiers createBootAttributes() {
+        ItemAttributeModifiers attributeModifiers = AquaArmorMaterials.NEPTUNIUM.createAttributes(ArmorType.BOOTS);
 
-        if (!player.level().isClientSide()) {
-            AttributeInstance swimSpeed = player.getAttribute(NeoForgeMod.SWIM_SPEED);
-            if (swimSpeed != null) {
-                if (player.isInWater() && player.getItemBySlot(EquipmentSlot.FEET).getItem() == AquaItems.NEPTUNIUM_BOOTS.get()) {
-                    if (!swimSpeed.hasModifier(NEPTUNIUM_BOOTS_SWIM_SPEED)) {
-                        swimSpeed.addPermanentModifier(INCREASED_SWIM_SPEED);
-                    }
-                } else {
-                    if (swimSpeed.hasModifier(NEPTUNIUM_BOOTS_SWIM_SPEED)) {
-                        swimSpeed.removeModifier(INCREASED_SWIM_SPEED);
-                    }
-                }
-            }
+        ImmutableList.Builder<ItemAttributeModifiers.Entry> builder = ImmutableList.builderWithExpectedSize(attributeModifiers.modifiers().size() + 1);
+        for (ItemAttributeModifiers.Entry entry : attributeModifiers.modifiers()) {
+            builder.add(entry);
         }
+
+        builder.add(new ItemAttributeModifiers.Entry(NeoForgeMod.SWIM_SPEED, INCREASED_SWIM_SPEED, EquipmentSlotGroup.FEET));
+
+        return new ItemAttributeModifiers(builder.build());
     }
 }

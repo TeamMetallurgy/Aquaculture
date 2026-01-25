@@ -48,7 +48,7 @@ public class AquaItems {
     public static final DeferredItem<Item> NEPTUNIUM_HELMET = registerWithTab(p -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorType.HELMET, p), "neptunium_helmet");
     public static final DeferredItem<Item> NEPTUNIUM_CHESTPLATE = registerWithTab(p -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorType.CHESTPLATE, p), "neptunium_chestplate");
     public static final DeferredItem<Item> NEPTUNIUM_LEGGINGS = registerWithTab(p -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorType.LEGGINGS, p), "neptunium_leggings");
-    public static final DeferredItem<Item> NEPTUNIUM_BOOTS = registerWithTab(p -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorType.BOOTS, p), "neptunium_boots");
+    public static final DeferredItem<Item> NEPTUNIUM_BOOTS = registerWithTab(p -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorType.BOOTS, p, NeptuniumArmor.createBootAttributes()), "neptunium_boots");
 
     // Fillet Knifes
     public static final DeferredItem<Item> WOODEN_FILLET_KNIFE = registerWithTab(p -> new ItemFilletKnife(ToolMaterial.WOOD, p), "wooden_fillet_knife");
