@@ -1,5 +1,6 @@
 package com.teammetallurgy.aquaculture.item.neptunium;
 
+import com.google.common.collect.ImmutableList;
 import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.init.AquaItems;
 import net.minecraft.core.Holder;
@@ -23,7 +24,7 @@ import javax.annotation.Nonnull;
 
 public class NeptuniumArmor extends ArmorItem {
     protected static final ResourceLocation NEPTUNIUM_BOOTS_SWIM_SPEED = ResourceLocation.fromNamespaceAndPath(Aquaculture.MOD_ID, "neptunium_boots_swim_speed");
-    private static final AttributeModifier INCREASED_SWIM_SPEED = new AttributeModifier(NEPTUNIUM_BOOTS_SWIM_SPEED, 0.5D, AttributeModifier.Operation.ADD_VALUE);
+    private static final AttributeModifier INCREASED_SWIM_SPEED = new AttributeModifier(NEPTUNIUM_BOOTS_SWIM_SPEED, 1.5D, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
     private String texture;
 
     public NeptuniumArmor(Holder<ArmorMaterial> armorMaterial, ArmorItem.Type type) {
@@ -65,8 +66,18 @@ public class NeptuniumArmor extends ArmorItem {
     @Override
     @Nonnull
     public ItemAttributeModifiers getDefaultAttributeModifiers(@Nonnull ItemStack stack) {
-        ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
-        builder.add(NeoForgeMod.SWIM_SPEED, INCREASED_SWIM_SPEED, EquipmentSlotGroup.FEET);
-        return builder.build();
+        ItemAttributeModifiers attributeModifiers = super.getDefaultAttributeModifiers(stack);
+
+        if (!(stack.getItem() instanceof ArmorItem armor) || armor.getEquipmentSlot() != EquipmentSlot.FEET) {
+            return attributeModifiers;
+        }
+
+        return new ItemAttributeModifiers(
+                ImmutableList.<ItemAttributeModifiers.Entry>builder()
+                        .addAll(attributeModifiers.modifiers())
+                        .add(new ItemAttributeModifiers.Entry(NeoForgeMod.SWIM_SPEED, INCREASED_SWIM_SPEED, EquipmentSlotGroup.FEET))
+                        .build(),
+                true
+        );
     }
 }
