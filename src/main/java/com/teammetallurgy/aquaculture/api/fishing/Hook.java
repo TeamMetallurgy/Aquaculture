@@ -171,6 +171,13 @@ public class Hook {
             return this;
         }
 
+        public HookBuilder setOptionalFluid(TagKey<Fluid> fluid, boolean check) {
+            if (check) {
+                this.fluids.add(fluid);
+            }
+            return this;
+        }
+
         public Hook build() {
             if (this.fluids.isEmpty()) {
                 this.fluids.add(FluidTags.WATER);
