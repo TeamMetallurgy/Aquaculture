@@ -4,8 +4,11 @@ import com.teammetallurgy.aquaculture.init.AquaSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.fml.ModList;
 
 public class Hooks {
+    public static final boolean IS_AQ2LAVA_LOADED = ModList.get().isLoaded("aq2lava");
+
     public static final Hook EMPTY = new Hook.HookBuilder().build();
     //Water
     public static final Hook IRON = new Hook.HookBuilder("iron").setDurabilityChance(0.20).setColor(ChatFormatting.GRAY).build();
@@ -16,14 +19,7 @@ public class Hooks {
     public static final Hook DOUBLE = new Hook.HookBuilder("double").setColor(ChatFormatting.DARK_GRAY).setDoubleCatchChance(0.10).build();
     public static final Hook REDSTONE = new Hook.HookBuilder("redstone").setColor(ChatFormatting.RED).setCatchableWindow(35, 70).build();
     public static final Hook NOTE = new Hook.HookBuilder("note").setColor(ChatFormatting.DARK_RED).setCatchSound(AquaSounds.BOBBER_NOTE).build();
-    public static final Hook NETHER_STAR = new Hook.HookBuilder("nether_star").setColor(ChatFormatting.BLACK)/*.setFluid(FluidTags.LAVA)*/.setFluid(FluidTags.WATER).setDurabilityChance(0.50).setLuckModifier(1).build();
-    //Lava
-    //public static final Hook OBSIDIAN = new Hook.HookBuilder("obsidian").setColor(TextFormatting.DARK_PURPLE).setFluid(FluidTags.LAVA).build();
-    //public static final Hook DOUBLE_OBSIDIAN = new Hook.HookBuilder("double_obsidian").setFluid(FluidTags.LAVA).setDoubleCatchChance(0.15).build();
-    //public static final Hook GLOWSTONE = new Hook.HookBuilder("glowstone").setColor(TextFormatting.YELLOW).setFluid(FluidTags.LAVA).setLuckModifier(1).build();
-    //public static final Hook QUARTZ = new Hook.HookBuilder("quartz").setFluid(FluidTags.LAVA).setDurabilityChance(0.30).build();
-    //public static final Hook SOUL_SAND = new Hook.HookBuilder("soul_sand").setColor(TextFormatting.DARK_GRAY).setFluid(FluidTags.LAVA).setCatchableWindow(40, 70).build();
-    //public static final Hook OBSIDIAN_NOTE = new Hook.HookBuilder("obsidian_note").setColor(TextFormatting.LIGHT_PURPLE).setFluid(FluidTags.LAVA).setCatchSound(SoundEvents.BLOCK_LAVA_EXTINGUISH).build();
+    public static final Hook NETHER_STAR = new Hook.HookBuilder("nether_star").setColor(ChatFormatting.BLACK).setOptionalFluid(FluidTags.LAVA, IS_AQ2LAVA_LOADED).setFluid(FluidTags.WATER).setDurabilityChance(0.50).setLuckModifier(1).build();
 
     public static void load() {}
 }

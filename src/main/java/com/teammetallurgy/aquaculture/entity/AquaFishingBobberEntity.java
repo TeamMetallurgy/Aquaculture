@@ -130,10 +130,12 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
                         lootEntries.add(new ItemStack(AquaItems.FISH_BONES.get()));
                     } else {
                         if (!level.isEmptyBlock(this.blockPosition()) && (level.getFluidState(this.blockPosition()).isSource())) {
-                            lootEntries.add(new ItemStack(Items.COD)); //Last resort fallback, for edge-cases
-                            ResourceLocation biomeFromRegistry = level.registryAccess().registryOrThrow(Registries.BIOME).getKey(level.getBiome(this.blockPosition()).value());
-                            if (biomeFromRegistry != null) {
-                                Aquaculture.LOG.error("Loot was empty in Biome: " + biomeFromRegistry + ". Please report on Github");
+                            if (level.getFluidState(this.blockPosition()).is(FluidTags.WATER)) {
+                                lootEntries.add(new ItemStack(Items.COD)); //Last resort fallback, for edge-cases
+                                ResourceLocation biomeFromRegistry = level.registryAccess().registryOrThrow(Registries.BIOME).getKey(level.getBiome(this.blockPosition()).value());
+                                if (biomeFromRegistry != null) {
+                                    Aquaculture.LOG.error("Loot was empty in Biome: " + biomeFromRegistry + ". Please report on Github");
+                                }
                             }
                         }
                     }
