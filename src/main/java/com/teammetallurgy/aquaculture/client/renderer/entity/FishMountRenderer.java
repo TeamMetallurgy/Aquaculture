@@ -10,12 +10,11 @@ import com.teammetallurgy.aquaculture.entity.FishType;
 import com.teammetallurgy.aquaculture.init.AquaDataComponents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.ModelManager;
@@ -61,9 +60,8 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
         }
         poseStack.mulPose(Axis.XP.rotationDegrees(x));
         poseStack.mulPose(Axis.YP.rotationDegrees(y));
-        if (!renderState.isInvisible) {
-            BlockRenderDispatcher rendererDispatcher = this.mc.getBlockRenderer();
-            ModelManager manager = rendererDispatcher.getBlockModelShaper().getModelManager();
+        /*if (!renderState.isInvisible) { //TODO Redo. Move to new models anyways
+            ModelManager manager = this.mc.getModelManager();
 
             poseStack.pushPose();
             poseStack.translate(-0.5D, -0.5D, -0.5D);
@@ -85,7 +83,7 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
                 }
             }
             poseStack.popPose();
-        }
+        }*/
         this.renderFish(renderState, poseStack, nodeCollector, cameraRenderState);
         poseStack.popPose();
     }
@@ -130,7 +128,7 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
     }
 
     @Override
-    protected void submitNameTag(@Nonnull FishMountRenderState renderState, @Nonnull PoseStack poseStack, @Nonnull SubmitNodeCollector nodeCollector, @Nonnull CameraRenderState cameraRenderState) {
+    protected void submitNameDisplay(@Nonnull FishMountRenderState renderState, @Nonnull PoseStack poseStack, @Nonnull SubmitNodeCollector nodeCollector, @Nonnull CameraRenderState cameraRenderState) {
         //Render Fish Name
         if (renderState.mountedFish != null) {
             nodeCollector.submitNameTag(

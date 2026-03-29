@@ -37,7 +37,7 @@ public class LootBoxItem extends Item {
             List<ItemStack> loot = serverLevel.getServer().reloadableRegistries().getLootTable(this.lootTable).getRandomItems(builder.create(LootContextParamSets.EMPTY));
             if (!loot.isEmpty()) {
                 ItemStack lootStack = loot.getFirst();
-                player.displayClientMessage(Component.translatable("aquaculture.loot.open", lootStack.getHoverName()).withStyle(ChatFormatting.YELLOW), true);
+                player.sendOverlayMessage(Component.translatable("aquaculture.loot.open", lootStack.getHoverName()).withStyle(ChatFormatting.YELLOW));
                 this.giveItem(player, lootStack);
                 heldStack.shrink(1);
                 return InteractionResult.SUCCESS.heldItemTransformedTo(heldStack);

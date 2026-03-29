@@ -1,21 +1,21 @@
 package com.teammetallurgy.aquaculture.item.crafting;
 
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
 import com.teammetallurgy.aquaculture.api.fish.FishData;
 import com.teammetallurgy.aquaculture.init.AquaDataComponents;
 import com.teammetallurgy.aquaculture.init.AquaItems;
-import com.teammetallurgy.aquaculture.init.AquaRecipeSerializers;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
-import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.CustomRecipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
@@ -23,10 +23,33 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FishFilletRecipe extends CustomRecipe {
+public class FishFilletRecipe extends CustomRecipe { //TODO Test after major changes
+    public static final MapCodec<FishFilletRecipe> MAP_CODEC = RecordCodecBuilder.mapCodec(
+            i -> i.group(
+                            ItemStack.CODEC.fieldOf("knife").forGetter(o -> o.knife),
+                            ItemStack.CODEC.fieldOf("fish").forGetter(o -> o.fish),
+                            ItemStackTemplate.CODEC.fieldOf("result").forGetter(o -> o.result)
+                    )
+                    .apply(i, FishFilletRecipe::new)
+    );
+    public static final StreamCodec<RegistryFriendlyByteBuf, FishFilletRecipe> STREAM_CODEC = StreamCodec.composite(
+            ItemStack.STREAM_CODEC,
+            o -> o.knife,
+            ItemStack.STREAM_CODEC,
+            o -> o.fish,
+            ItemStackTemplate.STREAM_CODEC,
+            o -> o.result,
+            FishFilletRecipe::new
+    );
+    public static final RecipeSerializer<FishFilletRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
+    private final ItemStack knife;
+    private final ItemStack fish;
+    private final ItemStackTemplate result;
 
-    public FishFilletRecipe(CraftingBookCategory craftingBookCategory) {
-        super(craftingBookCategory);
+    public FishFilletRecipe(ItemStack knife, ItemStack fish, ItemStackTemplate result) {
+        this.knife = knife;
+        this.fish = fish;
+        this.result = result;
     }
 
     @Override
@@ -37,13 +60,13 @@ public class FishFilletRecipe extends CustomRecipe {
         for (int i = 0; i < craftingInventory.size(); ++i) {
             ItemStack slotStack = craftingInventory.getItem(i);
             if (!slotStack.isEmpty()) {
-                if (AquacultureAPI.FISH_DATA.hasFilletAmount(slotStack.getItem())) {
+                if (AquacultureAPI.FISH_DATA.hasFilletAmount(this.fish.getItem()) || AquacultureAPI.FISH_DATA.hasFilletAmount(slotStack.getItem())) {
                     if (!stack.isEmpty()) {
                         return false;
                     }
                     stack = slotStack;
                 } else {
-                    if (!(slotStack.is(AquacultureAPI.Tags.KNIFE) && (slotStack.isDamageableItem() || isKnifeNeptunium(slotStack)) && slotStack.has(DataComponents.TOOL))) {
+                    if (!((slotStack.is(this.knife.getItem()) || slotStack.is(AquacultureAPI.Tags.KNIFE)) && (slotStack.isDamageableItem() || isKnifeNeptunium(slotStack)) && slotStack.has(DataComponents.TOOL))) {
                         return false;
                     }
                     list.add(slotStack);
@@ -55,7 +78,7 @@ public class FishFilletRecipe extends CustomRecipe {
 
     @Override
     @Nonnull
-    public ItemStack assemble(@Nonnull CraftingInput craftingInventory, @Nonnull HolderLookup.Provider provider) {
+    public ItemStack assemble(@Nonnull CraftingInput craftingInventory) {
         ItemStack fish = ItemStack.EMPTY;
         Item knife = null;
 
@@ -63,13 +86,13 @@ public class FishFilletRecipe extends CustomRecipe {
             ItemStack stackSlot = craftingInventory.getItem(i);
             if (!stackSlot.isEmpty()) {
                 Item item = stackSlot.getItem();
-                if (AquacultureAPI.FISH_DATA.hasFilletAmount(item)) {
+                if (AquacultureAPI.FISH_DATA.hasFilletAmount(this.fish.getItem()) || AquacultureAPI.FISH_DATA.hasFilletAmount(item)) {
                     if (!fish.isEmpty()) {
                         return ItemStack.EMPTY;
                     }
                     fish = stackSlot.copy();
                 } else {
-                    if (!(stackSlot.is(AquacultureAPI.Tags.KNIFE))) {
+                    if (!(stackSlot.is(this.knife.getItem()) || stackSlot.is(AquacultureAPI.Tags.KNIFE))) {
                         return ItemStack.EMPTY;
                     }
                     knife = item;
@@ -78,6 +101,9 @@ public class FishFilletRecipe extends CustomRecipe {
         }
         if (!fish.isEmpty() && knife != null) {
             int filletAmount = AquacultureAPI.FISH_DATA.getFilletAmount(fish.getItem());
+            if (!this.fish.isEmpty()) {
+                filletAmount = AquacultureAPI.FISH_DATA.getFilletAmount(this.fish.getItem());
+            }
             Float fishWeight = fish.get(AquaDataComponents.FISH_WEIGHT.get());
             if (AquaConfig.BASIC_OPTIONS.randomWeight.get() && fish.has(AquaDataComponents.FISH_WEIGHT) && fishWeight != null) {
                 filletAmount = FishData.getFilletAmountFromWeight(fishWeight);
@@ -85,7 +111,8 @@ public class FishFilletRecipe extends CustomRecipe {
             if (isKnifeNeptunium(new ItemStack(knife))) {
                 filletAmount += (int) (filletAmount * (25.0F / 100.0F));
             }
-            return new ItemStack(AquaItems.FISH_FILLET.get(), filletAmount);
+
+            return TransmuteRecipe.createWithOriginalComponents(this.result, new ItemStack(AquaItems.FISH_FILLET.get(), filletAmount));
         } else {
             return ItemStack.EMPTY;
         }
@@ -97,7 +124,7 @@ public class FishFilletRecipe extends CustomRecipe {
         NonNullList<ItemStack> list = NonNullList.withSize(craftingInventory.size(), ItemStack.EMPTY);
         for (int i = 0; i < list.size(); ++i) {
             ItemStack stack = craftingInventory.getItem(i);
-            if (stack.is(AquacultureAPI.Tags.KNIFE)) {
+            if (stack.is(this.knife.getItem()) || stack.is(AquacultureAPI.Tags.KNIFE)) {
                 ItemStack knife = stack.copy();
                 if (!isKnifeNeptunium(knife)) {
                     MinecraftServer server = ServerLifecycleHooks.getCurrentServer(); //Workaround
@@ -120,6 +147,6 @@ public class FishFilletRecipe extends CustomRecipe {
     @Override
     @Nonnull
     public RecipeSerializer<? extends CustomRecipe> getSerializer() {
-        return AquaRecipeSerializers.FISH_FILLET_SERIALIZER.get();
+        return SERIALIZER;
     }
 }

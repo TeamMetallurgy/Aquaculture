@@ -68,6 +68,6 @@ public class FishRegistry {
     @SubscribeEvent
     public static void registerFishies(RegisterEvent event) {
         if (!event.getRegistryKey().equals(Registries.LOOT_CONDITION_TYPE)) return;
-        event.register(Registries.LOOT_CONDITION_TYPE, Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "biome_tag_check"), () -> BiomeTagCheck.BIOME_TAG_CHECK);
+        event.register(Registries.LOOT_CONDITION_TYPE, Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "biome_tag_check"), () -> BiomeTagCheck.CODEC);
     }
 }

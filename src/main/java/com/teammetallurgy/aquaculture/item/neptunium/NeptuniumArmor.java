@@ -6,6 +6,7 @@ import com.teammetallurgy.aquaculture.api.AquaArmorMaterials;
 import com.teammetallurgy.aquaculture.init.AquaItems;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -38,7 +39,7 @@ public class NeptuniumArmor extends Item {
     public void inventoryTick(@Nonnull ItemStack stack, @Nonnull ServerLevel level, @Nonnull Entity entity, EquipmentSlot slot) {
         super.inventoryTick(stack, level, entity, slot);
         if (entity instanceof Player player) {
-            if (player.isEyeInFluidType(NeoForgeMod.WATER_TYPE.value())) {
+            if (player.isEyeInFluid(FluidTags.WATER)) {
                 if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() == AquaItems.NEPTUNIUM_HELMET.get()) {
                     player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 20, 0, false, false, false));
                 }

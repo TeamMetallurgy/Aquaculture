@@ -253,7 +253,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
 
     @Override
     @Nonnull
-    public InteractionResult interact(Player player, @Nonnull InteractionHand hand) {
+    public InteractionResult interact(Player player, @Nonnull InteractionHand hand, @Nonnull Vec3 location) {
         ItemStack heldStack = player.getItemInHand(hand);
         if (!this.level().isClientSide()) {
             if (this.getItem().isEmpty()) {
@@ -268,7 +268,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
             }
             return InteractionResult.CONSUME;
         }
-        return super.interact(player, hand);
+        return super.interact(player, hand, location);
     }
 
     @Override

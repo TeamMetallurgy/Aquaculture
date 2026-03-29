@@ -15,11 +15,14 @@ import com.teammetallurgy.aquaculture.client.renderer.special.NeptunesBountySpec
 import com.teammetallurgy.aquaculture.client.renderer.special.TackleBoxSpecialRenderer;
 import com.teammetallurgy.aquaculture.entity.AquaFishEntity;
 import com.teammetallurgy.aquaculture.entity.FishMountEntity;
-import com.teammetallurgy.aquaculture.init.*;
+import com.teammetallurgy.aquaculture.init.AquaBlockEntities;
+import com.teammetallurgy.aquaculture.init.AquaEntities;
+import com.teammetallurgy.aquaculture.init.AquaGuis;
+import com.teammetallurgy.aquaculture.init.FishRegistry;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.SpectralArrowRenderer;
 import net.minecraft.client.renderer.entity.TippableArrowRenderer;
@@ -28,7 +31,10 @@ import net.minecraft.world.entity.EntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
 import net.neoforged.neoforge.client.model.standalone.SimpleUnbakedStandaloneModel;
 import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -62,12 +68,6 @@ public class ClientHandler {
     public static void setupClient() {
         BlockEntityRenderers.register(AquaBlockEntities.NEPTUNES_BOUNTY.get(), NeptunesBountyRenderer::new);
         BlockEntityRenderers.register(AquaBlockEntities.TACKLE_BOX.get(), TackleBoxRenderer::new);
-    }
-
-    @SubscribeEvent
-    public static void registerSpecialBlockModelRenderer(RegisterSpecialBlockModelRendererEvent event) {
-        event.register(AquaBlocks.NEPTUNES_BOUNTY.get(), new NeptunesBountySpecialRenderer.Unbaked(NeptunesBountySpecialRenderer.NEPTUNES_BOUNTY));
-        event.register(AquaBlocks.TACKLE_BOX.get(), new TackleBoxSpecialRenderer.Unbaked());
     }
 
     @SubscribeEvent
