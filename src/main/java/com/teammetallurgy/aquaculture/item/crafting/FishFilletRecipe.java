@@ -23,34 +23,11 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FishFilletRecipe extends CustomRecipe { //TODO Test after major changes
-    public static final MapCodec<FishFilletRecipe> MAP_CODEC = RecordCodecBuilder.mapCodec(
-            i -> i.group(
-                            ItemStack.CODEC.fieldOf("knife").forGetter(o -> o.knife),
-                            ItemStack.CODEC.fieldOf("fish").forGetter(o -> o.fish),
-                            ItemStackTemplate.CODEC.fieldOf("result").forGetter(o -> o.result)
-                    )
-                    .apply(i, FishFilletRecipe::new)
-    );
-    public static final StreamCodec<RegistryFriendlyByteBuf, FishFilletRecipe> STREAM_CODEC = StreamCodec.composite(
-            ItemStack.STREAM_CODEC,
-            o -> o.knife,
-            ItemStack.STREAM_CODEC,
-            o -> o.fish,
-            ItemStackTemplate.STREAM_CODEC,
-            o -> o.result,
-            FishFilletRecipe::new
-    );
+public class FishFilletRecipe extends CustomRecipe {
+    public static final FishFilletRecipe INSTANCE = new FishFilletRecipe();
+    public static final MapCodec<FishFilletRecipe> MAP_CODEC = MapCodec.unit(INSTANCE);
+    public static final StreamCodec<RegistryFriendlyByteBuf, FishFilletRecipe> STREAM_CODEC = StreamCodec.unit(INSTANCE);
     public static final RecipeSerializer<FishFilletRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
-    private final ItemStack knife;
-    private final ItemStack fish;
-    private final ItemStackTemplate result;
-
-    public FishFilletRecipe(ItemStack knife, ItemStack fish, ItemStackTemplate result) {
-        this.knife = knife;
-        this.fish = fish;
-        this.result = result;
-    }
 
     @Override
     public boolean matches(@Nonnull CraftingInput craftingInventory, @Nonnull Level world) {
@@ -60,13 +37,13 @@ public class FishFilletRecipe extends CustomRecipe { //TODO Test after major cha
         for (int i = 0; i < craftingInventory.size(); ++i) {
             ItemStack slotStack = craftingInventory.getItem(i);
             if (!slotStack.isEmpty()) {
-                if (AquacultureAPI.FISH_DATA.hasFilletAmount(this.fish.getItem()) || AquacultureAPI.FISH_DATA.hasFilletAmount(slotStack.getItem())) {
+                if (AquacultureAPI.FISH_DATA.hasFilletAmount(slotStack.getItem())) {
                     if (!stack.isEmpty()) {
                         return false;
                     }
                     stack = slotStack;
                 } else {
-                    if (!((slotStack.is(this.knife.getItem()) || slotStack.is(AquacultureAPI.Tags.KNIFE)) && (slotStack.isDamageableItem() || isKnifeNeptunium(slotStack)) && slotStack.has(DataComponents.TOOL))) {
+                    if (!(slotStack.is(AquacultureAPI.Tags.KNIFE) && (slotStack.isDamageableItem() || isKnifeNeptunium(slotStack)) && slotStack.has(DataComponents.TOOL))) {
                         return false;
                     }
                     list.add(slotStack);
@@ -86,13 +63,13 @@ public class FishFilletRecipe extends CustomRecipe { //TODO Test after major cha
             ItemStack stackSlot = craftingInventory.getItem(i);
             if (!stackSlot.isEmpty()) {
                 Item item = stackSlot.getItem();
-                if (AquacultureAPI.FISH_DATA.hasFilletAmount(this.fish.getItem()) || AquacultureAPI.FISH_DATA.hasFilletAmount(item)) {
+                if (AquacultureAPI.FISH_DATA.hasFilletAmount(item)) {
                     if (!fish.isEmpty()) {
                         return ItemStack.EMPTY;
                     }
                     fish = stackSlot.copy();
                 } else {
-                    if (!(stackSlot.is(this.knife.getItem()) || stackSlot.is(AquacultureAPI.Tags.KNIFE))) {
+                    if (!(stackSlot.is(AquacultureAPI.Tags.KNIFE))) {
                         return ItemStack.EMPTY;
                     }
                     knife = item;
@@ -101,9 +78,6 @@ public class FishFilletRecipe extends CustomRecipe { //TODO Test after major cha
         }
         if (!fish.isEmpty() && knife != null) {
             int filletAmount = AquacultureAPI.FISH_DATA.getFilletAmount(fish.getItem());
-            if (!this.fish.isEmpty()) {
-                filletAmount = AquacultureAPI.FISH_DATA.getFilletAmount(this.fish.getItem());
-            }
             Float fishWeight = fish.get(AquaDataComponents.FISH_WEIGHT.get());
             if (AquaConfig.BASIC_OPTIONS.randomWeight.get() && fish.has(AquaDataComponents.FISH_WEIGHT) && fishWeight != null) {
                 filletAmount = FishData.getFilletAmountFromWeight(fishWeight);
@@ -111,8 +85,7 @@ public class FishFilletRecipe extends CustomRecipe { //TODO Test after major cha
             if (isKnifeNeptunium(new ItemStack(knife))) {
                 filletAmount += (int) (filletAmount * (25.0F / 100.0F));
             }
-
-            return TransmuteRecipe.createWithOriginalComponents(this.result, new ItemStack(AquaItems.FISH_FILLET.get(), filletAmount));
+            return new ItemStack(AquaItems.FISH_FILLET.get(), filletAmount);
         } else {
             return ItemStack.EMPTY;
         }
@@ -124,7 +97,7 @@ public class FishFilletRecipe extends CustomRecipe { //TODO Test after major cha
         NonNullList<ItemStack> list = NonNullList.withSize(craftingInventory.size(), ItemStack.EMPTY);
         for (int i = 0; i < list.size(); ++i) {
             ItemStack stack = craftingInventory.getItem(i);
-            if (stack.is(this.knife.getItem()) || stack.is(AquacultureAPI.Tags.KNIFE)) {
+            if (stack.is(AquacultureAPI.Tags.KNIFE)) {
                 ItemStack knife = stack.copy();
                 if (!isKnifeNeptunium(knife)) {
                     MinecraftServer server = ServerLifecycleHooks.getCurrentServer(); //Workaround
