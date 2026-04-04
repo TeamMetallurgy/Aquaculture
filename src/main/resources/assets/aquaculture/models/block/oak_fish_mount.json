@@ -1,6 +1,0 @@
-{
-    "parent": "aquaculture:block/fish_mount",
-    "textures": {
-        "wood": "minecraft:block/oak_planks"
-    }
-}

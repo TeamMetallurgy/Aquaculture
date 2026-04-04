@@ -1,7 +1,6 @@
 {
-
   "model": {
     "type": "minecraft:model",
-    "model": "aquaculture:item/birch_fish_mount"
+    "model": "aquaculture:item/fish_mount"
   }
 }

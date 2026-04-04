@@ -6,10 +6,11 @@
     "BBB"
   ],
   "key": {
-    "B": "minecraft:birch_button",
+    "B": "minecraft:oak_button",
     "H": "aquaculture:iron_hook"
   },
   "result": {
-    "id": "aquaculture:birch_fish_mount"
+    "count": 1,
+    "id": "aquaculture:fish_mount"
   }
 }

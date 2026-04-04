@@ -2,42 +2,68 @@ package com.teammetallurgy.aquaculture.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.client.ClientHandler;
+import com.teammetallurgy.aquaculture.client.renderer.entity.model.FishMountModel;
 import com.teammetallurgy.aquaculture.client.renderer.entity.state.FishMountRenderState;
 import com.teammetallurgy.aquaculture.entity.AquaFishEntity;
 import com.teammetallurgy.aquaculture.entity.FishMountEntity;
 import com.teammetallurgy.aquaculture.entity.FishType;
+import com.teammetallurgy.aquaculture.init.AquaBlocks;
 import com.teammetallurgy.aquaculture.init.AquaDataComponents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.BlockModelRenderState;
+import net.minecraft.client.renderer.block.BlockModelResolver;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.renderer.block.model.BlockDisplayContext;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.ItemFrameRenderer;
+import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.resources.model.BlockStateDefinitions;
 import net.minecraft.client.resources.model.ModelManager;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.fish.Pufferfish;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
+import net.neoforged.neoforge.client.model.quad.MutableQuad;
 
 import javax.annotation.Nonnull;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
 
 public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer<T, FishMountRenderState> {
     private final Minecraft mc = Minecraft.getInstance();
+    private final BlockModelResolver blockModelResolver;
+    public static final StateDefinition<Block, BlockState> FISH_MOUNT_FAKE_DEFINITION = createFishMountFakeState();
 
     public FishMountRenderer(EntityRendererProvider.Context context) {
         super(context);
+        this.blockModelResolver = context.getBlockModelResolver();
+
     }
 
     @Override
@@ -60,22 +86,25 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
         }
         poseStack.mulPose(Axis.XP.rotationDegrees(x));
         poseStack.mulPose(Axis.YP.rotationDegrees(y));
-        /*if (!renderState.isInvisible) { //TODO Redo. Move to new models anyways
+
+        if (!renderState.isInvisible) {
             ModelManager manager = this.mc.getModelManager();
+            List<BlockStateModelPart> modelParts = new ArrayList<>();
+            RandomSource randomSource = RandomSource.create();
+            randomSource.setSeed(42L);
+
+            manager.getStandaloneModel(ClientHandler.FISH_MOUNT_KEY).collectParts(randomSource, modelParts);
 
             poseStack.pushPose();
             poseStack.translate(-0.5D, -0.5D, -0.5D);
             Identifier entityTypeID = renderState.byName;
             if (entityTypeID != null) {
-                BlockStateModel model = manager.getStandaloneModel(getStandaloneKeyFromType(entityTypeID.getPath()));
-                if (model != null) {
+                if (!modelParts.isEmpty()) {
                     nodeCollector.submitBlockModel(
                             poseStack,
                             RenderTypes.entitySolidZOffsetForward(TextureAtlas.LOCATION_BLOCKS),
-                            model,
-                            1.0F,
-                            1.0F,
-                            1.0F,
+                            modelParts,
+                            BlockModelRenderState.EMPTY_TINTS,
                             renderState.lightCoords,
                             OverlayTexture.NO_OVERLAY,
                             renderState.outlineColor
@@ -83,7 +112,8 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
                 }
             }
             poseStack.popPose();
-        }*/
+        }
+
         this.renderFish(renderState, poseStack, nodeCollector, cameraRenderState);
         poseStack.popPose();
     }
@@ -91,14 +121,24 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
     private void renderFish(@Nonnull FishMountRenderState renderState, @Nonnull PoseStack poseStack, @Nonnull SubmitNodeCollector nodeCollector, @Nonnull CameraRenderState cameraRenderState) {
         Entity entity = renderState.mountedFish;
         if (entity instanceof Mob fish) {
-            double x = 0.0D;
+            double x = -0.1D;
             double y = 0.0D;
-            double depth = 0.42D;
+            double depth = 0.55D;
             if (fish instanceof Pufferfish) {
                 depth += 0.09D;
+            } else if (fish instanceof AquaFishEntity && ((AquaFishEntity) fish).getFishType().equals(FishType.HALIBUT)) {
+                depth = 0.56D;
             } else if (fish instanceof AquaFishEntity && ((AquaFishEntity) fish).getFishType().equals(FishType.LONGNOSE)) {
-                x = -0.1F;
-                y = -0.18D;
+                poseStack.scale(0.75F, 0.75F, 0.75F);
+                depth = 0.67D;
+            } else if (fish instanceof AquaFishEntity && ((AquaFishEntity) fish).getFishType().equals(FishType.JELLYFISH)) {
+                poseStack.scale(0.75F, 0.75F, 0.75F);
+                x = x + 0.025D;
+                depth = depth + 0.15D;
+            } else if (fish instanceof AquaFishEntity && ((AquaFishEntity) fish).getFishType().equals(FishType.SMALL)) {
+                y = 0.1D;
+            } else {
+                poseStack.scale(0.95F, 0.95F, 0.95F);
             }
             fish.setNoAi(true);
             poseStack.translate(x, y, depth);
@@ -199,17 +239,20 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
             renderState.fishRenderState = this.entityRenderDispatcher.extractEntity(renderState.mountedFish, 0.0F);
             renderState.fishRenderState.lightCoords = renderState.lightCoords;
         }
+
+        if (!renderState.isInvisible) {
+            this.updateForFishMount(renderState.fishMountModel);
+        } else {
+            renderState.fishMountModel.clear();
+        }
     }
 
+    public void updateForFishMount(BlockModelRenderState renderState) {
+        BlockState fakeState = FISH_MOUNT_FAKE_DEFINITION.any();
+        this.blockModelResolver.update(renderState, fakeState, ItemFrameRenderer.BLOCK_DISPLAY_CONTEXT);
+    }
 
-    public StandaloneModelKey<BlockStateModel> getStandaloneKeyFromType(String mountType) {
-        return switch (mountType) {
-            case "spruce_fish_mount" -> ClientHandler.SPRUCE_FISH_MOUNT_KEY;
-            case "birch_fish_mount" -> ClientHandler.BIRCH_FISH_MOUNT_KEY;
-            case "jungle_fish_mount" -> ClientHandler.JUNGLE_FISH_MOUNT_KEY;
-            case "acacia_fish_mount" -> ClientHandler.ACACIA_FISH_MOUNT_KEY;
-            case "dark_oak_fish_mount" -> ClientHandler.DARK_OAK_FISH_MOUNT_KEY;
-            default -> ClientHandler.OAK_FISH_MOUNT_KEY;
-        };
+    private static StateDefinition<Block, BlockState> createFishMountFakeState() {
+        return new StateDefinition.Builder<Block, BlockState>(Blocks.AIR).create(Block::defaultBlockState, BlockState::new);
     }
 }

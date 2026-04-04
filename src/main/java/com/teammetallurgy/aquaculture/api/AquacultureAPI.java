@@ -4,7 +4,6 @@ import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.api.fish.FishData;
 import com.teammetallurgy.aquaculture.api.fishing.Hook;
 import com.teammetallurgy.aquaculture.init.AquaItems;
-import com.teammetallurgy.aquaculture.init.FishRegistry;
 import com.teammetallurgy.aquaculture.item.BaitItem;
 import com.teammetallurgy.aquaculture.item.HookItem;
 import net.minecraft.core.registries.Registries;
@@ -14,8 +13,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.neoforged.neoforge.registries.DeferredItem;
-
-import javax.annotation.Nonnull;
 
 public class AquacultureAPI {
     /**
@@ -29,10 +26,6 @@ public class AquacultureAPI {
 
     public static BaitItem createBait(int durability, int lureSpeedModifier, Item.Properties properties) {
         return new BaitItem(durability, lureSpeedModifier, properties);
-    }
-
-    public static DeferredItem<Item> registerFishMount(@Nonnull String name) {
-        return FishRegistry.registerFishMount(name);
     }
 
     public static DeferredItem<Item> registerHook(Hook hook) {

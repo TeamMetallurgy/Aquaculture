@@ -53,12 +53,7 @@
   "item.aquaculture.box": "상자",
   "item.aquaculture.lockbox": "자물쇠 상자",
   "item.aquaculture.treasure_chest": "보물 상자",
-  "item.aquaculture.oak_fish_mount": "참나무 표본액자",
-  "item.aquaculture.spruce_fish_mount": "가문비나무 표본액자",
-  "item.aquaculture.birch_fish_mount": "자작나무 표본액자",
-  "item.aquaculture.jungle_fish_mount": "정글나무 표본액자",
-  "item.aquaculture.acacia_fish_mount": "아카시아나무 표본액자",
-  "item.aquaculture.dark_oak_fish_mount": "짙은 참나무 표본액자",
+  "item.aquaculture.fish_mount": "표본액자"
 
   "_comment": "넵투늄",
   "item.aquaculture.neptunium_nugget": "넵투늄 조각",
@@ -180,12 +175,7 @@
   "entity.aquaculture.arrau_turtle": "아라우거북",
   "entity.aquaculture.starshell_turtle": "스타셀거북",
   "entity.aquaculture.bobber": "찌",
-  "entity.aquaculture.oak_fish_mount": "참나무 표본액자",
-  "entity.aquaculture.spruce_fish_mount": "가문비나무 표본액자",
-  "entity.aquaculture.birch_fish_mount": "자작나무 표본액자",
-  "entity.aquaculture.jungle_fish_mount": "정글나무 표본액자",
-  "entity.aquaculture.acacia_fish_mount": "아카시아나무 표본액자",
-  "entity.aquaculture.dark_oak_fish_mount": "짙은 참나무 표본액자",
+  "entity.aquaculture.fish_mount": "표본액자",
   "entity.aquaculture.water_arrow": "화살",
   
   "_comment": "병 속의 편지",
