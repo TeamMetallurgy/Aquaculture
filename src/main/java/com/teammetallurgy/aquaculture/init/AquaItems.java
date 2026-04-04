@@ -88,6 +88,7 @@ public class AquaItems {
     public static final DeferredItem<Item> CAPITAINE = FishRegistry.register(p -> new FishItem(p, FishItem.LARGE_FISH_RAW), "capitaine");
     public static final DeferredItem<Item> SYNODONTIS = FishRegistry.register(p -> new FishItem(p, FishItem.SMALL_FISH_RAW), "synodontis", FishType.SMALL);
     public static final DeferredItem<Item> SMALLMOUTH_BASS = FishRegistry.register(FishItem::new, "smallmouth_bass");
+    public static final DeferredItem<Item> LARGEMOUTH_BASS = FishRegistry.register(FishItem::new, "largemouth_bass", FishType.LARGE);
     public static final DeferredItem<Item> BLUEGILL = FishRegistry.register(p -> new FishItem(p, FishItem.SMALL_FISH_RAW), "bluegill", FishType.SMALL);
     public static final DeferredItem<Item> BROWN_TROUT = FishRegistry.register(FishItem::new, "brown_trout");
     public static final DeferredItem<Item> CARP = FishRegistry.register(FishItem::new, "carp", FishType.LARGE);

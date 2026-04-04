@@ -51,8 +51,6 @@ public class ClientHandler {
     public static final ModelLayerLocation CATFISH_MODEL = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "catfish_model"), "catfish_model");
     public static final ModelLayerLocation TROPICAL_FISH_B = new ModelLayerLocation(ModelLayers.TROPICAL_FISH_SMALL.model(), "tropical_fish_b");
     public static final ModelLayerLocation JELLYFISH_MODEL = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "jellyfish_model"), "jellyfish_model");
-    public static final ModelLayerLocation FISH_MOUNT_LAYER = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "fish_mount"), "fish_mount");
-
     public static final Identifier FISH_MOUNT = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/fish_mount");
     public static final StandaloneModelKey<BlockStateModel> FISH_MOUNT_KEY = new StandaloneModelKey<>(() -> "aquaculture: Fish Mount");
 

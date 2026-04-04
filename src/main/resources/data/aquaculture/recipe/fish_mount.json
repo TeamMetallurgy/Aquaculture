@@ -6,7 +6,7 @@
     "BBB"
   ],
   "key": {
-    "B": "minecraft:oak_button",
+    "B": "#minecraft:wooden_buttons",
     "H": "aquaculture:iron_hook"
   },
   "result": {
