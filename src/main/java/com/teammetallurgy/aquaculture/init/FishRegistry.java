@@ -2,10 +2,8 @@ package com.teammetallurgy.aquaculture.init;
 
 import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.entity.AquaFishEntity;
-import com.teammetallurgy.aquaculture.entity.FishMountEntity;
 import com.teammetallurgy.aquaculture.entity.FishType;
 import com.teammetallurgy.aquaculture.item.AquaFishBucket;
-import com.teammetallurgy.aquaculture.item.FishMountItem;
 import com.teammetallurgy.aquaculture.loot.BiomeTagCheck;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -27,17 +25,6 @@ import java.util.function.Function;
 @EventBusSubscriber(modid = Aquaculture.MOD_ID)
 public class FishRegistry {
     public static List<DeferredHolder<EntityType<?>, EntityType<AquaFishEntity>>> fishEntities = new ArrayList<>();
-    public static List<DeferredHolder<EntityType<?>, EntityType<FishMountEntity>>> fishMounts = new ArrayList<>();
-
-    public static DeferredItem<Item> registerFishMount(@Nonnull String name) {
-        DeferredHolder<EntityType<?>, EntityType<FishMountEntity>> fishMount = AquaEntities.ENTITY_DEFERRED.register(name, () -> EntityType.Builder.<FishMountEntity>of(FishMountEntity::new, MobCategory.MISC)
-                .sized(0.5F, 0.5F)
-                .eyeHeight(0.0F)
-                .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, name))));
-        DeferredItem<Item> fishMountItem = AquaItems.registerWithTab(p -> new FishMountItem(fishMount, p), name);
-        fishMounts.add(fishMount);
-        return fishMountItem;
-    }
 
     /**
      * Same as {@link #register(Function, String, FishType)}, but with default size

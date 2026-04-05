@@ -1,7 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "aquaculture:item/lower_bucket",
-        "layer1": "aquaculture:item/bucket_content/pink_salmon"
-    }
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "aquaculture:item/pink_salmon_bucket"
+  }
 }

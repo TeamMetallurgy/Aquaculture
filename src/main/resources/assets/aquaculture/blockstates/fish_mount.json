@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "standalone": { "model": "aquaculture:block/fish_mount" }
+    }
+}

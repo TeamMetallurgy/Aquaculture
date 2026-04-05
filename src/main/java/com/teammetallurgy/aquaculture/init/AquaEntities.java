@@ -28,6 +28,9 @@ public class AquaEntities {
             .sized(0.25F, 0.25F)
             .setTrackingRange(4)
             .setUpdateInterval(5));
+    public static final DeferredHolder<EntityType<?>, EntityType<FishMountEntity>> FISH_MOUNT = register("fish_mount", () -> EntityType.Builder.<FishMountEntity>of(FishMountEntity::new, MobCategory.MISC)
+            .sized(0.5F, 0.5F)
+            .eyeHeight(0.0F));
     public static final DeferredHolder<EntityType<?>, EntityType<WaterArrowEntity>> WATER_ARROW = register("water_arrow", () -> EntityType.Builder.<WaterArrowEntity>of(WaterArrowEntity::new, MobCategory.MISC)
             .sized(0.5F, 0.5F)
             .eyeHeight(0.13F).clientTrackingRange(4).updateInterval(20));

@@ -272,6 +272,19 @@
             {
               "condition": "aquaculture:biome_tag_check",
               "predicate": {
+                "exclude": ["c:is_ocean", "c:is_beach", "c:is_cold", "c:is_desert", "c:is_snowy", "c:is_jungle"]
+              }
+            }
+          ],
+          "weight": 20,
+          "name": "aquaculture:largemouth_bass"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "aquaculture:biome_tag_check",
+              "predicate": {
                 "exclude": ["c:is_ocean", "c:is_beach", "c:is_desert", "c:is_jungle"]
               }
             }
