@@ -1,27 +1,49 @@
 ext {
-    parseVersionRange = { String range ->
-        def cleaned = range.trim().substring(1, range.length() - 1)
-        def (minVer, maxVerRaw) = cleaned.split(',')
+    parseVersionRange = { String range, String minecraftVersion ->
+        def maxPatch = (minecraftVersion.tokenize('.')?.getAt(2) ?: 0) as int
+        def cleaned = range.trim()[1..-2]
+        def (minRaw, maxRaw) = cleaned.split(',')
 
-        def (maj, min, patch) = maxVerRaw.tokenize('.').collect { it.toInteger() }
-        def maxVer = "${maj}.${min}.${patch - 1}"
-
-        def expand = { a, b ->
-            def (majA, minA, patchA) = a.tokenize('.').collect { it.toInteger() }
-            def (majB, minB, patchB) = b.tokenize('.').collect { it.toInteger() }
-
-            def list = []
-            for (p = patchA; p <= patchB; p++) {
-                list << "${majA}.${minA}.${p}"
-            }
-            return list
+        def parse = { v ->
+            def parts = v.tokenize('.').collect { it as int }
+            while (parts.size() < 3) parts << 0
+            return parts // major, minor, patch
         }
 
-        def expanded = expand(minVer, maxVer)
+        def min = parse(minRaw)
+        def max = parse(maxRaw)
 
-        [
-            list: expanded,   // For Modrinth
-            quoted: expanded  // For CurseForge
+        max[2] -= 1
+        if (max[2] < 0) {
+            max[2] = maxPatch
+            max[1] -= 1
+        }
+
+        def expanded = []
+
+        for (int maj = min[0]; maj <= max[0]; maj++) {
+            int minMinor = (maj == min[0]) ? min[1] : 0
+            int maxMinor = (maj == max[0]) ? max[1] : max[1]
+
+            for (int minor = minMinor; minor <= maxMinor; minor++) {
+                int minPatch = (maj == min[0] && minor == min[1]) ? min[2] : 0
+                int maxPatchLocal = (maj == max[0] && minor == max[1]) ? max[2] : maxPatch
+
+                for (int patch = minPatch; patch <= maxPatchLocal; patch++) {
+                    expanded << (
+                        patch == 0
+                            ? "${maj}.${minor}"
+                            : "${maj}.${minor}.${patch}"
+                    )
+                }
+            }
+        }
+
+        println "parseVersionRange(${range}) -> ${expanded}"
+
+        return [
+            list  : expanded, //For Modrinth
+            quoted: expanded //For CurseForge
         ]
     }
 }

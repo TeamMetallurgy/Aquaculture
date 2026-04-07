@@ -7,11 +7,13 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 
@@ -28,12 +30,11 @@ public class FilletKnifeRecipeMaker {
 
             NonNullList<Ingredient> input = NonNullList.of(Ingredient.of(Items.POTATO), Ingredient.of(HolderSet.emptyNamed(BuiltInRegistries.ITEM, filletKnifeTag)), Ingredient.of(fish)); //Pass literally anything as 1st ingredient. Ingredient.EMPTY is no longer a thing, and it doesn't like AIR/ItemStack.EMPTY
             if (AquacultureAPI.FISH_DATA.hasFilletAmount(fish)) {
-                ItemStack output = new ItemStack(AquaItems.FISH_FILLET.get(), AquacultureAPI.FISH_DATA.getFilletAmount(fish));
                 Identifier itemID = BuiltInRegistries.ITEM.getKey(fish);
                 if (itemID != null) {
                     Identifier id = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "fish_fillet." + itemID.getPath());
                     ResourceKey<Recipe<?>> key = ResourceKey.create(Registries.RECIPE, id);
-                    ShapelessRecipe recipe = new ShapelessRecipe("aquaculture.fish_fillet", CraftingBookCategory.MISC, output, input);
+                    ShapelessRecipe recipe = new ShapelessRecipe(RecipeBuilder.createCraftingCommonInfo(false), RecipeBuilder.createCraftingBookInfo(RecipeCategory.FOOD, "aquaculture.fish_fillet"), new ItemStackTemplate(AquaItems.FISH_FILLET.get(), AquacultureAPI.FISH_DATA.getFilletAmount(fish)), input); //TODO Test, might not work.
                     recipes.add(new RecipeHolder<>(key, recipe));
                 }
             }

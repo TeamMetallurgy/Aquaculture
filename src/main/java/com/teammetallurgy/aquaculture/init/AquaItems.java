@@ -88,6 +88,7 @@ public class AquaItems {
     public static final DeferredItem<Item> CAPITAINE = FishRegistry.register(p -> new FishItem(p, FishItem.LARGE_FISH_RAW), "capitaine");
     public static final DeferredItem<Item> SYNODONTIS = FishRegistry.register(p -> new FishItem(p, FishItem.SMALL_FISH_RAW), "synodontis", FishType.SMALL);
     public static final DeferredItem<Item> SMALLMOUTH_BASS = FishRegistry.register(FishItem::new, "smallmouth_bass");
+    public static final DeferredItem<Item> LARGEMOUTH_BASS = FishRegistry.register(FishItem::new, "largemouth_bass", FishType.LARGE);
     public static final DeferredItem<Item> BLUEGILL = FishRegistry.register(p -> new FishItem(p, FishItem.SMALL_FISH_RAW), "bluegill", FishType.SMALL);
     public static final DeferredItem<Item> BROWN_TROUT = FishRegistry.register(FishItem::new, "brown_trout");
     public static final DeferredItem<Item> CARP = FishRegistry.register(FishItem::new, "carp", FishType.LARGE);
@@ -110,13 +111,7 @@ public class AquaItems {
     public static final DeferredItem<Item> ARRAU_TURTLE = registerWithTab(SimpleItem::new, "arrau_turtle");
     public static final DeferredItem<Item> STARSHELL_TURTLE = registerWithTab(SimpleItem::new, "starshell_turtle");
 
-    //Fish Mounting
-    public static final DeferredItem<Item> OAK_FISH_MOUNT = AquacultureAPI.registerFishMount("oak_fish_mount");
-    public static final DeferredItem<Item> SPRUCE_FISH_MOUNT = AquacultureAPI.registerFishMount("spruce_fish_mount");
-    public static final DeferredItem<Item> BIRCH_FISH_MOUNT = AquacultureAPI.registerFishMount("birch_fish_mount");
-    public static final DeferredItem<Item> JUNGLE_FISH_MOUNT = AquacultureAPI.registerFishMount("jungle_fish_mount");
-    public static final DeferredItem<Item> ACACIA_FISH_MOUNT = AquacultureAPI.registerFishMount("acacia_fish_mount");
-    public static final DeferredItem<Item> DARK_OAK_FISH_MOUNT = AquacultureAPI.registerFishMount("dark_oak_fish_mount");
+    public static final DeferredItem<Item> OAK_FISH_MOUNT = AquaItems.registerWithTab(p -> new FishMountItem(AquaEntities.FISH_MOUNT, p), "fish_mount");
 
     //Hooks
     public static final DeferredItem<Item> IRON_HOOK = AquacultureAPI.registerHook(Hooks.IRON);

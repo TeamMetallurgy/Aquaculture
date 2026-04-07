@@ -24,10 +24,10 @@ public class ItemMessageInABottle extends Item {
     @Nonnull
     public InteractionResult use(Level world, Player player, @Nonnull InteractionHand hand) {
         ItemStack heldStack = player.getItemInHand(hand);
-        world.playSound(null, player.getX(), player.getY(), player.getZ(), AquaSounds.BOTTLE_OPEN.get(), SoundSource.PLAYERS, 0.5F, 0.4F / (world.random.nextFloat() * 0.4F + 0.8F));
+        world.playSound(null, player.getX(), player.getY(), player.getZ(), AquaSounds.BOTTLE_OPEN.get(), SoundSource.PLAYERS, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
 
         if (player instanceof ServerPlayer) {
-            player.displayClientMessage(Component.translatable("aquaculture.message" + world.random.nextInt(AquaConfig.BASIC_OPTIONS.messageInABottleAmount.get() + 1)), true);
+            player.sendOverlayMessage(Component.translatable("aquaculture.message" + world.getRandom().nextInt(AquaConfig.BASIC_OPTIONS.messageInABottleAmount.get() + 1)));
         }
         heldStack.shrink(1);
 

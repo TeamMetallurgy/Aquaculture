@@ -81,6 +81,9 @@
     "aquaculture:smallmouth_bass": {
       "chance": 0.05
     },
+    "aquaculture:largemouth_bass": {
+      "chance": 0.1
+    },
     "aquaculture:bayad": {
       "chance": 0.25
     },

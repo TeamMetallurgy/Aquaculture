@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.ItemDisplayContext;
 import org.joml.Vector3fc;
 
 import javax.annotation.Nonnull;
@@ -30,7 +29,7 @@ public class TackleBoxSpecialRenderer implements NoDataSpecialModelRenderer {
     }
 
     @Override
-    public void submit(@Nonnull ItemDisplayContext displayContext, @Nonnull PoseStack poseStack, @Nonnull SubmitNodeCollector nodeCollector, int packedLight, int packedOverlay, boolean hasFoil, int outlineColor) {
+    public void submit(@Nonnull PoseStack poseStack, @Nonnull SubmitNodeCollector nodeCollector, int lightCoords, int overlayCoords, boolean hasFoil, int outlineColor) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(-Direction.NORTH.toYRot()));
         poseStack.translate(-1.0F, 1.125F, -0.5F); //Translate
@@ -40,8 +39,8 @@ public class TackleBoxSpecialRenderer implements NoDataSpecialModelRenderer {
                 this.model.root(),
                 poseStack,
                 this.model.renderType(TACKLE_BOX),
-                packedLight,
-                packedOverlay,
+                lightCoords,
+                overlayCoords,
                 null,
                 false,
                 hasFoil,
@@ -58,7 +57,7 @@ public class TackleBoxSpecialRenderer implements NoDataSpecialModelRenderer {
         this.model.root().getExtentsForGui(posestack, consumer);
     }
 
-    public record Unbaked(float openness) implements SpecialModelRenderer.Unbaked {
+    public record Unbaked(float openness) implements NoDataSpecialModelRenderer.Unbaked {
         public static final MapCodec<TackleBoxSpecialRenderer.Unbaked> MAP_CODEC = RecordCodecBuilder.mapCodec(
                 r -> r.group(
                         Codec.FLOAT.optionalFieldOf("angle", 0.0F).forGetter(TackleBoxSpecialRenderer.Unbaked::openness)
@@ -76,7 +75,7 @@ public class TackleBoxSpecialRenderer implements NoDataSpecialModelRenderer {
         }
 
         @Override
-        public SpecialModelRenderer<?> bake(@Nonnull SpecialModelRenderer.BakingContext context) {
+        public TackleBoxSpecialRenderer bake(@Nonnull SpecialModelRenderer.BakingContext context) {
             TackleBoxModel tackleBoxModel = new TackleBoxModel(context.entityModelSet().bakeLayer(ClientHandler.TACKLE_BOX));
             return new TackleBoxSpecialRenderer(tackleBoxModel, this.openness);
         }

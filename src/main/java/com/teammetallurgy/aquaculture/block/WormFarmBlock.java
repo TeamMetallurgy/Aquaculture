@@ -48,7 +48,7 @@ public class WormFarmBlock extends ComposterBlock {
         int stateLevel = state.getValue(LEVEL);
         ItemStack heldStack = player.getItemInHand(hand);
 
-        if (heldStack.getItemHolder().getData(NeoForgeDataMaps.COMPOSTABLES) != null) {
+        if (heldStack.typeHolder().getData(NeoForgeDataMaps.COMPOSTABLES) != null) {
             if (stateLevel < 8 && !level.isClientSide()) {
                 boolean addItem = WormFarmBlock.addItem(state, level, pos, heldStack);
                 level.levelEvent(1500, pos, addItem ? 1 : 0);
@@ -59,9 +59,9 @@ public class WormFarmBlock extends ComposterBlock {
             return InteractionResult .SUCCESS;
         } else if (stateLevel > 0) {
             if (!level.isClientSide()) {
-                double x = (double) (level.random.nextFloat() * 0.7F) + 0.15000000596046448D;
-                double y = (double) (level.random.nextFloat() * 0.7F) + 0.06000000238418579D + 0.6D;
-                double z = (double) (level.random.nextFloat() * 0.7F) + 0.15000000596046448D;
+                double x = (double) (level.getRandom().nextFloat() * 0.7F) + 0.15000000596046448D;
+                double y = (double) (level.getRandom().nextFloat() * 0.7F) + 0.06000000238418579D + 0.6D;
+                double z = (double) (level.getRandom().nextFloat() * 0.7F) + 0.15000000596046448D;
                 ItemEntity itemEntity = new ItemEntity(level, (double) pos.getX() + x, (double) pos.getY() + y, (double) pos.getZ() + z, new ItemStack(AquaItems.WORM.get()));
                 itemEntity.setDefaultPickUpDelay();
                 level.addFreshEntity(itemEntity);

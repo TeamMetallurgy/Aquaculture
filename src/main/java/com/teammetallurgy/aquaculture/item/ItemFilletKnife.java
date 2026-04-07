@@ -18,7 +18,7 @@ public class ItemFilletKnife extends Item {
 
     @SubscribeEvent
     public static void modifyDefaultComponents(ModifyDefaultComponentsEvent event) {
-        event.modify(AquaItems.NEPTUNIUM_FILLET_KNIFE, b -> b.remove(DataComponents.DAMAGE).build());
-        event.modify(AquaItems.NEPTUNIUM_FILLET_KNIFE, b -> b.remove(DataComponents.MAX_DAMAGE).build());
+        event.modify(AquaItems.NEPTUNIUM_FILLET_KNIFE, b -> b.set(DataComponents.DAMAGE, null).build());
+        event.modify(AquaItems.NEPTUNIUM_FILLET_KNIFE, b -> b.set(DataComponents.MAX_DAMAGE, null).build());
     }
 }

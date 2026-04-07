@@ -14,12 +14,14 @@ import com.teammetallurgy.aquaculture.client.renderer.entity.model.*;
 import com.teammetallurgy.aquaculture.client.renderer.special.NeptunesBountySpecialRenderer;
 import com.teammetallurgy.aquaculture.client.renderer.special.TackleBoxSpecialRenderer;
 import com.teammetallurgy.aquaculture.entity.AquaFishEntity;
-import com.teammetallurgy.aquaculture.entity.FishMountEntity;
-import com.teammetallurgy.aquaculture.init.*;
+import com.teammetallurgy.aquaculture.init.AquaBlockEntities;
+import com.teammetallurgy.aquaculture.init.AquaEntities;
+import com.teammetallurgy.aquaculture.init.AquaGuis;
+import com.teammetallurgy.aquaculture.init.FishRegistry;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.SpectralArrowRenderer;
 import net.minecraft.client.renderer.entity.TippableArrowRenderer;
@@ -28,7 +30,10 @@ import net.minecraft.world.entity.EntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
 import net.neoforged.neoforge.client.model.standalone.SimpleUnbakedStandaloneModel;
 import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -46,28 +51,12 @@ public class ClientHandler {
     public static final ModelLayerLocation CATFISH_MODEL = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "catfish_model"), "catfish_model");
     public static final ModelLayerLocation TROPICAL_FISH_B = new ModelLayerLocation(ModelLayers.TROPICAL_FISH_SMALL.model(), "tropical_fish_b");
     public static final ModelLayerLocation JELLYFISH_MODEL = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "jellyfish_model"), "jellyfish_model");
-    public static final Identifier OAK_FISH_MOUNT = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/oak_fish_mount");
-    public static final Identifier SPRUCE_FISH_MOUNT = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/spruce_fish_mount");
-    public static final Identifier BIRCH_FISH_MOUNT = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/birch_fish_mount");
-    public static final Identifier JUNGLE_FISH_MOUNT = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/jungle_fish_mount");
-    public static final Identifier ACACIA_FISH_MOUNT = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/acacia_fish_mount");
-    public static final Identifier DARK_OAK_FISH_MOUNT = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/dark_oak_fish_mount");
-    public static final StandaloneModelKey<BlockStateModel> OAK_FISH_MOUNT_KEY = new StandaloneModelKey<>(() -> "aquaculture: Oak Fish Mount");
-    public static final StandaloneModelKey<BlockStateModel> SPRUCE_FISH_MOUNT_KEY = new StandaloneModelKey<>(() -> "aquaculture: Spruce Fish Mount");
-    public static final StandaloneModelKey<BlockStateModel> BIRCH_FISH_MOUNT_KEY = new StandaloneModelKey<>(() -> "aquaculture: Birch Fish Mount");
-    public static final StandaloneModelKey<BlockStateModel> JUNGLE_FISH_MOUNT_KEY = new StandaloneModelKey<>(() -> "aquaculture: Jungle Fish Mount");
-    public static final StandaloneModelKey<BlockStateModel> ACACIA_FISH_MOUNT_KEY = new StandaloneModelKey<>(() -> "aquaculture: Acacia Fish Mount");
-    public static final StandaloneModelKey<BlockStateModel> DARK_OAK_FISH_MOUNT_KEY = new StandaloneModelKey<>(() -> "aquaculture: Dark Oak Fish Mount");
+    public static final Identifier FISH_MOUNT = Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "block/fish_mount");
+    public static final StandaloneModelKey<BlockStateModel> FISH_MOUNT_KEY = new StandaloneModelKey<>(() -> "aquaculture: Fish Mount");
 
     public static void setupClient() {
         BlockEntityRenderers.register(AquaBlockEntities.NEPTUNES_BOUNTY.get(), NeptunesBountyRenderer::new);
         BlockEntityRenderers.register(AquaBlockEntities.TACKLE_BOX.get(), TackleBoxRenderer::new);
-    }
-
-    @SubscribeEvent
-    public static void registerSpecialBlockModelRenderer(RegisterSpecialBlockModelRendererEvent event) {
-        event.register(AquaBlocks.NEPTUNES_BOUNTY.get(), new NeptunesBountySpecialRenderer.Unbaked(NeptunesBountySpecialRenderer.NEPTUNES_BOUNTY));
-        event.register(AquaBlocks.TACKLE_BOX.get(), new TackleBoxSpecialRenderer.Unbaked());
     }
 
     @SubscribeEvent
@@ -92,9 +81,7 @@ public class ClientHandler {
         event.registerEntityRenderer(AquaEntities.BOX_TURTLE.get(), TurtleLandRenderer::new);
         event.registerEntityRenderer(AquaEntities.ARRAU_TURTLE.get(), TurtleLandRenderer::new);
         event.registerEntityRenderer(AquaEntities.STARSHELL_TURTLE.get(), TurtleLandRenderer::new);
-        for (DeferredHolder<EntityType<?>, EntityType<FishMountEntity>> fishMount : FishRegistry.fishMounts) {
-            event.registerEntityRenderer(fishMount.get(), FishMountRenderer::new);
-        }
+        event.registerEntityRenderer(AquaEntities.FISH_MOUNT.get(), FishMountRenderer::new);
     }
 
     @SubscribeEvent
@@ -114,11 +101,6 @@ public class ClientHandler {
 
     @SubscribeEvent
     public static void registerModels(ModelEvent.RegisterStandalone event) {
-        event.register(OAK_FISH_MOUNT_KEY, SimpleUnbakedStandaloneModel.blockStateModel(OAK_FISH_MOUNT));
-        event.register(SPRUCE_FISH_MOUNT_KEY, SimpleUnbakedStandaloneModel.blockStateModel(SPRUCE_FISH_MOUNT));
-        event.register(BIRCH_FISH_MOUNT_KEY, SimpleUnbakedStandaloneModel.blockStateModel(BIRCH_FISH_MOUNT));
-        event.register(JUNGLE_FISH_MOUNT_KEY, SimpleUnbakedStandaloneModel.blockStateModel(JUNGLE_FISH_MOUNT));
-        event.register(ACACIA_FISH_MOUNT_KEY, SimpleUnbakedStandaloneModel.blockStateModel(ACACIA_FISH_MOUNT));
-        event.register(DARK_OAK_FISH_MOUNT_KEY, SimpleUnbakedStandaloneModel.blockStateModel(DARK_OAK_FISH_MOUNT));
+        event.register(FISH_MOUNT_KEY, SimpleUnbakedStandaloneModel.blockStateModel(FISH_MOUNT));
     }
 }

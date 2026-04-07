@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.FishingHookRenderer;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
@@ -62,7 +62,7 @@ public class AquaFishingHookRenderer extends EntityRenderer<AquaFishingHookEntit
             float bobberB = 1.0F;
             int bobberColorInt = ARGB.color(193, 38, 38);
             if (!bobberStack.isEmpty()) {
-                if (bobberStack.is(ItemTags.DYEABLE)) {
+                if (bobberStack.is(ItemTags.DYES)) {
                     DyedItemColor dyeditemcolor = bobberStack.get(DataComponents.DYED_COLOR);
                     if (dyeditemcolor != null) {
                         bobberColorInt = dyeditemcolor.rgb();
@@ -109,7 +109,7 @@ public class AquaFishingHookRenderer extends EntityRenderer<AquaFishingHookEntit
             float g = 0;
             float b = 0;
             if (!line.isEmpty()) {
-                if (line.is(ItemTags.DYEABLE)) {
+                if (line.is(ItemTags.DYES)) {
                     DyedItemColor dyeditemcolor = line.get(DataComponents.DYED_COLOR);
                     if (dyeditemcolor != null) {
                         int colorInt = dyeditemcolor.rgb();
@@ -156,27 +156,22 @@ public class AquaFishingHookRenderer extends EntityRenderer<AquaFishingHookEntit
         return (float) numerator / (float) denominator;
     }
 
-    private Vec3 getPlayerHandPos(Player player, float handAngle, float partialTick) { //Copied from Fishing HookRenderer
-        int i = FishingHookRenderer.getHoldingArm(player) == HumanoidArm.RIGHT ? 1 : -1;
-        if (this.entityRenderDispatcher.options.getCameraType().isFirstPerson() && player == Minecraft.getInstance().player) {
-            double d4 = 960.0 / (double) this.entityRenderDispatcher.options.fov().get().intValue();
-            Vec3 vec3 = this.entityRenderDispatcher
-                    .camera
-                    .getNearPlane()
-                    .getPointOnPlane((float) i * 0.525F, -0.1F)
-                    .scale(d4)
-                    .yRot(handAngle * 0.5F)
-                    .xRot(-handAngle * 0.7F);
-            return player.getEyePosition(partialTick).add(vec3);
+    private Vec3 getPlayerHandPos(Player owner, float swing, float partialTicks) { //Copied from Fishing HookRenderer
+        int invert = FishingHookRenderer.getHoldingArm(owner) == HumanoidArm.RIGHT ? 1 : -1;
+        if (this.entityRenderDispatcher.options.getCameraType().isFirstPerson() && owner == Minecraft.getInstance().player) {
+            float fov = (float)(Integer)this.entityRenderDispatcher.options.fov().get();
+            double viewBobbingScale = (double)960.0F / (double)fov;
+            Vec3 viewVec = this.entityRenderDispatcher.camera.getNearPlane(fov).getPointOnPlane((float)invert * 0.525F, -0.1F).scale(viewBobbingScale).yRot(swing * 0.5F).xRot(-swing * 0.7F);
+            return owner.getEyePosition(partialTicks).add(viewVec);
         } else {
-            float f = Mth.lerp(partialTick, player.yBodyRotO, player.yBodyRot) * (float) (Math.PI / 180.0);
-            double d0 = Mth.sin(f);
-            double d1 = Mth.cos(f);
-            float f1 = player.getScale();
-            double d2 = (double) i * 0.35 * (double) f1;
-            double d3 = 0.8 * (double) f1;
-            float f2 = player.isCrouching() ? -0.1875F : 0.0F;
-            return player.getEyePosition(partialTick).add(-d1 * d2 - d0 * d3, (double) f2 - 0.45 * (double) f1, -d0 * d2 + d1 * d3);
+            float ownerYRot = Mth.lerp(partialTicks, owner.yBodyRotO, owner.yBodyRot) * ((float)Math.PI / 180F);
+            double sin = Mth.sin(ownerYRot);
+            double cos = Mth.cos(ownerYRot);
+            float playerScale = owner.getScale();
+            double rightOffset = (double)invert * 0.35 * (double)playerScale;
+            double forwardOffset = 0.8 * (double)playerScale;
+            float yOffset = owner.isCrouching() ? -0.1875F : 0.0F;
+            return owner.getEyePosition(partialTicks).add(-cos * rightOffset - sin * forwardOffset, (double)yOffset - 0.45 * (double)playerScale, -sin * rightOffset + cos * forwardOffset);
         }
     }
 

@@ -12,7 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -138,9 +138,9 @@ public class TackleBoxContainer extends AbstractContainerMenu {
     }
 
     @Override
-    public void clicked(int slotId, int dragType, @Nonnull ClickType clickType, @Nonnull Player player) {
+    public void clicked(int slotId, int dragType, @Nonnull ContainerInput containerInput, @Nonnull Player player) {
         //Bait replacing
-        if (slotId >= 0 && clickType == ClickType.PICKUP) {
+        if (slotId >= 0 && containerInput == ContainerInput.PICKUP) {
             Slot slot = this.slots.get(slotId);
             if (slot == this.slotBait) {
                 ItemStack mouseStack = player.containerMenu.getCarried();
@@ -151,6 +151,6 @@ public class TackleBoxContainer extends AbstractContainerMenu {
                 }
             }
         }
-        super.clicked(slotId, dragType, clickType, player);
+        super.clicked(slotId, dragType, containerInput, player);
     }
 }

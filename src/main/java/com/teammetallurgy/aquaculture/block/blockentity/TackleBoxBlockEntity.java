@@ -103,7 +103,7 @@ public class TackleBoxBlockEntity extends IItemHandlerBEBase implements MenuProv
 
     static void playSound(Level level, BlockPos pos, BlockState state, SoundEvent sound) {
         if (level != null) {
-            level.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, sound, SoundSource.BLOCKS, 0.5F, level.random.nextFloat() * 0.1F + 0.9F);
+            level.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, sound, SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
         }
     }
 

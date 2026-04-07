@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.ItemDisplayContext;
 import org.joml.Vector3fc;
 
 import javax.annotation.Nonnull;
@@ -28,14 +27,14 @@ public class NeptunesBountySpecialRenderer implements NoDataSpecialModelRenderer
     }
 
     @Override
-    public void submit(@Nonnull ItemDisplayContext displayContext, @Nonnull PoseStack poseStack, @Nonnull SubmitNodeCollector nodeCollector, int packedLight, int packedOverlay, boolean hasFoil, int outlineColor) {
+    public void submit(@Nonnull PoseStack poseStack, @Nonnull SubmitNodeCollector nodeCollector, int lightCoords, int overlayCoords, boolean hasFoil, int outlineColor) {
         nodeCollector.submitModel(
                 this.model,
                 this.openness,
                 poseStack,
                 this.model.renderType(NEPTUNES_BOUNTY),
-                packedLight,
-                packedOverlay,
+                lightCoords,
+                overlayCoords,
                 -1,
                 null,
                 outlineColor,
@@ -50,7 +49,7 @@ public class NeptunesBountySpecialRenderer implements NoDataSpecialModelRenderer
         this.model.root().getExtentsForGui(posestack, consumer);
     }
 
-    public static record Unbaked(float openness) implements SpecialModelRenderer.Unbaked {
+    public static record Unbaked(float openness) implements NoDataSpecialModelRenderer.Unbaked {
         public static final MapCodec<NeptunesBountySpecialRenderer.Unbaked> MAP_CODEC = RecordCodecBuilder.mapCodec(
                 m -> m.group(
                                 Codec.FLOAT.optionalFieldOf("openness", 0.0F).forGetter(NeptunesBountySpecialRenderer.Unbaked::openness)
@@ -69,7 +68,7 @@ public class NeptunesBountySpecialRenderer implements NoDataSpecialModelRenderer
         }
 
         @Override
-        public SpecialModelRenderer<?> bake(@Nonnull SpecialModelRenderer.BakingContext context) {
+        public NeptunesBountySpecialRenderer bake(@Nonnull SpecialModelRenderer.BakingContext context) {
             NeptunesBountyModel neptunesBountyModel = new NeptunesBountyModel(context.entityModelSet().bakeLayer(ClientHandler.NEPTUNES_BOUNTY));
             return new NeptunesBountySpecialRenderer(neptunesBountyModel, this.openness);
         }

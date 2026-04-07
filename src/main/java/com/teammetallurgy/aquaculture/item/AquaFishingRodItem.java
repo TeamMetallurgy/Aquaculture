@@ -69,7 +69,7 @@ public class AquaFishingRodItem extends FishingRodItem {
                 }
                 if (!isAdminRod) {
                     if (hook != Hooks.EMPTY && hook.getDurabilityChance() > 0) {
-                        if (level.random.nextDouble() >= hook.getDurabilityChance()) {
+                        if (level.getRandom().nextDouble() >= hook.getDurabilityChance()) {
                             heldStack.hurtAndBreak(retrieve, player, hand);
                         }
                     } else {
@@ -78,10 +78,10 @@ public class AquaFishingRodItem extends FishingRodItem {
                 }
             }
             player.swing(hand);
-            level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FISHING_BOBBER_RETRIEVE, SoundSource.NEUTRAL, 1.0F, 0.4F / (level.random.nextFloat() * 0.4F + 0.8F));
+            level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FISHING_BOBBER_RETRIEVE, SoundSource.NEUTRAL, 1.0F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
             player.gameEvent(GameEvent.ITEM_INTERACT_FINISH);
         } else {
-            level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FISHING_BOBBER_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.random.nextFloat() * 0.4F + 0.8F));
+            level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FISHING_BOBBER_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
             if (level instanceof ServerLevel serverLevel) {
                 //Lure Speed
                 int lureSpeed = (int) (EnchantmentHelper.getFishingTimeReduction(serverLevel, heldStack, player) * 20.0F);
@@ -107,7 +107,7 @@ public class AquaFishingRodItem extends FishingRodItem {
     }
 
     @Override
-    public boolean canPerformAction(@Nonnull ItemStack stack, @Nonnull ItemAbility toolAction) {
+    public boolean canPerformAction(@Nonnull ItemInstance stack, @Nonnull ItemAbility toolAction) {
         return ItemAbilities.DEFAULT_FISHING_ROD_ACTIONS.contains(toolAction);
     }
 

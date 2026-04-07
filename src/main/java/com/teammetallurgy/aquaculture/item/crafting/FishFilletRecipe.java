@@ -1,18 +1,18 @@
 package com.teammetallurgy.aquaculture.item.crafting;
 
+import com.mojang.serialization.MapCodec;
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
 import com.teammetallurgy.aquaculture.api.fish.FishData;
 import com.teammetallurgy.aquaculture.init.AquaDataComponents;
 import com.teammetallurgy.aquaculture.init.AquaItems;
-import com.teammetallurgy.aquaculture.init.AquaRecipeSerializers;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -24,10 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FishFilletRecipe extends CustomRecipe {
-
-    public FishFilletRecipe(CraftingBookCategory craftingBookCategory) {
-        super(craftingBookCategory);
-    }
+    public static final FishFilletRecipe INSTANCE = new FishFilletRecipe();
+    public static final MapCodec<FishFilletRecipe> MAP_CODEC = MapCodec.unit(INSTANCE);
+    public static final StreamCodec<RegistryFriendlyByteBuf, FishFilletRecipe> STREAM_CODEC = StreamCodec.unit(INSTANCE);
+    public static final RecipeSerializer<FishFilletRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
     @Override
     public boolean matches(@Nonnull CraftingInput craftingInventory, @Nonnull Level world) {
@@ -55,7 +55,7 @@ public class FishFilletRecipe extends CustomRecipe {
 
     @Override
     @Nonnull
-    public ItemStack assemble(@Nonnull CraftingInput craftingInventory, @Nonnull HolderLookup.Provider provider) {
+    public ItemStack assemble(@Nonnull CraftingInput craftingInventory) {
         ItemStack fish = ItemStack.EMPTY;
         Item knife = null;
 
@@ -120,6 +120,6 @@ public class FishFilletRecipe extends CustomRecipe {
     @Override
     @Nonnull
     public RecipeSerializer<? extends CustomRecipe> getSerializer() {
-        return AquaRecipeSerializers.FISH_FILLET_SERIALIZER.get();
+        return SERIALIZER;
     }
 }
