@@ -191,7 +191,7 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityWithC
     }
 
     public void triggerFishingRodHooked(ServerPlayer angler, @Nonnull ItemStack stack, List<ItemStack> lootEntries) {
-        if (lootEntries.getFirst().getItem() instanceof FishItem) {
+        if (!lootEntries.isEmpty() && lootEntries.getFirst().getItem() instanceof FishItem) {
             CriteriaTriggers.FISHING_ROD_HOOKED.trigger(angler, stack, this, List.of(new ItemStack(Items.COD))); //Used to trigger Fishy Business advancement for AQ fish
         } else {
             CriteriaTriggers.FISHING_ROD_HOOKED.trigger(angler, stack, this, lootEntries);
