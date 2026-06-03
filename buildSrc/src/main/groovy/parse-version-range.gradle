@@ -1,0 +1,49 @@
+ext {
+    parseVersionRange = { String range, String minecraftVersion ->
+        def maxPatch = (minecraftVersion.tokenize('.')?.getAt(2) ?: 0) as int
+        def cleaned = range.trim()[1..-2]
+        def (minRaw, maxRaw) = cleaned.split(',')
+
+        def parse = { v ->
+            def parts = v.tokenize('.').collect { it as int }
+            while (parts.size() < 3) parts << 0
+            return parts // major, minor, patch
+        }
+
+        def min = parse(minRaw)
+        def max = parse(maxRaw)
+
+        max[2] -= 1
+        if (max[2] < 0) {
+            max[2] = maxPatch
+            max[1] -= 1
+        }
+
+        def expanded = []
+
+        for (int maj = min[0]; maj <= max[0]; maj++) {
+            int minMinor = (maj == min[0]) ? min[1] : 0
+            int maxMinor = (maj == max[0]) ? max[1] : max[1]
+
+            for (int minor = minMinor; minor <= maxMinor; minor++) {
+                int minPatch = (maj == min[0] && minor == min[1]) ? min[2] : 0
+                int maxPatchLocal = (maj == max[0] && minor == max[1]) ? max[2] : maxPatch
+
+                for (int patch = minPatch; patch <= maxPatchLocal; patch++) {
+                    expanded << (
+                        patch == 0
+                            ? "${maj}.${minor}"
+                            : "${maj}.${minor}.${patch}"
+                    )
+                }
+            }
+        }
+
+        println "parseVersionRange(${range}) -> ${expanded}"
+
+        return [
+            list  : expanded, //For Modrinth
+            quoted: expanded //For CurseForge
+        ]
+    }
+}
