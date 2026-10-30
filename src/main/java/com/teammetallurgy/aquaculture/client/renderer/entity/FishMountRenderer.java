@@ -145,7 +145,7 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
 
     @Override
     protected boolean shouldShowName(@Nonnull T fishMount, double distanceToCameraSq) {
-        if (Minecraft.renderNames() && fishMount.entity != null && (this.mc.hitResult != null && fishMount.distanceToSqr(this.mc.hitResult.getLocation()) < 0.24D)) {
+        if (!Minecraft.getInstance().gui.hud.isHidden() && fishMount.entity != null && (this.mc.hitResult != null && fishMount.distanceToSqr(this.mc.hitResult.getLocation()) < 0.24D)) {
             double d0 = this.entityRenderDispatcher.distanceToSqr(fishMount);
             float sneaking = fishMount.isDiscrete() ? 32.0F : 64.0F;
             return d0 < (double) (sneaking * sneaking);
@@ -165,7 +165,6 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
                     renderState.mountedFish.getName(),
                     !renderState.isDiscrete,
                     renderState.lightCoords,
-                    renderState.distanceToCameraSq,
                     cameraRenderState
             );
         }
@@ -190,7 +189,6 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
                         Component.translatable("aquaculture.fishWeight.weight", df.format((int) bd.doubleValue()) + lb),
                         !renderState.isDiscrete,
                         renderState.lightCoords,
-                        renderState.distanceToCameraSq,
                         cameraRenderState
                 );
             } else {
@@ -201,7 +199,6 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
                         Component.translatable("aquaculture.fishWeight.weight", bd + lb),
                         !renderState.isDiscrete,
                         renderState.lightCoords,
-                        renderState.distanceToCameraSq,
                         cameraRenderState
                 );
             }

@@ -9,6 +9,7 @@ import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.client.ClientHandler;
 import com.teammetallurgy.aquaculture.client.model.TackleBoxModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.core.Direction;
@@ -35,19 +36,30 @@ public class TackleBoxSpecialRenderer implements NoDataSpecialModelRenderer {
         poseStack.translate(-1.0F, 1.125F, -0.5F); //Translate
         poseStack.mulPose(Axis.XN.rotationDegrees(-180)); //Flip
 
-        nodeCollector.submitModelPart(
+        nodeCollector.order(0).submitModelPart(
                 this.model.root(),
                 poseStack,
                 this.model.renderType(TACKLE_BOX),
                 lightCoords,
                 overlayCoords,
                 null,
-                false,
-                hasFoil,
                 -1,
                 null,
                 outlineColor
         );
+        if (hasFoil) {
+            nodeCollector.order(1).submitModelPart(
+                    this.model.root(),
+                    poseStack,
+                    RenderTypes.entityGlint(),
+                    lightCoords,
+                    overlayCoords,
+                    null,
+                    -1,
+                    null,
+                    outlineColor
+            );
+        }
         poseStack.popPose();
     }
 

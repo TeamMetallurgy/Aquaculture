@@ -37,7 +37,7 @@ public class FishMountItem extends HangingEntityItem {
             Level level = context.getLevel();
             FishMountEntity fishMountEntity = new FishMountEntity(this.fishMount.get(), level, offset, direction);
 
-            EntityType.<FishMountEntity>createDefaultStackConfig(level, useStack, player).accept(fishMountEntity);
+            EntityType.<FishMountEntity>createDefaultStackConfig(level, useStack, player).apply(fishMountEntity);
 
             if (fishMountEntity.survives()) {
                 if (!level.isClientSide()) {
