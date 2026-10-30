@@ -22,6 +22,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -215,7 +216,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
             ItemStack displayStack = this.getItem();
             if (displayStack != null && !displayStack.isEmpty()) {
                 EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.getValue(BuiltInRegistries.ITEM.getKey(displayStack.getItem()));
-                if (entityType != null && entityType != EntityType.PIG) {
+                if (entityType != null && entityType != EntityTypes.PIG) {
                     this.entity = entityType.create(this.level(), EntitySpawnReason.TRIGGERED);
                 }
             } else {
@@ -259,7 +260,7 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
             if (this.getItem().isEmpty()) {
                 Item heldItem = heldStack.getItem();
                 EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.getValue(BuiltInRegistries.ITEM.getKey(heldItem));
-                if (entityType != EntityType.PIG && AquacultureAPI.FISH_DATA.getFish().contains(heldItem)) {
+                if (entityType != EntityTypes.PIG && AquacultureAPI.FISH_DATA.getFish().contains(heldItem)) {
                     this.setDisplayedItem(heldStack);
                     if (!player.getAbilities().instabuild) {
                         heldStack.shrink(1);
