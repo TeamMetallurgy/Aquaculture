@@ -5,6 +5,7 @@ import com.teammetallurgy.aquaculture.api.fishing.Hook;
 import com.teammetallurgy.aquaculture.api.fishing.Hooks;
 import com.teammetallurgy.aquaculture.init.*;
 import com.teammetallurgy.aquaculture.item.AquaFishingRodItem;
+import com.teammetallurgy.aquaculture.item.BaitItem;
 import com.teammetallurgy.aquaculture.item.HookItem;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -161,7 +162,11 @@ public class AquaFishingHookEntity extends FishingHook implements IEntityWithCom
                     if (!angler.isCreative()) {
                         ItemStack bait = AquaFishingRodItem.getBait(this.fishingRod);
                         if (!bait.isEmpty()) {
-                            if (bait.isDamageableItem()) {
+                            if (bait.getItem() instanceof BaitItem baitItem) {
+                                if (baitItem.damageBait(bait)) {
+                                    this.playSound(AquaSounds.BOBBER_BAIT_BREAK.get(), 0.7F, 0.2F);
+                                }
+                            } else if (bait.isDamageableItem()) { //Else if is only kept to support old bait. Can be removed in the future.
                                 bait.hurtAndBreak(1, serverLevel, null, item -> {
                                     bait.shrink(1);
                                     this.playSound(AquaSounds.BOBBER_BAIT_BREAK.get(), 0.7F, 0.2F);
