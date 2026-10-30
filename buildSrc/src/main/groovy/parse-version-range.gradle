@@ -31,9 +31,9 @@ ext {
 
                 for (int patch = minPatch; patch <= maxPatchLocal; patch++) {
                     expanded << (
-                        patch == 0
-                            ? "${maj}.${minor}"
-                            : "${maj}.${minor}.${patch}"
+                            patch == 0
+                                    ? "${maj}.${minor}"
+                                    : "${maj}.${minor}.${patch}"
                     )
                 }
             }
@@ -42,8 +42,8 @@ ext {
         println "parseVersionRange(${range}) -> ${expanded}"
 
         return [
-            list  : expanded, //For Modrinth
-            quoted: expanded //For CurseForge
+                list  : expanded, //For Modrinth
+                quoted: expanded //For CurseForge
         ]
     }
 }
