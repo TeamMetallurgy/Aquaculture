@@ -31,7 +31,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:iron_fishing_rod"
+        "recipes": "aquaculture:iron_fishing_rod"
       }
     }
   },

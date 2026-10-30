@@ -8,11 +8,11 @@ import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.random.Weighted;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.neoforged.neoforge.common.world.BiomeModifier;
@@ -31,12 +31,12 @@ public class AquaBiomeModifiers {
     public record MobSpawnBiomeModifier(HolderSet<Biome> includeList, HolderSet<Biome> excludeList, WeightedList<MobSpawnSettings.SpawnerData> spawners) implements BiomeModifier {
 
         @Override
-        public void modify(@Nonnull Holder<Biome> biome, @Nonnull Phase phase, @Nonnull ModifiableBiomeInfo.BiomeInfo.Builder builder) {
+        public void modify(@Nonnull RegistryAccess registries, @Nonnull Holder<Biome> biome, @Nonnull Phase phase, @Nonnull ModifiableBiomeInfo.BiomeInfo.Builder builder) {
             if (phase == Phase.ADD && this.includeList.contains(biome) && !this.excludeList.contains(biome)) {
                 MobSpawnSettingsBuilder spawns = builder.getMobSpawnSettings();
                 for (Weighted<MobSpawnSettings.SpawnerData> spawner : this.spawners.unwrap()) {
                     EntityType<?> type = spawner.value().type();
-                    spawns.addSpawn(type.getCategory(), spawner.weight(), spawner.value());
+                    spawns.addSpawn(type, spawner.weight(), spawner.value().count());
                 }
             }
         }
@@ -62,12 +62,12 @@ public class AquaBiomeModifiers {
     public record FishSpawnBiomeModifier(List<HolderSet<Biome>> includeBiomes, List<HolderSet<Biome>> excludeBiomes, boolean and, WeightedList<MobSpawnSettings.SpawnerData> spawners) implements BiomeModifier {
 
         @Override
-        public void modify(@Nonnull Holder<Biome> biome, @Nonnull Phase phase, @Nonnull ModifiableBiomeInfo.BiomeInfo.Builder builder) {
+        public void modify(@Nonnull RegistryAccess registries, @Nonnull Holder<Biome> biome, @Nonnull Phase phase, @Nonnull ModifiableBiomeInfo.BiomeInfo.Builder builder) {
             if (phase == Phase.ADD) {
                 if (biome.tags().noneMatch(BiomeTagPredicate.INVALID_TYPES::contains)) {
                     MobSpawnSettingsBuilder spawns = builder.getMobSpawnSettings();
                     for (Weighted<MobSpawnSettings.SpawnerData> spawner : this.spawners.unwrap()) {
-                        MobCategory category = spawner.value().type().getCategory();
+                        EntityType<?> type = spawner.value().type();
                         if (this.includeBiomes.stream().findAny().get().stream().findAny().isEmpty() && !this.excludeBiomes.isEmpty()) {
                             for (HolderSet<Biome> exclude : this.excludeBiomes) {
                                 if (exclude.contains(biome)) {
@@ -75,13 +75,13 @@ public class AquaBiomeModifiers {
                                 }
                             }
                             debugOutput(biome, "Exclude only. Valid biome included");
-                            spawns.addSpawn(category, spawner.weight(), spawner.value());
+                            spawns.addSpawn(type, spawner.weight(), spawner.value().count());
                         } else if (this.and) {
                             for (HolderSet<Biome> include : this.includeBiomes) {
                                 if (!include.contains(biome)) return;
                             }
                             debugOutput(biome, "And Include");
-                            spawns.addSpawn(category, spawner.weight(), spawner.value());
+                            spawns.addSpawn(type, spawner.weight(), spawner.value().count());
                         } else {
                             for (HolderSet<Biome> exclude : this.excludeBiomes) {
                                 if (exclude.contains(biome)) {
@@ -91,7 +91,7 @@ public class AquaBiomeModifiers {
                             for (HolderSet<Biome> include : this.includeBiomes) {
                                 if (include.contains(biome)) {
                                     debugOutput(biome, "Normal");
-                                    spawns.addSpawn(category, spawner.weight(), spawner.value());
+                                    spawns.addSpawn(type, spawner.weight(), spawner.value().count());
                                 }
                             }
                         }

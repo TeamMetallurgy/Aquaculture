@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:tin_can_to_iron_nugget"
+        "recipes": "aquaculture:tin_can_to_iron_nugget"
       }
     }
   },

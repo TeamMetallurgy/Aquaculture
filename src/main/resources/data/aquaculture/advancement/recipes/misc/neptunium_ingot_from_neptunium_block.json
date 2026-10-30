@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:neptunium_ingot_from_neptunium_block"
+        "recipes": "aquaculture:neptunium_ingot_from_neptunium_block"
       }
     }
   },

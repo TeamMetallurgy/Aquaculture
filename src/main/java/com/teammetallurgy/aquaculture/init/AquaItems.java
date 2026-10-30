@@ -10,7 +10,6 @@ import com.teammetallurgy.aquaculture.item.neptunium.*;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.Unit;
 import net.minecraft.world.food.Foods;
-import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
@@ -41,7 +40,7 @@ public class AquaItems {
     public static final DeferredItem<Item> NEPTUNIUM_INGOT = registerWithTab(SimpleItem::new, "neptunium_ingot");
     public static final DeferredItem<Item> NEPTUNIUM_PICKAXE = registerWithTab(p -> new NeptuniumPickaxe(AquacultureAPI.MATS.NEPTUNIUM, 1, -2.8F, p), "neptunium_pickaxe");
     public static final DeferredItem<Item> NEPTUNIUM_SHOVEL = registerWithTab(p -> new NeptuniumShovel(AquacultureAPI.MATS.NEPTUNIUM, 1.5F, -3.0F, p), "neptunium_shovel");
-    public static final DeferredItem<Item> NEPTUNIUM_AXE = registerWithTab(p -> new AxeItem(AquacultureAPI.MATS.NEPTUNIUM, 5.0F, -3.0F, p), "neptunium_axe");
+    public static final DeferredItem<Item> NEPTUNIUM_AXE = registerWithTab(p -> new Item(p.axe(AquacultureAPI.MATS.NEPTUNIUM, 5.0F, -3.0F)), "neptunium_axe");
     public static final DeferredItem<Item> NEPTUNIUM_HOE = registerWithTab(p -> new NeptuniumHoe(AquacultureAPI.MATS.NEPTUNIUM, -3, 0.2F, p), "neptunium_hoe");
     public static final DeferredItem<Item> NEPTUNIUM_SWORD = registerWithTab(p -> new Item(p.sword(AquacultureAPI.MATS.NEPTUNIUM, 3, -2.4F)), "neptunium_sword");
     public static final DeferredItem<Item> NEPTUNIUM_BOW = registerWithTab(NeptuniumBow::new, "neptunium_bow");
@@ -51,7 +50,7 @@ public class AquaItems {
     public static final DeferredItem<Item> NEPTUNIUM_BOOTS = registerWithTab(p -> new NeptuniumArmor(AquaArmorMaterials.NEPTUNIUM, ArmorType.BOOTS, p, NeptuniumArmor.createBootAttributes()), "neptunium_boots");
 
     // Fillet Knifes
-    public static final DeferredItem<Item> WOODEN_FILLET_KNIFE = registerWithTab(p -> new ItemFilletKnife(ToolMaterial.WOOD, p), "wooden_fillet_knife");
+    public static final DeferredItem<Item> WOODEN_FILLET_KNIFE = registerWithTab(p -> new ItemFilletKnife(ToolMaterial.WOOD, p.cookingFuel(AquaContextIntProviders.COOKING_TIME_WOODEN_FILLET_KNIFE)), "wooden_fillet_knife");
     public static final DeferredItem<Item> STONE_FILLET_KNIFE = registerWithTab(p -> new ItemFilletKnife(ToolMaterial.STONE, p), "stone_fillet_knife");
     public static final DeferredItem<Item> IRON_FILLET_KNIFE = registerWithTab(p -> new ItemFilletKnife(ToolMaterial.IRON, p), "iron_fillet_knife");
     public static final DeferredItem<Item> GOLD_FILLET_KNIFE = registerWithTab(p -> new ItemFilletKnife(ToolMaterial.GOLD, p), "gold_fillet_knife");
@@ -59,7 +58,7 @@ public class AquaItems {
     public static final DeferredItem<Item> NEPTUNIUM_FILLET_KNIFE = registerWithTab(p -> new ItemFilletKnife(AquacultureAPI.MATS.NEPTUNIUM, p.component(DataComponents.UNBREAKABLE, Unit.INSTANCE)), "neptunium_fillet_knife");
 
     // Misc
-    public static final DeferredItem<Item> DRIFTWOOD = registerWithTab(SimpleItem::new, "driftwood");
+    public static final DeferredItem<Item> DRIFTWOOD = registerWithTab(p -> new SimpleItem(p.cookingFuel(AquaContextIntProviders.COOKING_TIME_DRIFTWOOD)), "driftwood");
     public static final DeferredItem<Item> TIN_CAN = registerWithTab(SimpleItem::new, "tin_can");
     public static final DeferredItem<Item> NESSAGE_IN_A_BOTTLE = registerWithTab(ItemMessageInABottle::new, "message_in_a_bottle");
     public static final DeferredItem<Item> BOX = registerWithTab(p -> new LootBoxItem(AquaLootTables.BOX, p), "box");

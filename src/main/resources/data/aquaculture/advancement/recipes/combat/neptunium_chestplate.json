@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:neptunium_chestplate"
+        "recipes": "aquaculture:neptunium_chestplate"
       }
     }
   },

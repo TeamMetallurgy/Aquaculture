@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:brown_mushroom_from_fish"
+        "recipes": "aquaculture:brown_mushroom_from_fish"
       }
     }
   },

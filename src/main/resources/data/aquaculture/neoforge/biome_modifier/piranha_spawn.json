@@ -3,8 +3,7 @@
   "spawn": {
     "type": "aquaculture:piranha",
     "weight": 20,
-    "minCount": 1,
-    "maxCount": 6
+    "count": {"type": "minecraft:uniform", "min_inclusive": 1, "max_inclusive": 6}
   },
   "includeBiomes": ["#c:is_jungle"],
   "excludeBiomes": ["#aquaculture:empty"],

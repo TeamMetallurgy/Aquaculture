@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:cooked_fish_fillet_from_smoking"
+        "recipes": "aquaculture:cooked_fish_fillet_from_smoking"
       }
     }
   },

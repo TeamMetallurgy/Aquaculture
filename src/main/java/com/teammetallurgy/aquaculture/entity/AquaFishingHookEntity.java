@@ -8,6 +8,7 @@ import com.teammetallurgy.aquaculture.item.AquaFishingRodItem;
 import com.teammetallurgy.aquaculture.item.BaitItem;
 import com.teammetallurgy.aquaculture.item.HookItem;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
+import com.teammetallurgy.aquaculture.misc.StackHelper;
 import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -179,7 +180,7 @@ public class AquaFishingHookEntity extends FishingHook implements IEntityWithCom
                                 List<ItemStack> inventory = new ArrayList<>(container.getSlots());
 
                                 for (int i = 0; i < container.getSlots(); i++) {
-                                    inventory.add(container.getStackInSlot(i));
+                                    inventory.add(StackHelper.getStackInSlot(container, i));
                                 }
                                 inventory.set(1, bait); //Replace original bait with damaged bait in specifically slot 1, to keep order.
 

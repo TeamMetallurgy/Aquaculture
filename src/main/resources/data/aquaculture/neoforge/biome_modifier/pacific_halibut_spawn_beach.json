@@ -3,8 +3,7 @@
   "spawn": {
     "type": "aquaculture:pacific_halibut",
     "weight": 3,
-    "minCount": 1,
-    "maxCount": 1
+    "count": 1
   },
   "includeBiomes": ["#c:is_cold", "#c:is_beach"],
   "excludeBiomes": ["#aquaculture:empty"],

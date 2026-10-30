@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "aquaculture:red_mushroom_from_fish"
+      "aquaculture:red_mushroom_from_red_shrooma"
     ]
   },
   "criteria": {
@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:red_mushroom_from_fish"
+        "recipes": "aquaculture:red_mushroom_from_red_shrooma"
       }
     }
   },

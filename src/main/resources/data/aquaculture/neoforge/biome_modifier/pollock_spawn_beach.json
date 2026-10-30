@@ -3,8 +3,7 @@
   "spawn": {
     "type": "aquaculture:pollock",
     "weight": 8,
-    "minCount": 1,
-    "maxCount": 2
+    "count": {"type": "minecraft:uniform", "min_inclusive": 1, "max_inclusive": 2}
   },
   "includeBiomes": ["#c:is_cold", "#c:is_beach"],
   "excludeBiomes": ["#aquaculture:empty"],

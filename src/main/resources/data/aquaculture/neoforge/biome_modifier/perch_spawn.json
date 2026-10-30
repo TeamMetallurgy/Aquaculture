@@ -3,8 +3,7 @@
   "spawn": {
     "type": "aquaculture:perch",
     "weight": 20,
-    "minCount": 1,
-    "maxCount": 6
+    "count": {"type": "minecraft:uniform", "min_inclusive": 1, "max_inclusive": 6}
   },
   "includeBiomes": ["#aquaculture:empty"],
   "excludeBiomes": ["#c:is_ocean", "#c:is_beach", "#c:is_hot", "#c:is_desert", "#c:is_jungle"],

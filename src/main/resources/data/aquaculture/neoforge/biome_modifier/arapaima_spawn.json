@@ -3,8 +3,7 @@
   "spawn": {
     "type": "aquaculture:arapaima",
     "weight": 1,
-    "minCount": 1,
-    "maxCount": 1
+    "count": 1
   },
   "includeBiomes": ["#c:is_jungle"],
   "excludeBiomes": ["#aquaculture:empty"],

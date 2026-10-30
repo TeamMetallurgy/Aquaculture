@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:nether_star_hook"
+        "recipes": "aquaculture:nether_star_hook"
       }
     }
   },

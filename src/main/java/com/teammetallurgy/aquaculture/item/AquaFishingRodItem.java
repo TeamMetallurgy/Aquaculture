@@ -7,6 +7,7 @@ import com.teammetallurgy.aquaculture.api.fishing.Hooks;
 import com.teammetallurgy.aquaculture.entity.AquaFishingHookEntity;
 import com.teammetallurgy.aquaculture.init.AquaDataComponents;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
+import com.teammetallurgy.aquaculture.misc.StackHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -77,7 +78,6 @@ public class AquaFishingRodItem extends FishingRodItem {
                     }
                 }
             }
-            player.swing(hand);
             level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FISHING_BOBBER_RETRIEVE, SoundSource.NEUTRAL, 1.0F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
             player.gameEvent(GameEvent.ITEM_INTERACT_FINISH);
         } else {
@@ -116,7 +116,7 @@ public class AquaFishingRodItem extends FishingRodItem {
         Hook hook = Hooks.EMPTY;
         ItemContainerContents handler = getHandler(fishingRod);
         if (handler != ItemContainerContents.EMPTY) {
-            ItemStack hookStack = handler.getStackInSlot(0);
+            ItemStack hookStack = StackHelper.getStackInSlot(handler, 0);
             if (hookStack.getItem() instanceof HookItem) {
                 hook = ((HookItem) hookStack.getItem()).getHookType();
             }
@@ -127,19 +127,19 @@ public class AquaFishingRodItem extends FishingRodItem {
     @Nonnull
     public static ItemStack getBait(@Nonnull ItemStack fishingRod) {
         ItemContainerContents handler = getHandler(fishingRod);
-        return handler != ItemContainerContents.EMPTY && handler.getSlots() > 1 ? handler.getStackInSlot(1) : ItemStack.EMPTY;
+        return handler != ItemContainerContents.EMPTY && handler.getSlots() > 1 ? StackHelper.getStackInSlot(handler, 1) : ItemStack.EMPTY;
     }
 
     @Nonnull
     public static ItemStack getFishingLine(@Nonnull ItemStack fishingRod) {
         ItemContainerContents handler = getHandler(fishingRod);
-        return handler != ItemContainerContents.EMPTY & handler.getSlots() > 2 ? handler.getStackInSlot(2) : ItemStack.EMPTY;
+        return handler != ItemContainerContents.EMPTY & handler.getSlots() > 2 ? StackHelper.getStackInSlot(handler, 2) : ItemStack.EMPTY;
     }
 
     @Nonnull
     public static ItemStack getBobber(@Nonnull ItemStack fishingRod) {
         ItemContainerContents handler = getHandler(fishingRod);
-        return handler != ItemContainerContents.EMPTY && handler.getSlots() > 3 ? handler.getStackInSlot(3) : ItemStack.EMPTY;
+        return handler != ItemContainerContents.EMPTY && handler.getSlots() > 3 ? StackHelper.getStackInSlot(handler, 3) : ItemStack.EMPTY;
     }
 
     public static ItemContainerContents getHandler(@Nonnull ItemStack fishingRod) {

@@ -5,6 +5,7 @@ import com.teammetallurgy.aquaculture.api.bait.IBaitItem;
 import com.teammetallurgy.aquaculture.init.AquaDataComponents;
 import com.teammetallurgy.aquaculture.inventory.container.slot.SlotFishingRod;
 import com.teammetallurgy.aquaculture.item.HookItem;
+import com.teammetallurgy.aquaculture.misc.StackHelper;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -67,7 +68,7 @@ public class FishingRodContainerWrapper implements Container {
         ItemContainerContents inv = this.inv();
         if (inv == null) return true;
         for (int i = 0; i < inv.getSlots(); i++) {
-            if (!inv.getStackInSlot(i).isEmpty()) {
+            if (!StackHelper.getStackInSlot(inv, i).isEmpty()) {
                 return false;
             }
         }
@@ -79,7 +80,7 @@ public class FishingRodContainerWrapper implements Container {
     public ItemStack getItem(int slot) {
         ItemContainerContents inv = this.inv();
         if (inv == null) return ItemStack.EMPTY;
-        return slot < inv.getSlots() ? inv.getStackInSlot(slot) : ItemStack.EMPTY;
+        return slot < inv.getSlots() ? StackHelper.getStackInSlot(inv, slot) : ItemStack.EMPTY;
     }
 
     @Override
@@ -118,7 +119,7 @@ public class FishingRodContainerWrapper implements Container {
         ItemContainerContents inv = inv();
 
         for (int i = 0; i < this.actualSlots; i++) {
-            ItemStack existing = (inv != null && i < inv.getSlots()) ? inv.getStackInSlot(i) : ItemStack.EMPTY;
+            ItemStack existing = (inv != null && i < inv.getSlots()) ? StackHelper.getStackInSlot(inv, i) : ItemStack.EMPTY;
             items.add(i == slot ? newStack : existing);
         }
 

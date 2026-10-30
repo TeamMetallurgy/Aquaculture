@@ -6,17 +6,17 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nonnull;
 
-public class NeptuniumShovel extends ShovelItem {
+public class NeptuniumShovel extends Item {
 
     public NeptuniumShovel(ToolMaterial toolMaterial, float damage, float speed, Properties properties) {
-        super(toolMaterial,damage, speed, properties);
+        super(properties.shovel(toolMaterial, damage, speed));
     }
 
     @Override

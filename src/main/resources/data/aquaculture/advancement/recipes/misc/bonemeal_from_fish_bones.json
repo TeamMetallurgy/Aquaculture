@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:bonemeal_from_fish_bones"
+        "recipes": "aquaculture:bonemeal_from_fish_bones"
       }
     }
   },
