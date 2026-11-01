@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:heavy_hook"
+        "recipes": "aquaculture:heavy_hook"
       }
     }
   },

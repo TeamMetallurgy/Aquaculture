@@ -32,34 +32,20 @@ public class TackleBoxSpecialRenderer implements NoDataSpecialModelRenderer {
     @Override
     public void submit(@Nonnull PoseStack poseStack, @Nonnull SubmitNodeCollector nodeCollector, int lightCoords, int overlayCoords, boolean hasFoil, int outlineColor) {
         poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotationDegrees(-Direction.NORTH.toYRot()));
+        poseStack.rotate(Axis.YP.rotationDegrees(-Direction.NORTH.toYRot()));
         poseStack.translate(-1.0F, 1.125F, -0.5F); //Translate
-        poseStack.mulPose(Axis.XN.rotationDegrees(-180)); //Flip
+        poseStack.rotate(Axis.XN.rotationDegrees(-180)); //Flip
 
-        nodeCollector.order(0).submitModelPart(
+        nodeCollector.submitModelPart(
                 this.model.root(),
                 poseStack,
-                this.model.renderType(TACKLE_BOX),
+                hasFoil ? RenderTypes.itemCutoutGlint(TACKLE_BOX) : this.model.renderType(TACKLE_BOX),
                 lightCoords,
                 overlayCoords,
                 null,
                 -1,
-                null,
                 outlineColor
         );
-        if (hasFoil) {
-            nodeCollector.order(1).submitModelPart(
-                    this.model.root(),
-                    poseStack,
-                    RenderTypes.entityGlint(),
-                    lightCoords,
-                    overlayCoords,
-                    null,
-                    -1,
-                    null,
-                    outlineColor
-            );
-        }
         poseStack.popPose();
     }
 

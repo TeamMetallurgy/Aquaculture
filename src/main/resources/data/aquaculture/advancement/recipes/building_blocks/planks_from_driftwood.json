@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:planks_from_driftwood"
+        "recipes": "aquaculture:planks_from_driftwood"
       }
     }
   },

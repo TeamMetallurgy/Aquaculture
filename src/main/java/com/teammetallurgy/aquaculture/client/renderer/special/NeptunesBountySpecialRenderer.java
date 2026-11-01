@@ -37,8 +37,7 @@ public class NeptunesBountySpecialRenderer implements NoDataSpecialModelRenderer
                 overlayCoords,
                 -1,
                 null,
-                outlineColor,
-                null
+                outlineColor
         );
     }
 

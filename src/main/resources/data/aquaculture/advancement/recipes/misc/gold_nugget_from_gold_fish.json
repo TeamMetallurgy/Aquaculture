@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:gold_nugget_from_gold_fish"
+        "recipes": "aquaculture:gold_nugget_from_gold_fish"
       }
     }
   },

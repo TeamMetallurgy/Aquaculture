@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -52,13 +53,17 @@ public class TackleBoxRenderer<T extends TackleBoxBlockEntity & LidBlockEntity> 
     public void submit(TackleBoxRenderState renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, @Nonnull CameraRenderState cameraRenderState) {
         poseStack.pushPose();
         poseStack.translate(0.5D, 0.5D, 0.5D);
-        poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.angle));
+        poseStack.rotate(Axis.YP.rotationDegrees(-renderState.angle));
         poseStack.translate(-0.5D, -0.5D, -0.5D);
         poseStack.translate(0.0625F, 1.125F, 0.5F); //Translate
-        poseStack.mulPose(Axis.XN.rotationDegrees(-180)); //Flip
+        poseStack.rotate(Axis.XN.rotationDegrees(-180)); //Flip
 
         this.tackleBoxModel.setupAnim(renderState);
-        nodeCollector.submitModel(this.tackleBoxModel, renderState, poseStack, RenderTypes.entityCutout(TACKLE_BOX_TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, 0, renderState.breakProgress);
+        RenderType renderType = RenderTypes.entityCutout(TACKLE_BOX_TEXTURE);
+        nodeCollector.submitModel(this.tackleBoxModel, renderState, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, 0);
+        if (renderState.breakProgress != null) {
+            nodeCollector.order(1).submitCrumblingOverlay(this.tackleBoxModel, renderState, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1, renderState.breakProgress);
+        }
 
         poseStack.popPose();
     }

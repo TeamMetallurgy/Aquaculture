@@ -1,6 +1,5 @@
 package com.teammetallurgy.aquaculture.block;
 
-import com.mojang.serialization.MapCodec;
 import com.teammetallurgy.aquaculture.block.blockentity.TackleBoxBlockEntity;
 import com.teammetallurgy.aquaculture.init.AquaBlockEntities;
 import com.teammetallurgy.aquaculture.misc.StackHelper;
@@ -47,7 +46,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
-    public static final MapCodec<TackleBoxBlock> CODEC = simpleCodec(TackleBoxBlock::new);
     public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private static final VoxelShape NORTH_SOUTH = Block.box(0.8D, 0.0D, 3.9D, 15.2D, 9.0D, 12.2D);
@@ -63,11 +61,6 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
         return new TackleBoxBlockEntity(pos, state);
     }
 
-    @Override
-    @Nonnull
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 
     @Override
     @Nonnull
@@ -189,7 +182,7 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
     }
 
     @Override
-    public void playerDestroy(@Nonnull Level level, Player player, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nullable BlockEntity blockEntity, @Nonnull ItemStack stack) {
+    public void playerDestroy(@Nonnull ServerLevel level, ServerPlayer player, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nullable BlockEntity blockEntity, @Nonnull ItemStack stack) {
         player.awardStat(Stats.BLOCK_MINED.get(this));
         player.causeFoodExhaustion(0.005F);
     }

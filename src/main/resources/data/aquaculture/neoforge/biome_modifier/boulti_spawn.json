@@ -3,8 +3,7 @@
   "spawn": {
     "type": "aquaculture:boulti",
     "weight": 10,
-    "minCount": 1,
-    "maxCount": 3
+    "count": {"type": "minecraft:uniform", "min_inclusive": 1, "max_inclusive": 3}
   },
   "includeBiomes": ["#c:is_dry"],
   "excludeBiomes": ["#c:is_cold"],

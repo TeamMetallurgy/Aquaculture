@@ -92,7 +92,7 @@ public class AquaFishRenderer extends MobRenderer<AquaFishEntity, AquaFishRender
             }
             float fishRotation = fishType == FishType.LONGNOSE ? salmonRotation * 4.3F * Mth.sin(salmonMultiplier * 0.6F * renderState.ageInTicks) : 4.3F * Mth.sin(0.6F * renderState.ageInTicks);
 
-            matrixStack.mulPose(Axis.YP.rotationDegrees(fishRotation));
+            matrixStack.rotate(Axis.YP.rotationDegrees(fishRotation));
             if (fishType == FishType.LONGNOSE) {
                 matrixStack.translate(0.0F, 0.0F, -0.4F);
             }
@@ -102,11 +102,11 @@ public class AquaFishRenderer extends MobRenderer<AquaFishEntity, AquaFishRender
                 } else {
                     matrixStack.translate(0.2F, 0.1F, 0.0F);
                 }
-                matrixStack.mulPose(Axis.ZP.rotationDegrees(90));
+                matrixStack.rotate(Axis.ZP.rotationDegrees(90));
             }
             if (fishType == FishType.HALIBUT) {
                 matrixStack.translate(-0.4F, 0.1F, 0.0F);
-                matrixStack.mulPose(Axis.ZP.rotationDegrees(-90));
+                matrixStack.rotate(Axis.ZP.rotationDegrees(-90));
             }
         }
     }

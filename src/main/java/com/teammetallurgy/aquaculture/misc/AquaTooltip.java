@@ -1,6 +1,5 @@
 package com.teammetallurgy.aquaculture.misc;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
 import com.teammetallurgy.aquaculture.init.AquaBlocks;
@@ -16,7 +15,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
-import org.lwjgl.glfw.GLFW;
 
 @EventBusSubscriber(modid = Aquaculture.MOD_ID, value = Dist.CLIENT)
 public class AquaTooltip {
@@ -30,7 +28,7 @@ public class AquaTooltip {
                 Identifier id = BuiltInRegistries.ITEM.getKey(item);
                 if (id != null) {
                     String itemIdentifier = id.getPath() + ".tooltip";
-                    if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT)) {
+                    if (Minecraft.getInstance().hasShiftDown()) {
                         event.getToolTip().add(Component.translatable(Aquaculture.MOD_ID + "." + itemIdentifier + ".desc").withStyle(ChatFormatting.AQUA));
                     } else {
                         event.getToolTip().add(Component.translatable(Aquaculture.MOD_ID + "." + itemIdentifier + ".title").withStyle(ChatFormatting.AQUA)

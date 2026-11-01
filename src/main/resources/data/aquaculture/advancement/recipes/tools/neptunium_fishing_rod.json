@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:neptunium_fishing_rod"
+        "recipes": "aquaculture:neptunium_fishing_rod"
       }
     }
   },

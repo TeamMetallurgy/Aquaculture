@@ -1,6 +1,5 @@
 package com.teammetallurgy.aquaculture.block;
 
-import com.mojang.serialization.MapCodec;
 import com.teammetallurgy.aquaculture.block.blockentity.NeptunesBountyBlockEntity;
 import com.teammetallurgy.aquaculture.init.AquaBlockEntities;
 import net.minecraft.core.BlockPos;
@@ -26,7 +25,6 @@ import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
 public class NeptunesBountyBlock extends ChestBlock {
-    public static final MapCodec<NeptunesBountyBlock> CODEC = simpleCodec((p) -> new NeptunesBountyBlock(AquaBlockEntities.NEPTUNES_BOUNTY::get, p));
 
     public NeptunesBountyBlock(Supplier<BlockEntityType<? extends ChestBlockEntity>> block, BlockBehaviour.Properties properties) {
         super(block, SoundEvents.CHEST_OPEN, SoundEvents.CHEST_CLOSE, properties.mapColor(MapColor.METAL).strength(3.5F, 8.0F).sound(SoundType.METAL));
@@ -37,11 +35,6 @@ public class NeptunesBountyBlock extends ChestBlock {
         return new NeptunesBountyBlockEntity(pos, state);
     }
 
-    @Override
-    @Nonnull
-    public MapCodec<? extends NeptunesBountyBlock> codec() {
-        return CODEC;
-    }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {

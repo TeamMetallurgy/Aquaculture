@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:worm_farm"
+        "recipes": "aquaculture:worm_farm"
       }
     }
   },

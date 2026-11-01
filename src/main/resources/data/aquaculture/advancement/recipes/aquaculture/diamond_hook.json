@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:diamond_hook"
+        "recipes": "aquaculture:diamond_hook"
       }
     }
   },

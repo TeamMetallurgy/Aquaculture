@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:light_hook"
+        "recipes": "aquaculture:light_hook"
       }
     }
   },

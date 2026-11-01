@@ -48,7 +48,7 @@ public class Aquaculture {
         this.registerDeferredRegistries(modBus);
         modBus.addListener(this::registerCapabilities);
         modBus.addListener(this::addItemsToTabs);
-        modContainer.registerConfig(ModConfig.Type.COMMON, AquaConfig.spec);
+        modContainer.registerConfig(ModConfig.Type.LOCAL, AquaConfig.spec);
         AquacultureAPI.Tags.init();
 
         AquaBiomeModifiers.BIOME_MODIFIER_SERIALIZERS_DEFERRED.register("mob_spawn", AquaBiomeModifiers.MobSpawnBiomeModifier::makeCodec);

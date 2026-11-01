@@ -3,8 +3,7 @@
   "spawn": {
     "type": "aquaculture:starshell_turtle",
     "weight": 6,
-    "minCount": 1,
-    "maxCount": 2
+    "count": {"type": "minecraft:uniform", "min_inclusive": 1, "max_inclusive": 2}
   },
   "includeBiomes": "#c:is_twilight",
   "excludeBiomes": "#aquaculture:empty"

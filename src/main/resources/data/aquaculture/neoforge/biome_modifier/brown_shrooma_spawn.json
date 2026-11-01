@@ -3,8 +3,7 @@
   "spawn": {
     "type": "aquaculture:brown_shrooma",
     "weight": 26,
-    "minCount": 1,
-    "maxCount": 8
+    "count": {"type": "minecraft:uniform", "min_inclusive": 1, "max_inclusive": 8}
   },
   "includeBiomes": ["#c:is_mushroom"],
   "excludeBiomes": ["#aquaculture:empty"],

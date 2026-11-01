@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:diamond_fillet_knife"
+        "recipes": "aquaculture:diamond_fillet_knife"
       }
     }
   },

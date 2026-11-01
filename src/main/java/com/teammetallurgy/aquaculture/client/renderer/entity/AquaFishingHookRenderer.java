@@ -43,8 +43,8 @@ public class AquaFishingHookRenderer extends EntityRenderer<AquaFishingHookEntit
     }
 
     @Override
-    public boolean shouldRender(@Nonnull AquaFishingHookEntity bobber, @Nonnull Frustum frustum, double x, double y, double z) {
-        return super.shouldRender(bobber, frustum, x, y, z) && bobber.getPlayerOwner() != null;
+    public boolean shouldRender(@Nonnull AquaFishingHookEntity bobber, @Nonnull Frustum frustum, double x, double y, double z, float partialTicks) {
+        return super.shouldRender(bobber, frustum, x, y, z, partialTicks) && bobber.getPlayerOwner() != null;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class AquaFishingHookRenderer extends EntityRenderer<AquaFishingHookEntit
         poseStack.pushPose();
         poseStack.pushPose(); //Start Hook/Bobber rendering
         poseStack.scale(0.5F, 0.5F, 0.5F);
-        poseStack.mulPose(cameraRenderState.orientation);
+        poseStack.rotate(cameraRenderState.orientation);
 
         //Bobber Overlay
         nodeCollector.submitCustomGeometry(poseStack, renderState.hasBobber ? BOBBER_OVERLAY_RENDER : BOBBER_VANILLA_RENDER, (pose, vertexConsumer) -> {
@@ -188,7 +188,7 @@ public class AquaFishingHookRenderer extends EntityRenderer<AquaFishingHookEntit
         if (player == null) {
             reusedState.lineOriginOffset = Vec3.ZERO;
         } else {
-            float attackAnim = player.getAttackAnim(partialTick);
+            float attackAnim = player.getSwingAnimation(partialTick);
             float f1 = Mth.sin(Mth.sqrt(attackAnim) * (float) Math.PI);
             Vec3 vec3 = this.getPlayerHandPos(player, f1, partialTick);
             Vec3 vec31 = bobber.getPosition(partialTick).add(0.0, 0.25, 0.0);

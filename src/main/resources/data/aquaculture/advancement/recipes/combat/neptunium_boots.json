@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:neptunium_boots"
+        "recipes": "aquaculture:neptunium_boots"
       }
     }
   },

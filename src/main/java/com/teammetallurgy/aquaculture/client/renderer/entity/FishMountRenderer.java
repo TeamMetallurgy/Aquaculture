@@ -71,8 +71,8 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
             x = (float)(-90 * direction.getAxisDirection().getStep());
             y = 180.0F;
         }
-        poseStack.mulPose(Axis.XP.rotationDegrees(x));
-        poseStack.mulPose(Axis.YP.rotationDegrees(y));
+        poseStack.rotate(Axis.XP.rotationDegrees(x));
+        poseStack.rotate(Axis.YP.rotationDegrees(y));
 
         if (!renderState.isInvisible) {
             ModelManager manager = this.mc.getModelManager();
@@ -129,8 +129,8 @@ public class FishMountRenderer<T extends FishMountEntity> extends EntityRenderer
             }
             fish.setNoAi(true);
             poseStack.translate(x, y, depth);
-            poseStack.mulPose(Axis.XP.rotationDegrees(-90.0F));
-            poseStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
+            poseStack.rotate(Axis.XP.rotationDegrees(-90.0F));
+            poseStack.rotate(Axis.YP.rotationDegrees(-90.0F));
             if (renderState.fishRenderState != null) {
                 this.entityRenderDispatcher.submit(renderState.fishRenderState, cameraRenderState, 0.0D, 0.0D, 0.0F, poseStack, nodeCollector);
             }

@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:gold_fillet_knife"
+        "recipes": "aquaculture:gold_fillet_knife"
       }
     }
   },

@@ -4,6 +4,7 @@ import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
 import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.advancements.predicates.entity.FishingHookPredicate;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -51,18 +52,18 @@ public class AquaLootTables {
         if (name != null && name.equals(BuiltInLootTables.FISHING.identifier())) {
             LootPool pool = event.getTable().getPool("main");
             if (pool != null) {
-                addEntry(pool, getInjectEntry(FISH, 85, -1));
-                addEntry(pool, getInjectEntry(JUNK, 10, -2));
+                addEntry(pool, getInjectEntry(event.getRegistries(), FISH, 85, -1));
+                addEntry(pool, getInjectEntry(event.getRegistries(), JUNK, 10, -2));
                 if (AquaConfig.NEPTUNIUM_OPTIONS.addNeptunesBountyToLoot.get()) {
-                    LootPoolEntryContainer neptuniumEntry = NestedLootTable.lootTableReference(NEPTUNIUM).setWeight(AquaConfig.NEPTUNIUM_OPTIONS.neptuniumLootRarity.get()).setQuality(2).when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().fishingHook(FishingHookPredicate.inOpenWater(true)))).build();
+                    LootPoolEntryContainer neptuniumEntry = NestedLootTable.lootTableReference(event.getRegistries().getOrThrow(NEPTUNIUM)).setWeight(AquaConfig.NEPTUNIUM_OPTIONS.neptuniumLootRarity.get()).setQuality(2).when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().fishingHook(FishingHookPredicate.inOpenWater(true)))).build();
                     addEntry(pool, neptuniumEntry);
                 }
             }
         }
     }
 
-    private static LootPoolEntryContainer getInjectEntry(ResourceKey<LootTable> resourceKey, int weight, int quality) {
-        return NestedLootTable.lootTableReference(resourceKey).setWeight(weight).setQuality(quality).build();
+    private static LootPoolEntryContainer getInjectEntry(HolderGetter.Provider registries, ResourceKey<LootTable> resourceKey, int weight, int quality) {
+        return NestedLootTable.lootTableReference(registries.getOrThrow(resourceKey)).setWeight(weight).setQuality(quality).build();
     }
 
     private static void addEntry(LootPool pool, LootPoolEntryContainer entry) {

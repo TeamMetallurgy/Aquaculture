@@ -33,7 +33,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:sushi"
+        "recipes": "aquaculture:sushi"
       }
     }
   },

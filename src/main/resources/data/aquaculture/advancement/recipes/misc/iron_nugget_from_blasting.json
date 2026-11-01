@@ -33,7 +33,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "aquaculture:iron_nugget_from_blasting"
+        "recipes": "aquaculture:iron_nugget_from_blasting"
       }
     }
   },
