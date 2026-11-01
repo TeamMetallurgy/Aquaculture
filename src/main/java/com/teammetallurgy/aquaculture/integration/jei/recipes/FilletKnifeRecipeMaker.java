@@ -3,7 +3,6 @@ package com.teammetallurgy.aquaculture.integration.jei.recipes;
 import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
 import com.teammetallurgy.aquaculture.init.AquaItems;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -28,7 +27,7 @@ public class FilletKnifeRecipeMaker {
         for (Item fish : AquacultureAPI.FISH_DATA.getFish()) {
             TagKey<Item> filletKnifeTag = AquacultureAPI.Tags.KNIFE;
 
-            NonNullList<Ingredient> input = NonNullList.of(Ingredient.of(Items.POTATO), Ingredient.of(HolderSet.emptyNamed(BuiltInRegistries.ITEM, filletKnifeTag)), Ingredient.of(fish)); //Pass literally anything as 1st ingredient. Ingredient.EMPTY is no longer a thing, and it doesn't like AIR/ItemStack.EMPTY
+            NonNullList<Ingredient> input = NonNullList.of(Ingredient.of(Items.POTATO), Ingredient.of(BuiltInRegistries.ITEM.getOrThrow(filletKnifeTag)), Ingredient.of(fish)); //Pass literally anything as 1st ingredient. Ingredient.EMPTY is no longer a thing, and it doesn't like AIR/ItemStack.EMPTY
             if (AquacultureAPI.FISH_DATA.hasFilletAmount(fish)) {
                 Identifier itemID = BuiltInRegistries.ITEM.getKey(fish);
                 if (itemID != null) {

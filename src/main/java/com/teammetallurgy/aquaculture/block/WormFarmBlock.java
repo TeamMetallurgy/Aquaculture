@@ -46,19 +46,18 @@ public class WormFarmBlock extends ComposterBlock {
     @Override
     @Nonnull
     public InteractionResult useItemOn(@Nonnull ItemStack stack, BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, Player player, @Nonnull InteractionHand hand, @Nonnull BlockHitResult blockHitResult) {
-        int stateLevel = state.getValue(LEVEL);
-        ItemStack heldStack = player.getItemInHand(hand);
+        int fillLevel = state.getValue(LEVEL);
 
-        if (heldStack.has(DataComponents.COMPOSTABLE)) {
-            if (stateLevel < 8 && level instanceof ServerLevel serverLevel) {
-                boolean addItem = WormFarmBlock.addItem(player, state, serverLevel, pos, heldStack);
+        if (stack.has(DataComponents.COMPOSTABLE)) {
+            if (fillLevel < 8 && level instanceof ServerLevel serverLevel) {
+                boolean addItem = WormFarmBlock.addItem(state, serverLevel, pos, stack);
                 level.levelEvent(1500, pos, addItem ? 1 : 0);
                 if (!player.getAbilities().instabuild) {
-                    heldStack.shrink(1);
+                    stack.shrink(1);
                 }
             }
             return InteractionResult .SUCCESS;
-        } else if (stateLevel > 0) {
+        } else if (fillLevel > 0) {
             if (!level.isClientSide()) {
                 double x = (double) (level.getRandom().nextFloat() * 0.7F) + 0.15000000596046448D;
                 double y = (double) (level.getRandom().nextFloat() * 0.7F) + 0.06000000238418579D + 0.6D;
@@ -79,7 +78,7 @@ public class WormFarmBlock extends ComposterBlock {
     public void tick(@Nonnull BlockState state, @Nonnull ServerLevel level, @Nonnull BlockPos pos, @Nonnull RandomSource random) {
     }
     
-    private static boolean addItem(@Nullable Entity sourceEntity, BlockState state, ServerLevel level, BlockPos pos, @Nonnull ItemStack stack) {
+    private static boolean addItem(BlockState state, ServerLevel level, BlockPos pos, @Nonnull ItemStack stack) {
         Compostable compostable = stack.get(DataComponents.COMPOSTABLE);
         if (compostable == null) {
             return false;
@@ -89,7 +88,7 @@ public class WormFarmBlock extends ComposterBlock {
                 new LootParams.Builder(level)
                         .withParameter(LootContextParams.BLOCK_STATE, state)
                         .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
-                        .withOptionalParameter(LootContextParams.INTERACTING_ENTITY, sourceEntity)
+                        .withOptionalParameter(LootContextParams.INTERACTING_ENTITY, null)
                         .create(LootContextParamSets.BLOCK_INTERACT)
         ).create(Optional.empty());
         if (stateLevel != 0 && compostable.layers().get(lootContext, 0) <= 0) {
@@ -154,7 +153,7 @@ public class WormFarmBlock extends ComposterBlock {
             ItemStack stack = this.getItem(0);
             if (!stack.isEmpty() && this.levelAccessor instanceof ServerLevel serverLevel) {
                 this.inserted = true;
-                WormFarmBlock.addItem(null, this.state, serverLevel, this.pos, stack);
+                WormFarmBlock.addItem(this.state, serverLevel, this.pos, stack);
                 this.removeItemNoUpdate(0);
             }
 

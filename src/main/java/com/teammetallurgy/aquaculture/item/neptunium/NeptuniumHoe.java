@@ -10,7 +10,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ToolMaterial;
 
 public class NeptuniumHoe extends Item {
-    //Same as vanilla hoe, except tilling turns into Aquaculture's moist farmland. See data/aquaculture/block_transformer/neptunium_hoe.json
     public static final ResourceKey<BlockTransformer> NEPTUNIUM_HOE_TRANSFORMER = ResourceKey.create(Registries.BLOCK_TRANSFORMER, Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, "neptunium_hoe"));
 
     public NeptuniumHoe(ToolMaterial toolMaterial, int damage, float speed, Properties properties) {
