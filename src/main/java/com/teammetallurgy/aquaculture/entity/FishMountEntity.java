@@ -28,6 +28,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.BaseSpawner;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DiodeBlock;
@@ -217,7 +218,8 @@ public class FishMountEntity extends HangingEntity implements IEntityWithComplex
             if (displayStack != null && !displayStack.isEmpty()) {
                 EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.getValue(BuiltInRegistries.ITEM.getKey(displayStack.getItem()));
                 if (entityType != null && entityType != EntityTypes.PIG) {
-                    this.entity = entityType.create(this.level(), EntitySpawnReason.TRIGGERED);
+                    Entity displayEntity = entityType.create(this.level(), EntitySpawnReason.TRIGGERED);
+                    this.entity = displayEntity == null ? null : BaseSpawner.SET_DISPLAY_ENTITY_ID.process(displayEntity);
                 }
             } else {
                 this.entity = null;
