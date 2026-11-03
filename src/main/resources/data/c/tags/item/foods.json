@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "aquaculture:fish_fillet_raw"
+    "aquaculture:fish_fillet_raw",
+    "aquaculture:sushi",
+    "aquaculture:algae"
   ]
 }
