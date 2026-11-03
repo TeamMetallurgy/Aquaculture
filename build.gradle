@@ -1,9 +1,9 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.121'
+    id 'net.neoforged.moddev' version '2.0.148'
     id 'idea'
-    id 'net.darkhax.curseforgegradle' version '1.1.+'
+    id 'net.darkhax.curseforgegradle' version '1.+'
     id "com.modrinth.minotaur" version "2.+"
     id 'git-changelog'
     id 'parse-version-range'
