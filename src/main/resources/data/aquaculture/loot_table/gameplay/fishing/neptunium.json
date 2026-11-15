@@ -7,18 +7,16 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_contents",
-              "component": "minecraft:container",
-              "entries": [
-                {
-                  "type": "minecraft:loot_table",
-                  "value": "aquaculture:box/neptunes_bounty"
-                }
-              ]
-            }
-          ],
+          "modifier": {
+            "type": "minecraft:set_contents",
+            "component": "minecraft:container",
+            "entries": [
+              {
+                "type": "minecraft:loot_table",
+                "value": "aquaculture:box/neptunes_bounty"
+              }
+            ]
+          },
           "name": "aquaculture:neptunes_bounty"
         },
         {
