@@ -3,14 +3,15 @@ package com.teammetallurgy.aquaculture.misc;
 import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
 import com.teammetallurgy.aquaculture.init.AquaBlocks;
-import com.teammetallurgy.aquaculture.init.AquaDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -37,7 +38,8 @@ public class AquaTooltip {
                 }
             }
             if (stack.is(AquaBlocks.NEPTUNES_BOUNTY.asItem())) {
-                if (stack.has(AquaDataComponents.ROD_INVENTORY)) {
+                ItemContainerContents contents = stack.get(DataComponents.CONTAINER);
+                if (contents != null && contents.nonEmptyItems().iterator().hasNext()) {
                     event.getToolTip().clear();
                     event.getToolTip().add(stack.getStyledHoverName());
                     event.getToolTip().add(Component.literal("???????").withStyle(ChatFormatting.ITALIC));
