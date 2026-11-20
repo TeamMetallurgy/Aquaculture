@@ -43,7 +43,7 @@ public class AquaLootTables {
     public static final ResourceKey<LootTable> NETHER_TREASURE = register("gameplay/fishing/nether/treasure");
 
     private static ResourceKey<LootTable> register(String path) {
-        return BuiltInLootTables.register(ResourceKey.create(Registries.LOOT_TABLE, Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, path)));
+        return ResourceKey.create(Registries.LOOT_TABLE, Identifier.fromNamespaceAndPath(Aquaculture.MOD_ID, path));
     }
 
     @SubscribeEvent
